@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/login">
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.testapp.Login"
+        android:label="@string/login_label"
+        tools:layout="@layout/login">
+
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/register" />
+        <action
+            android:id="@+id/action_login_to_pokemonCollection"
+            app:destination="@id/pokemonCollection" />
+    </fragment>
+    <fragment
+        android:id="@+id/register"
+        android:name="com.example.testapp.Register"
+        android:label="@string/register_label"
+        tools:layout="@layout/register">
+
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/pokemonCollection"
+        android:name="com.example.testapp.PokemonCollection"
+        android:label="@string/pokemonCollection_label" />
+</navigation>

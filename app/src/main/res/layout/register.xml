@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mint"
+    tools:context=".Register">
+
+    <TextView
+        android:id="@+id/register_textview_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/register_textview_email"
+        android:textColor="@color/pine"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/register_button_registerbutton"
+        app:layout_constraintStart_toStartOf="@+id/register_textview_password" />
+
+    <TextView
+        android:id="@+id/register_textview_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/register_textview_username"
+        android:textColor="@color/pine"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/register_textview_password"
+        app:layout_constraintEnd_toStartOf="@+id/register_textbox_username"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/register_textbox_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/pine"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textColor="@color/pine"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/register_textview_username"
+        app:layout_constraintTop_toTopOf="@+id/register_textview_username" />
+
+    <TextView
+        android:id="@+id/register_textview_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/register_textview_password"
+        android:textColor="@color/pine"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/register_textview_email"
+        app:layout_constraintStart_toStartOf="@+id/register_textview_username" />
+
+    <EditText
+        android:id="@+id/register_textbox_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/pine"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textColor="@color/pine"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/register_textbox_username"
+        app:layout_constraintTop_toTopOf="@+id/register_textview_password" />
+
+    <Button
+        android:id="@+id/register_button_registerbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/pine"
+        android:text="@string/register_button_registerButton"
+        android:textAlignment="center"
+        android:textColor="@color/fern"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/register_textbox_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/pine"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/pine"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/register_textbox_password"
+        app:layout_constraintTop_toTopOf="@+id/register_textview_email" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

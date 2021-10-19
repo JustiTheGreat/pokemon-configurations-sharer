@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">TestApp</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="login_label">Login</string>
+    <string name="login_textview_username">Username:</string>
+    <string name="login_textview_password">Password:</string>
+    <string name="login_button_loginButton">Login</string>
+    <string name="login_textview_registerText">Don\'t have an account?</string>
+    <string name="login_textview_registerLink"><u>Click here to register!</u></string>
+
+    <string name="register_label">Register</string>
+    <string name="register_textview_username">Username:</string>
+    <string name="register_textview_password">Password:</string>
+    <string name="register_textview_email">E-mail:</string>
+    <string name="register_button_registerButton">Register</string>
+
+    <string name="pokemonCollection_label">My pokemon collection</string>
+    <string name="pokemonCollection_button_addButton">Add new pokemon</string>
+</resources>
