@@ -30,6 +30,6 @@
     </fragment>
     <fragment
         android:id="@+id/pokemonCollection"
-        android:name="com.example.testapp.PokemonCollection"
+        android:name="com.example.testapp.PokemonConfigurations"
         android:label="@string/pokemonCollection_label" />
 </navigation>
