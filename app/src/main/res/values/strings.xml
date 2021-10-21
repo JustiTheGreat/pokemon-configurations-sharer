@@ -17,4 +17,5 @@
 
     <string name="pokemonCollection_label">My pokemon collection</string>
     <string name="pokemonCollection_button_addButton">Add new pokemon</string>
+    <string name="todo">TODO</string>
 </resources>

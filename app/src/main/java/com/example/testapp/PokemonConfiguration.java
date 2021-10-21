@@ -1,17 +1,19 @@
 package com.example.testapp;
 
+import java.util.ArrayList;
+
 public class PokemonConfiguration {
     private int id;
     private String species;
     private String name;
     private String gender;
     private Ability ability;
-    private Move[] moves;
+    private ArrayList<Move> moves;
     private int level;
-    private int[] IVs;
-    private int[] EVs;
+    private ArrayList<Integer> IVs;
+    private ArrayList<Integer> EVs;
 
-    public PokemonConfiguration(int id, String species, String name, String gender, Ability ability, Move[] moves, int level, int[] IVs, int[] EVs) {
+    public PokemonConfiguration(int id, String species, String name, String gender, Ability ability, ArrayList<Move> moves, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs) {
         this.id = id;
         this.species = species;
         this.name = name;
@@ -43,7 +45,7 @@ public class PokemonConfiguration {
         return ability;
     }
 
-    public Move[] getMoves() {
+    public ArrayList<Move> getMoves() {
         return moves;
     }
 
@@ -51,11 +53,11 @@ public class PokemonConfiguration {
         return level;
     }
 
-    public int[] getIVs() {
+    public ArrayList<Integer> getIVs() {
         return IVs;
     }
 
-    public int[] getEVs() {
+    public ArrayList<Integer> getEVs() {
         return EVs;
     }
 }
