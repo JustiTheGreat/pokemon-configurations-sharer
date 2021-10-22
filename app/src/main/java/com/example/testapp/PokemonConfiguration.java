@@ -2,27 +2,29 @@ package com.example.testapp;
 
 import java.util.ArrayList;
 
-public class PokemonConfiguration {
+public class PokemonConfiguration implements PokemonConstants{
     private int id;
     private String species;
     private String name;
     private String gender;
     private Ability ability;
-    private ArrayList<Move> moves;
+    private NATURE nature;
     private int level;
     private ArrayList<Integer> IVs;
     private ArrayList<Integer> EVs;
+    private ArrayList<Move> moves;
 
-    public PokemonConfiguration(int id, String species, String name, String gender, Ability ability, ArrayList<Move> moves, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs) {
+    public PokemonConfiguration(int id, String species, String name, String gender, Ability ability, NATURE nature, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves) {
         this.id = id;
         this.species = species;
         this.name = name;
         this.gender = gender;
         this.ability = ability;
-        this.moves = moves;
+        this.nature = nature;
         this.level = level;
         this.IVs = IVs;
         this.EVs = EVs;
+        this.moves = moves;
     }
 
     public int getId() {
@@ -45,8 +47,8 @@ public class PokemonConfiguration {
         return ability;
     }
 
-    public ArrayList<Move> getMoves() {
-        return moves;
+    public NATURE getNature() {
+        return nature;
     }
 
     public int getLevel() {
@@ -59,5 +61,9 @@ public class PokemonConfiguration {
 
     public ArrayList<Integer> getEVs() {
         return EVs;
+    }
+
+    public ArrayList<Move> getMoves() {
+        return moves;
     }
 }

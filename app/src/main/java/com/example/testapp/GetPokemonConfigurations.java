@@ -20,6 +20,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class GetPokemonConfigurations extends AsyncTask implements PokemonConstants {
@@ -29,114 +35,66 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
 
     public GetPokemonConfigurations(Fragment fragment) {
         this.fragment = fragment;
-        pokemonConfigurations.add(new PokemonConfiguration(
-                1,
-                "Bulbasaur",
-                "\"Veni\"",
-                MALE,
-                new Ability("Overgrow", "description"),
-                null,
-                5,
-                new ArrayList<Integer>() {{
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                }},
-                new ArrayList<Integer>() {{
-                    add(6);
-                    add(0);
-                    add(0);
-                    add(252);
-                    add(0);
-                    add(252);
-                }}
-                )
-        );
-        pokemonConfigurations.add(new PokemonConfiguration(
-                2,
-                "Ivysaur",
-                "\"Veni\"",
-                MALE,
-                new Ability("Overgrow", "description"),
-                null,
-                5,
-                new ArrayList<Integer>() {{
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                }},
-                new ArrayList<Integer>() {{
-                    add(6);
-                    add(0);
-                    add(0);
-                    add(252);
-                    add(0);
-                    add(252);
-                }}
-                )
-        );
-        pokemonConfigurations.add(new PokemonConfiguration(
-                3,
-                "Venusaur",
-                "\"Veni\"",
-                MALE,
-                new Ability("Overgrow", "description"),
-                null,
-                5,
-                new ArrayList<Integer>() {{
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                }},
-                new ArrayList<Integer>() {{
-                    add(6);
-                    add(0);
-                    add(0);
-                    add(252);
-                    add(0);
-                    add(252);
-                }}
-                )
-        );
-        pokemonConfigurations.add(new PokemonConfiguration(
-                4,
-                "Charmander",
-                "\"Veni\"",
-                MALE,
-                new Ability("Overgrow", "description"),
-                null,
-                5,
-                new ArrayList<Integer>() {{
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                    add(31);
-                }},
-                new ArrayList<Integer>() {{
-                    add(6);
-                    add(0);
-                    add(0);
-                    add(252);
-                    add(0);
-                    add(252);
-                }}
-                )
-        );
-
     }
 
+    private NATURE getNature(String s){
+        for (NATURE N:NATURES) {
+            if(s.equals(N.getName()))return N;
+        }
+        return null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void readFromDatabase() {
+        try {
+            String username = "a";
+
+            String link = "http://192.168.0.11/get_pokemon.php";
+            String data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
+
+            URL url = new URL(link);
+            URLConnection conn = url.openConnection();
+            conn.setDoOutput(true);
+
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line="";
+
+            while ((line = reader.readLine()) != null) {
+                String[] configuration = line.split(":");
+                pokemonConfigurations.add(new PokemonConfiguration(
+                        Integer.parseInt(configuration[0]),
+                        configuration[1],
+                        configuration[2],
+                        configuration[3],
+                        new Ability(configuration[4], ""),
+                        getNature(configuration[5]),//nature
+                        Integer.parseInt(configuration[6]),
+                        new ArrayList<Integer>() {{
+                            add(Integer.parseInt(configuration[7]));
+                            add(Integer.parseInt(configuration[8]));
+                            add(Integer.parseInt(configuration[9]));
+                            add(Integer.parseInt(configuration[10]));
+                            add(Integer.parseInt(configuration[11]));
+                            add(Integer.parseInt(configuration[12]));
+                        }},
+                        new ArrayList<Integer>() {{
+                            add(Integer.parseInt(configuration[13]));
+                            add(Integer.parseInt(configuration[14]));
+                            add(Integer.parseInt(configuration[15]));
+                            add(Integer.parseInt(configuration[16]));
+                            add(Integer.parseInt(configuration[17]));
+                            add(Integer.parseInt(configuration[18]));
+                        }},
+                        null//moves
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -229,8 +187,7 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
                 t.setText(cell.getTypes().get(types.indexOf(t)));
                 TYPES.forEach(T -> {
                     if (T.getName().equalsIgnoreCase(cell.getTypes().get(types.indexOf(t)))) {
-                        t.setBackgroundColor(T.getColor());
-
+                        t.setBackgroundResource(T.getColor());
                     }
                 });
             });
