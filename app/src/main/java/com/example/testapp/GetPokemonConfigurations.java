@@ -1,5 +1,6 @@
 package com.example.testapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -29,45 +30,113 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
     public GetPokemonConfigurations(Fragment fragment) {
         this.fragment = fragment;
         pokemonConfigurations.add(new PokemonConfiguration(
-                    1,
-                    "Bulbasaur",
-                    null,
-                    MALE,
-                    new Ability("Overgrow", "description"),
-                    null,
-                    5,
-                    new ArrayList<Integer>(){{add(31);add(31);add(31);add(31);add(31);add(31);}},
-                    new ArrayList<Integer>(){{add(6);add(0);add(0);add(252);add(0);add(252);}}
+                1,
+                "Bulbasaur",
+                "\"Veni\"",
+                MALE,
+                new Ability("Overgrow", "description"),
+                null,
+                5,
+                new ArrayList<Integer>() {{
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                }},
+                new ArrayList<Integer>() {{
+                    add(6);
+                    add(0);
+                    add(0);
+                    add(252);
+                    add(0);
+                    add(252);
+                }}
                 )
         );
         pokemonConfigurations.add(new PokemonConfiguration(
-                    2,
-                    "Ivysaur",
-                    null,
-                    MALE,
-                    new Ability("Overgrow", "description"),
-                    null,
-                    5,
-                    new ArrayList<Integer>(){{add(31);add(31);add(31);add(31);add(31);add(31);}},
-                    new ArrayList<Integer>(){{add(6);add(0);add(0);add(252);add(0);add(252);}}
+                2,
+                "Ivysaur",
+                "\"Veni\"",
+                MALE,
+                new Ability("Overgrow", "description"),
+                null,
+                5,
+                new ArrayList<Integer>() {{
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                }},
+                new ArrayList<Integer>() {{
+                    add(6);
+                    add(0);
+                    add(0);
+                    add(252);
+                    add(0);
+                    add(252);
+                }}
                 )
         );
         pokemonConfigurations.add(new PokemonConfiguration(
-                    3,
-                    "Venusaur",
-                    null,
-                    MALE,
-                    new Ability("Overgrow", "description"),
-                    null,
-                    5,
-                    new ArrayList<Integer>(){{add(31);add(31);add(31);add(31);add(31);add(31);}},
-                    new ArrayList<Integer>(){{add(6);add(0);add(0);add(252);add(0);add(252);}}
+                3,
+                "Venusaur",
+                "\"Veni\"",
+                MALE,
+                new Ability("Overgrow", "description"),
+                null,
+                5,
+                new ArrayList<Integer>() {{
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                }},
+                new ArrayList<Integer>() {{
+                    add(6);
+                    add(0);
+                    add(0);
+                    add(252);
+                    add(0);
+                    add(252);
+                }}
+                )
+        );
+        pokemonConfigurations.add(new PokemonConfiguration(
+                4,
+                "Charmander",
+                "\"Veni\"",
+                MALE,
+                new Ability("Overgrow", "description"),
+                null,
+                5,
+                new ArrayList<Integer>() {{
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                    add(31);
+                }},
+                new ArrayList<Integer>() {{
+                    add(6);
+                    add(0);
+                    add(0);
+                    add(252);
+                    add(0);
+                    add(252);
+                }}
                 )
         );
 
     }
 
-    public void readFromDatabase(){
+    public void readFromDatabase() {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -78,30 +147,22 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
 
             Document doc = Jsoup.connect("https://pokemondb.net/pokedex/all").get();
             Elements elements = doc.getElementsByClass("ent-name");
-            ArrayList<String> added = new ArrayList<>();
             pokemonConfigurations.forEach(pc -> {
                 for (Element e : elements) {
-                    if (e.text().equals(pc.getSpecies()) && !added.contains(e.text())) {
-                        added.add(e.text());
+                    if (e.text().equals(pc.getSpecies())) {
                         HelperInterface helper = new Helper();
                         Bitmap image = helper.getImageViewFromElement(e);
                         String species = e.text();
                         String name = pc.getName();
                         ArrayList<String> types = helper.getTypesFromElement(e);
-                        ArrayList<Integer> stats = helper.calculateStats(e,pc);
+                        ArrayList<Integer> stats = helper.calculateStats(e, pc);
 
-                        cells.add(new Cell(image,species,name,types));
-//                        TextView textView = new TextView(fragment.getContext());
-//                        textView.setText(pc.getSpecies());
-//                        textView.setId(pokemonConfigurations.indexOf(pc));
-//                        //textView.setLayoutParams(new GridView.LayoutParams(240,100));
-//                        textViews.add(textView);
+                        cells.add(new Cell(image, species, name, types));
                         break;
                     }
                 }
             });
-            return new PokemonConfigurationAdapter(fragment.getContext(),cells);
-            //return new PokemonConfigurationAdapter(textViews);
+            return new PokemonConfigurationAdapter(fragment.getContext(), cells);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -117,8 +178,8 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
         private Context context;
         private ArrayList<Cell> cells;
 
-        public PokemonConfigurationAdapter(Context context,ArrayList<Cell> cells) {
-            this.context=context;
+        public PokemonConfigurationAdapter(Context context, ArrayList<Cell> cells) {
+            this.context = context;
             this.cells = cells;
         }
 
@@ -137,18 +198,18 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
             return position;
         }
 
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            return textViews.get(position);
-//        }
-
+        @SuppressLint("ResourceAsColor")
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Cell cell = (Cell)getItem(position);
+            Cell cell = (Cell) getItem(position);
 
             if (convertView == null) {
-                convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_template, parent, false);
+                if (cell.getTypes().size() == 1) {
+                    convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_layout_1type, parent, false);
+                } else if (cell.getTypes().size() == 2) {
+                    convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_layout_2types, parent, false);
+                }
             }
 
             ImageView image = convertView.findViewById(R.id.image);
@@ -156,13 +217,23 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
             TextView name = convertView.findViewById(R.id.name);
             ArrayList<TextView> types = new ArrayList<>();
             types.add(convertView.findViewById(R.id.type1));
-            types.add(convertView.findViewById(R.id.type2));
+            if (cell.getTypes().size() == 2) {
+                types.add(convertView.findViewById(R.id.type2));
+            }
 
             image.setImageBitmap(cell.getImage());
             image.setContentDescription(cell.getSpecies());
             species.setText(cell.getSpecies());
             name.setText(cell.getName());
-            types.forEach(t->t.setText(cell.getTypes().get(types.indexOf(t))));
+            types.forEach(t -> {
+                t.setText(cell.getTypes().get(types.indexOf(t)));
+                TYPES.forEach(T -> {
+                    if (T.getName().equalsIgnoreCase(cell.getTypes().get(types.indexOf(t)))) {
+                        t.setBackgroundColor(T.getColor());
+
+                    }
+                });
+            });
 
             return convertView;
         }

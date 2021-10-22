@@ -1,8 +1,6 @@
 package com.example.testapp;
 
 import android.graphics.Bitmap;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
