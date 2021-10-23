@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.activities;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,9 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.testapp.communication.Login;
+import com.example.testapp.R;
 import com.example.testapp.databinding.LoginBinding;
 
-public class Login extends Fragment {
+public class LoginActivity extends Fragment {
 
     private LoginBinding binding;
     private EditText username, password;
@@ -29,13 +31,13 @@ public class Login extends Fragment {
         password = binding.loginTextboxPassword;
         binding.loginButtonLoginbutton.setOnClickListener(this::login);
         binding.loginTextviewRegisterlink.setOnClickListener(v -> NavHostFragment
-                .findNavController(Login.this)
+                .findNavController(LoginActivity.this)
                 .navigate(R.id.action_login_to_register)
         );
     }
 
     public void login(View view) {
-        new LoginServer(this).execute(username.getText().toString(), password.getText().toString());
+        new Login(this).execute(username.getText().toString(), password.getText().toString());
     }
 
     @Override

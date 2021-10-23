@@ -1,8 +1,8 @@
 package com.example.testapp;
 
 import android.graphics.Bitmap;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.example.testapp.data_objects.PokemonConfiguration;
 
 import org.jsoup.nodes.Element;
 
@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 public interface HelperInterface {
     Bitmap getImageViewFromElement(Element e);
-
-    TextView getTextViewFromString(String s);
 
     ArrayList<String> getTypesFromElement(Element element);
 

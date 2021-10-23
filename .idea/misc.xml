@@ -10,10 +10,13 @@
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/fragment_first.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/fragment_second.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_layout_1type.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_layout_2types.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_template.xml" value="0.33" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_collection.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/register.xml" value="0.1" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_details.xml" value="0.25" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_details_activity.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/register.xml" value="0.22" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/menu/menu_main.xml" value="0.20416666666666666" />
       </map>
     </option>

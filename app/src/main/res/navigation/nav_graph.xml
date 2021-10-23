@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.example.testapp.Login"
-        android:label="@string/login_label"
+        android:name="com.example.testapp.activities.LoginActivity"
+        android:label="@string/login"
         tools:layout="@layout/login">
 
         <action
@@ -20,8 +20,8 @@
     </fragment>
     <fragment
         android:id="@+id/register"
-        android:name="com.example.testapp.Register"
-        android:label="@string/register_label"
+        android:name="com.example.testapp.activities.RegisterActivity"
+        android:label="@string/register"
         tools:layout="@layout/register">
 
         <action
@@ -30,6 +30,19 @@
     </fragment>
     <fragment
         android:id="@+id/pokemonCollection"
-        android:name="com.example.testapp.PokemonConfigurations"
-        android:label="@string/pokemonCollection_label" />
+        android:name="com.example.testapp.activities.PokemonCollectionActivity"
+        android:label="@string/my_pokemon_collection"
+        tools:layout="@layout/pokemon_collection">
+        <action
+            android:id="@+id/action_pokemonCollection_to_pokemonDetails"
+            app:destination="@id/pokemonDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/pokemonDetails"
+        android:name="com.example.testapp.activities.PokemonDetailsActivity"
+        android:label="@string/pokemon_details">
+        <action
+            android:id="@+id/action_pokemonDetails_to_pokemonCollection"
+            app:destination="@id/pokemonCollection" />
+    </fragment>
 </navigation>

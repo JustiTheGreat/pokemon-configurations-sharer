@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mint"
-    tools:context=".Login">
+    tools:context=".activities.LoginActivity">
 
     <TextView
         android:id="@+id/login_textview_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:text="@string/login_textview_username"
-        android:textColor="@color/pine"
+        android:text="@string/username"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/login_textview_password"
         app:layout_constraintEnd_toStartOf="@+id/login_textbox_username"
@@ -21,50 +19,43 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/login_textbox_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/pine"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:textColor="@color/pine"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/login_textbox_username"
-        app:layout_constraintTop_toTopOf="@+id/login_textview_password" />
-
-    <TextView
-        android:id="@+id/login_textview_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="@string/login_textview_password"
-        android:textColor="@color/pine"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/login_button_loginbutton"
-        app:layout_constraintStart_toStartOf="@+id/login_textview_username" />
-
-    <EditText
         android:id="@+id/login_textbox_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/pine"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textColor="@color/pine"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/login_textview_username"
         app:layout_constraintTop_toTopOf="@+id/login_textview_username" />
 
+    <TextView
+        android:id="@+id/login_textview_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/password"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_button_loginbutton"
+        app:layout_constraintStart_toStartOf="@+id/login_textview_username" />
+
+    <EditText
+        android:id="@+id/login_textbox_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/login_textbox_username"
+        app:layout_constraintTop_toTopOf="@+id/login_textview_password" />
+
     <Button
         android:id="@+id/login_button_loginbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/pine"
-        android:text="@string/login_button_loginButton"
+        android:text="@string/login"
         android:textAlignment="center"
-        android:textColor="@color/fern"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,8 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/login_textview_registerText"
-        android:textColor="@color/pine"
+        android:text="@string/don_t_have_an_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +79,7 @@
         android:id="@+id/login_textview_registerlink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login_textview_registerLink"
+        android:text="@string/click_here_to_register"
         android:textAllCaps="false"
         android:textColor="@color/link_blue"
         app:layout_constraintEnd_toEndOf="parent"

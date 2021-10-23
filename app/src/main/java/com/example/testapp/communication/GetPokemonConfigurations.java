@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.communication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -14,6 +14,15 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
+import com.example.testapp.data_objects.Ability;
+import com.example.testapp.data_objects.GridViewCell;
+import com.example.testapp.Helper;
+import com.example.testapp.HelperInterface;
+import com.example.testapp.data_objects.PokemonConfiguration;
+import com.example.testapp.PokemonConstants;
+import com.example.testapp.R;
+import com.example.testapp.activities.PokemonCollectionActivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,7 +40,7 @@ import java.util.ArrayList;
 public class GetPokemonConfigurations extends AsyncTask implements PokemonConstants {
     private Fragment fragment;
     private ArrayList<PokemonConfiguration> pokemonConfigurations = new ArrayList<>();
-    private ArrayList<Cell> cells = new ArrayList<>();
+    private ArrayList<GridViewCell> gridViewCells = new ArrayList<>();
 
     public GetPokemonConfigurations(Fragment fragment) {
         this.fragment = fragment;
@@ -40,6 +49,24 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
     private NATURE getNature(String s){
         for (NATURE N:NATURES) {
             if(s.equals(N.getName()))return N;
+        }
+        return null;
+    }
+
+    private Ability getAbility(String s) {
+        try {
+            Document doc = Jsoup.connect("https://pokemondb.net/ability").get();
+            Elements elements = doc.getElementsByClass("ent-name");
+            for (Element e : elements) {
+                if (e.text().equals(s)) {
+                    return new Ability(
+                            e.text(),
+                            e.parent().parent().getElementsByClass("cell-med-text").get(0).text()
+                    );
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
         return null;
     }
@@ -61,7 +88,7 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
             wr.flush();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line="";
+            String line;
 
             while ((line = reader.readLine()) != null) {
                 String[] configuration = line.split(":");
@@ -70,8 +97,8 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
                         configuration[1],
                         configuration[2],
                         configuration[3],
-                        new Ability(configuration[4], ""),
-                        getNature(configuration[5]),//nature
+                        getAbility(configuration[4]),
+                        getNature(configuration[5]),
                         Integer.parseInt(configuration[6]),
                         new ArrayList<Integer>() {{
                             add(Integer.parseInt(configuration[7]));
@@ -89,7 +116,7 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
                             add(Integer.parseInt(configuration[17]));
                             add(Integer.parseInt(configuration[18]));
                         }},
-                        null//moves
+                        null
                 ));
             }
         } catch (Exception e) {
@@ -109,18 +136,19 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
                 for (Element e : elements) {
                     if (e.text().equals(pc.getSpecies())) {
                         HelperInterface helper = new Helper();
+                        long id = pc.getId();
                         Bitmap image = helper.getImageViewFromElement(e);
                         String species = e.text();
                         String name = pc.getName();
                         ArrayList<String> types = helper.getTypesFromElement(e);
                         ArrayList<Integer> stats = helper.calculateStats(e, pc);
 
-                        cells.add(new Cell(image, species, name, types));
+                        gridViewCells.add(new GridViewCell(id, image, species, name, types));
                         break;
                     }
                 }
             });
-            return new PokemonConfigurationAdapter(fragment.getContext(), cells);
+            return new PokemonConfigurationAdapter(fragment.getContext(), gridViewCells);
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -129,43 +157,44 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
 
     @Override
     protected void onPostExecute(Object object) {
-        ((PokemonConfigurations) fragment).setGridViewAdapter((BaseAdapter) object);
+        ((PokemonCollectionActivity) fragment).setGridViewAdapter((BaseAdapter) object);
+        ((PokemonCollectionActivity) fragment).setPokemonConfigurations(pokemonConfigurations);
     }
 
     private static class PokemonConfigurationAdapter extends BaseAdapter {
         private Context context;
-        private ArrayList<Cell> cells;
+        private ArrayList<GridViewCell> gridViewCells;
 
-        public PokemonConfigurationAdapter(Context context, ArrayList<Cell> cells) {
+        public PokemonConfigurationAdapter(Context context, ArrayList<GridViewCell> gridViewCells) {
             this.context = context;
-            this.cells = cells;
+            this.gridViewCells = gridViewCells;
         }
 
         @Override
         public int getCount() {
-            return cells.size();
+            return gridViewCells.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return cells.get(position);
+            return gridViewCells.get(position);
         }
 
         @Override
         public long getItemId(int position) {
-            return position;
+            return gridViewCells.get(position).getId();
         }
 
         @SuppressLint("ResourceAsColor")
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Cell cell = (Cell) getItem(position);
+            GridViewCell gridViewCell = (GridViewCell) getItem(position);
 
             if (convertView == null) {
-                if (cell.getTypes().size() == 1) {
+                if (gridViewCell.getTypes().size() == 1) {
                     convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_layout_1type, parent, false);
-                } else if (cell.getTypes().size() == 2) {
+                } else if (gridViewCell.getTypes().size() == 2) {
                     convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_layout_2types, parent, false);
                 }
             }
@@ -175,18 +204,18 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
             TextView name = convertView.findViewById(R.id.name);
             ArrayList<TextView> types = new ArrayList<>();
             types.add(convertView.findViewById(R.id.type1));
-            if (cell.getTypes().size() == 2) {
+            if (gridViewCell.getTypes().size() == 2) {
                 types.add(convertView.findViewById(R.id.type2));
             }
 
-            image.setImageBitmap(cell.getImage());
-            image.setContentDescription(cell.getSpecies());
-            species.setText(cell.getSpecies());
-            name.setText(cell.getName());
+            image.setImageBitmap(gridViewCell.getImage());
+            image.setContentDescription(gridViewCell.getSpecies());
+            species.setText(gridViewCell.getSpecies());
+            name.setText(gridViewCell.getName());
             types.forEach(t -> {
-                t.setText(cell.getTypes().get(types.indexOf(t)));
+                t.setText(gridViewCell.getTypes().get(types.indexOf(t)));
                 TYPES.forEach(T -> {
-                    if (T.getName().equalsIgnoreCase(cell.getTypes().get(types.indexOf(t)))) {
+                    if (T.getName().equalsIgnoreCase(gridViewCell.getTypes().get(types.indexOf(t)))) {
                         t.setBackgroundResource(T.getColor());
                     }
                 });

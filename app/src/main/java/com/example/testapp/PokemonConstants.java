@@ -3,9 +3,6 @@ package com.example.testapp;
 import java.util.ArrayList;
 
 public interface PokemonConstants {
-    String MALE = "male";
-    String FEM = "female";
-
     TYPE TYPE_NORMAL = new TYPE("normal", R.color.normal);
     TYPE TYPE_FIGHTING = new TYPE("fighting", R.color.fighting);
     TYPE TYPE_FLYING = new TYPE("flying", R.color.flying);
@@ -24,24 +21,7 @@ public interface PokemonConstants {
     TYPE TYPE_DRAGON = new TYPE("dragon", R.color.dragon);
     TYPE TYPE_DARK = new TYPE("dark", R.color.dark);
     TYPE TYPE_FAIRY = new TYPE("fairy", R.color.fairy);
-    //    String[] TYPE_NORMAL = {"normal", "#A8A77A"};
-//    String[] TYPE_FIGHTING = {"fighting", "#C22E28"};
-//    String[] TYPE_FLYING = {"flying", "#A98FF3"};
-//    String[] TYPE_POISON = {"poison", "#A33EA1"};
-//    String[] TYPE_GROUND = {"ground", "#E2BF65"};
-//    String[] TYPE_ROCK = {"rock", "#B6A136"};
-//    String[] TYPE_BUG = {"bug", "#A6B91A"};
-//    String[] TYPE_GHOST = {"ghost", "#735797"};
-//    String[] TYPE_STEEL = {"steel", "#B7B7CE"};
-//    String[] TYPE_FIRE = {"fire", "#EE8130"};
-//    String[] TYPE_WATER = {"water", "#6390F0"};
-//    String[] TYPE_GRASS = {"grass", "#7AC74C"};
-//    String[] TYPE_ELECTRIC = {"electric", "#F7D02C"};
-//    String[] TYPE_PSYCHIC = {"psychic", "#F95587"};
-//    String[] TYPE_ICE = {"ice", "#96D9D6"};
-//    String[] TYPE_DRAGON = {"dragon", "#6F35FC"};
-//    String[] TYPE_DARK = {"dark", "#705746"};
-//    String[] TYPE_FAIRY = {"fairy", "#D685AD"};
+
     ArrayList<TYPE> TYPES = new ArrayList<TYPE>() {{
         add(TYPE_NORMAL);
         add(TYPE_FIGHTING);
@@ -106,6 +86,7 @@ public interface PokemonConstants {
     NATURE NATURE_SASSY = new NATURE("Sassy (+SpD, -Spe)", 1, 1, 1, 1.1, 0.9);
     NATURE NATURE_SERIOUS = new NATURE("Serious", 1, 1, 1, 1, 1);
     NATURE NATURE_TIMID = new NATURE("Timid (+Spe, -Atk)", 0.9, 1, 1, 1, 1.1);
+
     ArrayList<NATURE> NATURES = new ArrayList<NATURE>() {{
         add(NATURE_ADAMANT);
         add(NATURE_BASHFUL);
@@ -133,53 +114,6 @@ public interface PokemonConstants {
         add(NATURE_SERIOUS);
         add(NATURE_TIMID);
     }};
-    //            switch(name){
-//                case "Adamant":
-//                    break;
-//                case "Bold":
-//                    break;
-//                case "Brave":
-//                    break;
-//                case "Calm":
-//                    break;
-//                case "Careful":
-//                    break;
-//                case "Gentle":
-//                    break;
-//                case "Hasty":
-//                    break;
-//                case "Impish":
-//                    break;
-//                case "Jolly":
-//                    break;
-//                case "Lax":
-//                    break;
-//                case "Lonely":
-//                    break;
-//                case "Mild":
-//                    break;
-//                case "Modest":
-//                    break;
-//                case "Naive":
-//                    break;
-//                case "Naughty":
-//                    break;
-//                case "Quiet":
-//                    break;
-//                case "Rash":
-//                    break;
-//                case "Relaxed":
-//                    break;
-//                case "Sassy":
-//                    break;
-//                case "Timid":
-//                    break;
-//                case "Docile","Hardy","Quirky","Serious":
-//                    break;
-//                case "Bashful":
-//                    break;
-//
-//            }
 
     class NATURE {
         private String name;

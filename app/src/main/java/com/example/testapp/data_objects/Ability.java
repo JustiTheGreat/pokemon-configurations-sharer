@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.data_objects;
 
 public class Ability {
     private String name;
@@ -7,5 +7,13 @@ public class Ability {
     public Ability(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

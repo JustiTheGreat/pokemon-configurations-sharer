@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.communication;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,10 +13,13 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-public class LoginServer extends AsyncTask implements ToastMessages {
+import com.example.testapp.R;
+import com.example.testapp.ToastMessages;
+
+public class Login extends AsyncTask implements ToastMessages {
     private Fragment fragment;
 
-    public LoginServer(Fragment fragment) {
+    public Login(Fragment fragment) {
         this.fragment = fragment;
     }
 

@@ -1,9 +1,11 @@
-package com.example.testapp;
+package com.example.testapp.data_objects;
+
+import com.example.testapp.PokemonConstants;
 
 import java.util.ArrayList;
 
-public class PokemonConfiguration implements PokemonConstants{
-    private int id;
+public class PokemonConfiguration implements PokemonConstants {
+    private long id;
     private String species;
     private String name;
     private String gender;
@@ -14,7 +16,7 @@ public class PokemonConfiguration implements PokemonConstants{
     private ArrayList<Integer> EVs;
     private ArrayList<Move> moves;
 
-    public PokemonConfiguration(int id, String species, String name, String gender, Ability ability, NATURE nature, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves) {
+    public PokemonConfiguration(long id, String species, String name, String gender, Ability ability, NATURE nature, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves) {
         this.id = id;
         this.species = species;
         this.name = name;
@@ -27,7 +29,7 @@ public class PokemonConfiguration implements PokemonConstants{
         this.moves = moves;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

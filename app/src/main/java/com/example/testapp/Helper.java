@@ -3,10 +3,10 @@ package com.example.testapp;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+
+import com.example.testapp.data_objects.PokemonConfiguration;
 
 import org.jsoup.nodes.Element;
 
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class Helper implements HelperInterface {
     public String getPokedexNumber(Element element) {
-        return element.parent().parent().getElementsByClass("infocard-cell-data").text();
+        return element.parent().parent().getElementsByClass("infocard-cell-data").get(0).text();
     }
 
     public String getImageURL(Element element) {
@@ -34,8 +34,6 @@ public class Helper implements HelperInterface {
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap bitmap = BitmapFactory.decodeStream(input);
-//            ImageView imageView = new ImageView(null);
-//            imageView.setImageBitmap(bitmap);
             return bitmap;
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,17 +41,8 @@ public class Helper implements HelperInterface {
         return null;
     }
 
-    public TextView getTextViewFromString(String s) {
-        TextView textView = new TextView(null);
-        textView.setText(s);
-        return textView;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ArrayList<String> getTypesFromElement(Element element) {
-//        return (ArrayList<TextView>) element.parent().parent().getElementsByClass("type-icon").stream()
-//                .map(e -> getTextViewFromString(e.text()))
-//                .collect(Collectors.toList());
         return (ArrayList<String>) element.parent().parent().getElementsByClass("type-icon").stream()
                 .map(Element::text)
                 .collect(Collectors.toList());

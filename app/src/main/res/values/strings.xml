@@ -2,20 +2,37 @@
     <string name="app_name">TestApp</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="login_label">Login</string>
-    <string name="login_textview_username">Username:</string>
-    <string name="login_textview_password">Password:</string>
-    <string name="login_button_loginButton">Login</string>
-    <string name="login_textview_registerText">Don\'t have an account?</string>
-    <string name="login_textview_registerLink"><u>Click here to register!</u></string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="email">E-mail:</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="click_here_to_register"><u>Click here to register!</u></string>
 
-    <string name="register_label">Register</string>
-    <string name="register_textview_username">Username:</string>
-    <string name="register_textview_password">Password:</string>
-    <string name="register_textview_email">E-mail:</string>
-    <string name="register_button_registerButton">Register</string>
+    <string name="my_pokemon_collection">My pokemon collection</string>
+    <string name="add_new_pokemon">Add new pokemon</string>
 
-    <string name="pokemonCollection_label">My pokemon collection</string>
-    <string name="pokemonCollection_button_addButton">Add new pokemon</string>
+    <string name="unknown">\?\?\?</string>
+
+    <string name="pokemon_details">Pokemon details</string>
+    <string name="ability">Ability</string>
+    <string name="stats">Stats</string>
+    <string name="stat">Stat</string>
+    <string name="hp">HP:</string>
+    <string name="attack">Attack:</string>
+    <string name="defense">Defense:</string>
+    <string name="special_attack">Special Attack:</string>
+    <string name="special_defense">Special Defense:</string>
+    <string name="speed">Speed:</string>
+
+    <string name="value">Value</string>
+    <string name="base">Base</string>
+    <string name="ivs">IVs</string>
+    <string name="evs">EVs</string>
+    <string name="moves">Moves</string>
+    <string name="edit_pokemon">Edit pokemon</string>
+    <string name="go_back">Go back</string>
+
     <string name="todo">TODO</string>
 </resources>

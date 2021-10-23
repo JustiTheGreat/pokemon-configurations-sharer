@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.data_objects;
 
 public class Move {
     private String name;

@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.activities;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,9 +9,10 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.testapp.communication.Register;
 import com.example.testapp.databinding.RegisterBinding;
 
-public class Register extends Fragment {
+public class RegisterActivity extends Fragment {
 
     private RegisterBinding binding;
     private EditText username, password, email;
@@ -31,7 +32,7 @@ public class Register extends Fragment {
     }
 
     public void register(View view) {
-        new RegisterServer(this).execute(username.getText().toString(), password.getText().toString(), email.getText().toString());
+        new Register(this).execute(username.getText().toString(), password.getText().toString(), email.getText().toString());
     }
 
     @Override

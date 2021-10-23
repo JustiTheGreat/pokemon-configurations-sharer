@@ -1,10 +1,13 @@
-package com.example.testapp;
+package com.example.testapp.communication;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+
+import com.example.testapp.R;
+import com.example.testapp.ToastMessages;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,43 +16,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
-public class RegisterServer extends AsyncTask implements ToastMessages {
+public class Register extends AsyncTask implements ToastMessages {
     private Fragment fragment;
 
-    public RegisterServer(Fragment fragment) {
+    public Register(Fragment fragment) {
         this.fragment = fragment;
     }
 
     @Override
-    protected void onPreExecute() {
-    }
-
-    @Override
     protected Object doInBackground(Object[] objects) {
-        //            try {
-//                String username = (String) objects[0];
-//                String password = (String) objects[1];
-//                String link = "http://http://192.168.0.11/" + "login.php?username=" + username + "& password=" + password;
-//
-//                HttpClient client = new DefaultHttpClient();
-//                HttpGet request = new HttpGet();
-//                request.setURI(new URI(link));
-//                HttpResponse response = client.execute(request);
-//
-//                BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-//                StringBuffer sb = new StringBuffer("");
-//                String line;
-//                while ((line = in.readLine()) != null) {
-//                    sb.append(line);
-//                    break;
-//                }
-//                in.close();
-//
-//                return sb.toString();
-//            } catch (Exception e) {
-//                return "Exception: " + e.getMessage();
-//            }
-//        } else if(flag==0){
         try {
             String username = (String) objects[0];
             String password = (String) objects[1];
@@ -70,7 +45,7 @@ public class RegisterServer extends AsyncTask implements ToastMessages {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder sb = new StringBuilder();
-            String line="";
+            String line;
 
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
