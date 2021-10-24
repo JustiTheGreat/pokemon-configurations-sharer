@@ -15,14 +15,12 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.data_objects.Ability;
-import com.example.testapp.data_objects.GridViewCell;
 import com.example.testapp.Helper;
-import com.example.testapp.HelperInterface;
-import com.example.testapp.data_objects.PokemonConfiguration;
 import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
 import com.example.testapp.activities.PokemonCollectionActivity;
+import com.example.testapp.data_objects.GridViewCell;
+import com.example.testapp.data_objects.PokemonConfiguration;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -30,6 +28,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
@@ -39,40 +38,15 @@ import java.util.ArrayList;
 
 public class GetPokemonConfigurations extends AsyncTask implements PokemonConstants {
     private Fragment fragment;
-    private ArrayList<PokemonConfiguration> pokemonConfigurations = new ArrayList<>();
-    private ArrayList<GridViewCell> gridViewCells = new ArrayList<>();
+    private ArrayList<PokemonConfiguration> pokemonConfigurations;
 
     public GetPokemonConfigurations(Fragment fragment) {
         this.fragment = fragment;
     }
 
-    private NATURE getNature(String s){
-        for (NATURE N:NATURES) {
-            if(s.equals(N.getName()))return N;
-        }
-        return null;
-    }
-
-    private Ability getAbility(String s) {
-        try {
-            Document doc = Jsoup.connect("https://pokemondb.net/ability").get();
-            Elements elements = doc.getElementsByClass("ent-name");
-            for (Element e : elements) {
-                if (e.text().equals(s)) {
-                    return new Ability(
-                            e.text(),
-                            e.parent().parent().getElementsByClass("cell-med-text").get(0).text()
-                    );
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return null;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void readFromDatabase() {
+    private ArrayList<PokemonConfiguration> readFromDatabase() {
+        ArrayList<PokemonConfiguration> pokemonConfigurations = new ArrayList<>();
         try {
             String username = "a";
 
@@ -97,8 +71,8 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
                         configuration[1],
                         configuration[2],
                         configuration[3],
-                        getAbility(configuration[4]),
-                        getNature(configuration[5]),
+                        configuration[4],
+                        configuration[5],
                         Integer.parseInt(configuration[6]),
                         new ArrayList<Integer>() {{
                             add(Integer.parseInt(configuration[7]));
@@ -121,38 +95,45 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(-1);
         }
+        return pokemonConfigurations;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected Object doInBackground(Object[] objects) {
+        ArrayList<GridViewCell> gridViewCells = new ArrayList<>();
+        pokemonConfigurations = readFromDatabase();
+
+        Document doc = null;
         try {
-            readFromDatabase();
-
-            Document doc = Jsoup.connect("https://pokemondb.net/pokedex/all").get();
-            Elements elements = doc.getElementsByClass("ent-name");
-            pokemonConfigurations.forEach(pc -> {
-                for (Element e : elements) {
-                    if (e.text().equals(pc.getSpecies())) {
-                        HelperInterface helper = new Helper();
-                        long id = pc.getId();
-                        Bitmap image = helper.getImageViewFromElement(e);
-                        String species = e.text();
-                        String name = pc.getName();
-                        ArrayList<String> types = helper.getTypesFromElement(e);
-                        ArrayList<Integer> stats = helper.calculateStats(e, pc);
-
-                        gridViewCells.add(new GridViewCell(id, image, species, name, types));
-                        break;
-                    }
-                }
-            });
-            return new PokemonConfigurationAdapter(fragment.getContext(), gridViewCells);
-        } catch (Exception e) {
-            System.out.println(e);
+            doc = Jsoup.connect("https://pokemondb.net/pokedex/all").get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
         }
-        return false;
+        Elements elements = doc.getElementsByClass("ent-name");
+        pokemonConfigurations.forEach(pc -> {
+            for (Element e : elements) {
+                if (e.text().equals(pc.getSpecies())) {
+                    try {
+                        long id = pc.getId();
+                        Bitmap image = Helper.getBitmapFromElement(e);
+                        String species = pc.getSpecies();
+                        String name = pc.getName();
+                        ArrayList<String> types = Helper.getTypesFromElement(e);
+                        gridViewCells.add(new GridViewCell(id, image, species, name, types));
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                        System.exit(-1);
+                    }
+                    break;
+                }
+            }
+        });
+
+        return new PokemonConfigurationAdapter(fragment.getContext(), gridViewCells);
     }
 
     @Override
@@ -186,17 +167,13 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
         }
 
         @SuppressLint("ResourceAsColor")
-        @RequiresApi(api = Build.VERSION_CODES.N)
+        @RequiresApi(api = Build.VERSION_CODES.R)
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             GridViewCell gridViewCell = (GridViewCell) getItem(position);
 
             if (convertView == null) {
-                if (gridViewCell.getTypes().size() == 1) {
-                    convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_layout_1type, parent, false);
-                } else if (gridViewCell.getTypes().size() == 2) {
-                    convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_layout_2types, parent, false);
-                }
+                convertView = LayoutInflater.from(context).inflate(R.layout.grid_view_layout, parent, false);
             }
 
             ImageView image = convertView.findViewById(R.id.image);
@@ -206,6 +183,8 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
             types.add(convertView.findViewById(R.id.type1));
             if (gridViewCell.getTypes().size() == 2) {
                 types.add(convertView.findViewById(R.id.type2));
+            } else {
+                convertView.findViewById(R.id.type2).setVisibility(View.GONE);
             }
 
             image.setImageBitmap(gridViewCell.getImage());

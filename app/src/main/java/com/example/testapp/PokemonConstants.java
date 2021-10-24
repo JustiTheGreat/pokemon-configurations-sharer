@@ -1,7 +1,12 @@
 package com.example.testapp;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 
+@RequiresApi(api = Build.VERSION_CODES.R)
 public interface PokemonConstants {
     TYPE TYPE_NORMAL = new TYPE("normal", R.color.normal);
     TYPE TYPE_FIGHTING = new TYPE("fighting", R.color.fighting);
@@ -61,31 +66,31 @@ public interface PokemonConstants {
         }
     }
 
-    NATURE NATURE_ADAMANT = new NATURE("Adamant (+Atk, -SpA)", 1.1, 1, 0.9, 1, 1);
-    NATURE NATURE_BASHFUL = new NATURE("Bashful", 1, 1, 1, 1, 1);
-    NATURE NATURE_BOLD = new NATURE("Bold (+Def, -Atk)", 0.9, 1.1, 1, 1, 1);
-    NATURE NATURE_BRAVE = new NATURE("Brave (+Atk, -Spe)", 1.1, 1, 1, 1, 0.9);
-    NATURE NATURE_CALM = new NATURE("Calm (+SpD, -Atk)", 0.9, 1, 1, 1.1, 1);
-    NATURE NATURE_CAREFUL = new NATURE("Careful (+SpD, -SpA)", 1, 1, 0.9, 1.1, 1);
-    NATURE NATURE_DOCILE = new NATURE("Docile", 1, 1, 1, 1, 1);
-    NATURE NATURE_GENTLE = new NATURE("Gentle (+SpD, -Def)", 1, 0.9, 1, 1.1, 1);
-    NATURE NATURE_HARDY = new NATURE("Hardy", 1, 1, 1, 1, 1);
-    NATURE NATURE_HASTY = new NATURE("Hasty (+Spe, -Def)", 1, 0.9, 1, 1, 1.1);
-    NATURE NATURE_IMPISH = new NATURE("Impish (+Def, -SpA)", 1, 1.1, 0.9, 1, 1);
-    NATURE NATURE_JOLLY = new NATURE("Jolly (+Spe, -SpA)", 1, 1, 0.9, 1, 1.1);
-    NATURE NATURE_LAX = new NATURE("Lax (+Def, -SpD)", 1, 1.1, 1, 0.9, 1);
-    NATURE NATURE_LONELY = new NATURE("Lonely (+Atk, -Def)", 1.1, 0.9, 1, 1, 1);
-    NATURE NATURE_MILD = new NATURE("Mild (+SpA, -Def)", 1, 0.9, 1.1, 1, 1);
-    NATURE NATURE_MODEST = new NATURE("Modest (+SpA, -Atk)", 0.9, 1, 1.1, 1, 1);
-    NATURE NATURE_NAIVE = new NATURE("Naive (+Spe, -SpD)", 1, 1, 1, 0.9, 1.1);
-    NATURE NATURE_NAUGHTY = new NATURE("Naughty (+Atk, -SpD)", 1.1, 1, 1, 0.9, 1);
-    NATURE NATURE_QUIET = new NATURE("Quiet (+SpA, -Spe)", 1, 1, 1.1, 1, 0.9);
-    NATURE NATURE_QUIRKY = new NATURE("Quirky", 1, 1, 1, 1, 1);
-    NATURE NATURE_RASH = new NATURE("Rash (+SpA, -SpD)", 1, 1, 1.1, 0.9, 1);
-    NATURE NATURE_RELAXED = new NATURE("Relaxed (+Def, -Spe)", 1, 1.1, 1, 1, 0.9);
-    NATURE NATURE_SASSY = new NATURE("Sassy (+SpD, -Spe)", 1, 1, 1, 1.1, 0.9);
-    NATURE NATURE_SERIOUS = new NATURE("Serious", 1, 1, 1, 1, 1);
-    NATURE NATURE_TIMID = new NATURE("Timid (+Spe, -Atk)", 0.9, 1, 1, 1, 1.1);
+    NATURE NATURE_ADAMANT = new NATURE("Adamant (+Atk, -SpA)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 0.9, 1, 1}));
+    NATURE NATURE_BASHFUL = new NATURE("Bashful", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    NATURE NATURE_BOLD = new NATURE("Bold (+Def, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1.1, 1, 1, 1}));
+    NATURE NATURE_BRAVE = new NATURE("Brave (+Atk, -Spe)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 1, 0.9}));
+    NATURE NATURE_CALM = new NATURE("Calm (+SpD, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1.1, 1}));
+    NATURE NATURE_CAREFUL = new NATURE("Careful (+SpD, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1.1, 1}));
+    NATURE NATURE_DOCILE = new NATURE("Docile", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    NATURE NATURE_GENTLE = new NATURE("Gentle (+SpD, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1.1, 1}));
+    NATURE NATURE_HARDY = new NATURE("Hardy", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    NATURE NATURE_HASTY = new NATURE("Hasty (+Spe, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1, 1.1}));
+    NATURE NATURE_IMPISH = new NATURE("Impish (+Def, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 0.9, 1, 1}));
+    NATURE NATURE_JOLLY = new NATURE("Jolly (+Spe, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1, 1.1}));
+    NATURE NATURE_LAX = new NATURE("Lax (+Def, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 0.9, 1}));
+    NATURE NATURE_LONELY = new NATURE("Lonely (+Atk, -Def)", Helper.createArrayListOfDouble(new double[]{1.1, 0.9, 1, 1, 1}));
+    NATURE NATURE_MILD = new NATURE("Mild (+SpA, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1.1, 1, 1}));
+    NATURE NATURE_MODEST = new NATURE("Modest (+SpA, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1.1, 1, 1}));
+    NATURE NATURE_NAIVE = new NATURE("Naive (+Spe, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 0.9, 1.1}));
+    NATURE NATURE_NAUGHTY = new NATURE("Naughty (+Atk, -SpD)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 0.9, 1}));
+    NATURE NATURE_QUIET = new NATURE("Quiet (+SpA, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 1, 0.9}));
+    NATURE NATURE_QUIRKY = new NATURE("Quirky", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    NATURE NATURE_RASH = new NATURE("Rash (+SpA, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 0.9, 1}));
+    NATURE NATURE_RELAXED = new NATURE("Relaxed (+Def, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 1, 0.9}));
+    NATURE NATURE_SASSY = new NATURE("Sassy (+SpD, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1.1, 0.9}));
+    NATURE NATURE_SERIOUS = new NATURE("Serious", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    NATURE NATURE_TIMID = new NATURE("Timid (+Spe, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1, 1.1}));
 
     ArrayList<NATURE> NATURES = new ArrayList<NATURE>() {{
         add(NATURE_ADAMANT);
@@ -117,43 +122,19 @@ public interface PokemonConstants {
 
     class NATURE {
         private String name;
-        private double attack;
-        private double defense;
-        private double specialAttack;
-        private double specialDefense;
-        private double speed;
+        private ArrayList<Double> nature;
 
-        public NATURE(String name, double attack, double defense, double specialAttack, double specialDefense, double speed) {
+        public NATURE(String name, ArrayList<Double> nature) {
             this.name = name;
-            this.attack = attack;
-            this.defense = defense;
-            this.specialAttack = specialAttack;
-            this.specialDefense = specialDefense;
-            this.speed = speed;
+            this.nature = nature;
         }
 
         public String getName() {
             return name;
         }
 
-        public double getAttack() {
-            return attack;
-        }
-
-        public double getDefense() {
-            return defense;
-        }
-
-        public double getSpecialAttack() {
-            return specialAttack;
-        }
-
-        public double getSpecialDefense() {
-            return specialDefense;
-        }
-
-        public double getSpeed() {
-            return speed;
+        public ArrayList<Double> getNature() {
+            return nature;
         }
     }
 }

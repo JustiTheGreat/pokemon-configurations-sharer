@@ -9,14 +9,14 @@ public class PokemonConfiguration implements PokemonConstants {
     private String species;
     private String name;
     private String gender;
-    private Ability ability;
-    private NATURE nature;
+    private String ability;
+    private String nature;
     private int level;
     private ArrayList<Integer> IVs;
     private ArrayList<Integer> EVs;
     private ArrayList<Move> moves;
 
-    public PokemonConfiguration(long id, String species, String name, String gender, Ability ability, NATURE nature, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves) {
+    public PokemonConfiguration(long id, String species, String name, String gender, String ability, String nature, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves) {
         this.id = id;
         this.species = species;
         this.name = name;
@@ -45,11 +45,11 @@ public class PokemonConfiguration implements PokemonConstants {
         return gender;
     }
 
-    public Ability getAbility() {
+    public String getAbility() {
         return ability;
     }
 
-    public NATURE getNature() {
+    public String getNature() {
         return nature;
     }
 

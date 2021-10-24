@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.testapp.R;
-import com.example.testapp.Store;
+import com.example.testapp.Storage;
 import com.example.testapp.communication.GetPokemonConfigurations;
 import com.example.testapp.data_objects.PokemonConfiguration;
 import com.example.testapp.databinding.PokemonCollectionBinding;
@@ -39,7 +39,7 @@ public class PokemonCollectionActivity extends Fragment {
         new GetPokemonConfigurations(this).execute(gridView);
 
         gridView.setOnItemClickListener((adapterView, view1, position, id) -> {
-            Store.setPokemonConfiguration(getPokemonConfiguration(id));
+            Storage.setPokemonConfiguration(getPokemonConfiguration(id));
             NavHostFragment
                     .findNavController(PokemonCollectionActivity.this)
                     .navigate(R.id.action_pokemonCollection_to_pokemonDetails);
