@@ -1,11 +1,14 @@
 package com.example.testapp.activities;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,8 +24,12 @@ import com.example.testapp.Storage;
 import com.example.testapp.data_objects.Ability;
 import com.example.testapp.data_objects.PokemonConfiguration;
 import com.example.testapp.databinding.PokemonDetailsBinding;
+import com.google.zxing.WriterException;
 
 import java.util.ArrayList;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 
 public class PokemonDetailsActivity extends Fragment implements PokemonConstants {
     private PokemonConfiguration pokemonConfiguration;
@@ -42,9 +49,10 @@ public class PokemonDetailsActivity extends Fragment implements PokemonConstants
 
         //main details
         binding.pokemondetailsTextviewName.setText(pokemonConfiguration.getName());
-        binding.pokemondetailsTextviewSpecies.setText(pokemonConfiguration.getSpecies());
-        binding.pokemondetailsTextviewGender.setText(pokemonConfiguration.getGender());
-        binding.pokemondetailsTextviewLevel.setText(String.valueOf(pokemonConfiguration.getLevel()));
+        String text = pokemonConfiguration.getSpecies()
+                + " " + pokemonConfiguration.getGender()
+                + " Lv. " + pokemonConfiguration.getLevel();
+        binding.pokemondetailsTextviewSpecies.setText(text);
         binding.pokemondetailsTextviewNature.setText(pokemonConfiguration.getNature());
 
         //click listeners
@@ -99,6 +107,28 @@ public class PokemonDetailsActivity extends Fragment implements PokemonConstants
         binding.pokemondetailsButtonGoback.setOnClickListener(v -> NavHostFragment
                 .findNavController(PokemonDetailsActivity.this)
                 .navigate(R.id.action_pokemonDetails_to_pokemonCollection));
+
+        binding.pokemondetailsButtonQrcode.setOnClickListener(v-> showQRCode());
+    }
+    public void showQRCode(){
+        Dialog dialog = new Dialog(this.getActivity());
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setTitle("QR Code for " + pokemonConfiguration.getName());
+        dialog.setContentView(R.layout.qr_code_layout);
+        dialog.show();
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels/2;
+        QRGEncoder qrgEncoder = new QRGEncoder(pokemonConfiguration.toString(), null, QRGContents.Type.TEXT,width);
+
+        try {
+            Bitmap bitmap = qrgEncoder.encodeAsBitmap();
+            ImageView iv = dialog.findViewById(R.id.qr_image);
+            iv.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)

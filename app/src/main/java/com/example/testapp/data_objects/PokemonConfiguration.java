@@ -68,4 +68,13 @@ public class PokemonConfiguration implements PokemonConstants {
     public ArrayList<Move> getMoves() {
         return moves;
     }
+
+    @Override
+    public String toString() {
+        String s = "" + species + ";" + name + ";" + gender + ";" + ability + ";" + nature + ";" + level;
+        for (int iv : IVs) s += ":" + iv;
+        s += ";";
+        for (int ev : EVs) s += ":" + ev;
+        return s;
+    }
 }
