@@ -56,13 +56,14 @@ public class PokemonDetailsActivity extends Fragment implements PokemonConstants
         binding.pokemondetailsTextviewNature.setText(pokemonConfiguration.getNature());
 
         //click listeners
-        int ability_weight = 10, stats_weight = 35, moves_weight = 25;
+        int ability_weight = 7, stats_weight = 27, moves_weight = 16;
+        int space_weight = 100 - ability_weight - stats_weight - moves_weight;
         binding.ability.setVisibility(View.GONE);
         binding.stats.setVisibility(View.GONE);
         binding.moves.setVisibility(View.GONE);
         if (true) {
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.space.getLayoutParams();
-            params.weight = 30;
+            params.weight = space_weight;
             binding.space.setLayoutParams(params);
         }
         binding.hideAbility.setOnClickListener((v) -> {
