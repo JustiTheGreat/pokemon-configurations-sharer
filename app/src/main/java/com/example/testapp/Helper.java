@@ -8,7 +8,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.activities.PokemonDetailsActivity;
+import com.example.testapp.activities.PokemonDetails;
 import com.example.testapp.data_objects.Ability;
 
 import org.jsoup.Jsoup;
@@ -50,7 +50,7 @@ public class Helper extends AsyncTask implements PokemonConstants {
     @Override
     protected void onPostExecute(Object o) {
         ArrayList<Object> objects = (ArrayList<Object>) o;
-        ((PokemonDetailsActivity) fragment).set(
+        ((PokemonDetails) fragment).set(
                 (Bitmap) objects.get(0),
                 (ArrayList<String>) objects.get(1),
                 (Ability) objects.get(2),
@@ -94,9 +94,25 @@ public class Helper extends AsyncTask implements PokemonConstants {
         return total;
     }
 
-    public static Bitmap getBitmapFromElement(Element element) throws IOException {
+    public static Bitmap getBitmapImageFromElement(Element element) throws IOException {
         String pokedexNumber = element.parent().parent().getElementsByClass("infocard-cell-data").get(0).text();
         String imageURL = "https://assets.pokemon.com/assets/cms2/img/pokedex/full/" + pokedexNumber + ".png";
+        URL url = new URL(imageURL);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setDoInput(true);
+        connection.connect();
+        InputStream input = connection.getInputStream();
+        return BitmapFactory.decodeStream(input);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static Bitmap getBitmapIconFromElement(Element element) throws IOException {
+        String s = element.text().toLowerCase();
+        s=s.replace(FEMALE,"-f");
+        s=s.replace(MALE,"-m");
+        s=s.replace("'","");
+        s=s.replace(". ","-");
+        String imageURL = "https://img.pokemondb.net/sprites/sword-shield/icon/"+s+".png";
         URL url = new URL(imageURL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setDoInput(true);
@@ -174,5 +190,28 @@ public class Helper extends AsyncTask implements PokemonConstants {
             }
         }
         return null;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static ArrayList<Ability> getAbilitiesFromString(String pokemonName){
+        ArrayList<Ability> abilitiesRows = new ArrayList<>();
+        String formatedPokemonName = pokemonName.toLowerCase();
+        formatedPokemonName=formatedPokemonName.replace(FEMALE,"-f");
+        formatedPokemonName=formatedPokemonName.replace(MALE,"-m");
+        formatedPokemonName=formatedPokemonName.replace("'","");
+        formatedPokemonName=formatedPokemonName.replace(". ","-");
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("https://pokemondb.net/pokedex/"+formatedPokemonName).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        assert doc != null;
+        Elements elements = doc.select("a[href^=/ability/]");
+        for (Element e : elements) {
+            abilitiesRows.add(new Ability(e.text(),e.attr("title")));
+        }
+        return abilitiesRows;
     }
 }

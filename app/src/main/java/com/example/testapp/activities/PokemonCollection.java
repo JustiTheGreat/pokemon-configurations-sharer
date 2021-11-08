@@ -21,7 +21,7 @@ import com.example.testapp.databinding.PokemonCollectionBinding;
 
 import java.util.ArrayList;
 
-public class PokemonCollectionActivity extends Fragment {
+public class PokemonCollection extends Fragment {
     private PokemonCollectionBinding binding;
     private GridView gridView;
     private ArrayList<PokemonConfiguration> pokemonConfigurations = new ArrayList<>();
@@ -36,20 +36,19 @@ public class PokemonCollectionActivity extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         gridView = binding.pokemoncollectionGridviewCollection;
-        new GetPokemonConfigurations(this).execute(gridView);
+        new GetPokemonConfigurations().execute(this);
 
         gridView.setOnItemClickListener((adapterView, view1, position, id) -> {
             Storage.setPokemonConfiguration(getPokemonConfiguration(id));
             NavHostFragment
-                    .findNavController(PokemonCollectionActivity.this)
+                    .findNavController(PokemonCollection.this)
                     .navigate(R.id.action_pokemonCollection_to_pokemonDetails);
         });
 
-        binding.pokemoncollectionButtonAddbutton.setOnClickListener(this::AddNewPokemon);
-    }
-
-    public void AddNewPokemon(View view) {
-
+        binding.pokemoncollectionButtonAddbutton.setOnClickListener(v -> NavHostFragment
+                .findNavController(PokemonCollection.this)
+                .navigate(R.id.action_pokemonCollection_to_addPokemon)
+        );
     }
 
     public PokemonConfiguration getPokemonConfiguration(long id) {

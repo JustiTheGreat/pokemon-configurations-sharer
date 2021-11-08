@@ -13,25 +13,24 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.testapp.LoggedUser;
 import com.example.testapp.R;
 import com.example.testapp.ToastMessages;
 
 public class Login extends AsyncTask implements ToastMessages {
     private Fragment fragment;
+    private String username;
+    private String password;
 
     public Login(Fragment fragment) {
         this.fragment = fragment;
     }
 
     @Override
-    protected void onPreExecute() {
-    }
-
-    @Override
     protected Object doInBackground(Object[] objects) {
         try {
-            String username = (String) objects[0];
-            String password = (String) objects[1];
+            username = (String) objects[0];
+            password = (String) objects[1];
 
             String link = "http://192.168.0.11/login.php";
             String data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
@@ -64,6 +63,8 @@ public class Login extends AsyncTask implements ToastMessages {
     protected void onPostExecute(Object o) {
         Toast toast = Toast.makeText(fragment.getActivity(), "", Toast.LENGTH_SHORT);
         if (o.equals(LOGIN_SUCCESS)) {
+            LoggedUser.setUsername(username);
+            LoggedUser.setPassword(password);
             NavHostFragment
                     .findNavController(fragment)
                     .navigate(R.id.action_login_to_pokemonCollection);

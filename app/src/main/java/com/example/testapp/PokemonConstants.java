@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public interface PokemonConstants {
+    int POKEDEX_NUMBER_LIMIT = 10;
+    String MALE = "♂";
+    String FEMALE = "♀";
+
     TYPE TYPE_NORMAL = new TYPE("normal", R.color.normal);
     TYPE TYPE_FIGHTING = new TYPE("fighting", R.color.fighting);
     TYPE TYPE_FLYING = new TYPE("flying", R.color.flying);

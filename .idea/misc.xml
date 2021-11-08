@@ -6,20 +6,31 @@
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2203125" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/drawable/background_gradient.xml" value="0.2203125" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2203125" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/ac_textview_dialog.xml" value="0.18" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/ac_textview_layout.xml" value="0.1" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/add_pokemon.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/content_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_search.xml" value="0.22" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_stats.xml" value="0.25" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_statsrelated.xml" value="0.22" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/fragment_first.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/fragment_second.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_layout.xml" value="0.1852355072463768" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_layout_1type.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_layout_2types.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_template.xml" value="0.33" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_abilities.xml" value="0.22" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_collection.xml" value="0.15081521739130435" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_species.xml" value="0.15081521739130435" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_collection.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_details.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_details_activity.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_species_layout.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/qr_code_layout.xml" value="0.17391304347826086" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/register.xml" value="0.22" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/species_layout.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/menu/menu_main.xml" value="0.20416666666666666" />
       </map>
     </option>

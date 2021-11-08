@@ -30,19 +30,26 @@
     </fragment>
     <fragment
         android:id="@+id/pokemonCollection"
-        android:name="com.example.testapp.activities.PokemonCollectionActivity"
+        android:name="com.example.testapp.activities.PokemonCollection"
         android:label="@string/my_pokemon_collection"
         tools:layout="@layout/pokemon_collection">
         <action
             android:id="@+id/action_pokemonCollection_to_pokemonDetails"
             app:destination="@id/pokemonDetails" />
+        <action
+            android:id="@+id/action_pokemonCollection_to_addPokemon"
+            app:destination="@id/addPokemon" />
     </fragment>
     <fragment
         android:id="@+id/pokemonDetails"
-        android:name="com.example.testapp.activities.PokemonDetailsActivity"
+        android:name="com.example.testapp.activities.PokemonDetails"
         android:label="@string/pokemon_details">
         <action
             android:id="@+id/action_pokemonDetails_to_pokemonCollection"
             app:destination="@id/pokemonCollection" />
     </fragment>
+    <fragment
+        android:id="@+id/addPokemon"
+        android:name="com.example.testapp.activities.AddPokemon"
+        android:label="@string/add_pokemon" />
 </navigation>

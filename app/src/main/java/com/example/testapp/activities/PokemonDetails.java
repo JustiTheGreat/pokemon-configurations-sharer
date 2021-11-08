@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.testapp.Helper;
 import com.example.testapp.PokemonConstants;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-public class PokemonDetailsActivity extends Fragment implements PokemonConstants {
+public class PokemonDetails extends Fragment implements PokemonConstants {
     private PokemonConfiguration pokemonConfiguration;
     private PokemonDetailsBinding binding;
 
@@ -105,17 +104,15 @@ public class PokemonDetailsActivity extends Fragment implements PokemonConstants
                 binding.space.setLayoutParams(params);
             }
         });
-        binding.pokemondetailsButtonGoback.setOnClickListener(v -> NavHostFragment
-                .findNavController(PokemonDetailsActivity.this)
-                .navigate(R.id.action_pokemonDetails_to_pokemonCollection));
 
-        binding.pokemondetailsButtonQrcode.setOnClickListener(v-> showQRCode());
+        binding.pokemondetailsQrcode.setOnClickListener(v-> showQRCode());
+
+        binding.pokemondetailsDelete.setOnClickListener(v -> {});
     }
     public void showQRCode(){
         Dialog dialog = new Dialog(this.getActivity());
         dialog.setCanceledOnTouchOutside(true);
-        dialog.setTitle("QR Code for " + pokemonConfiguration.getName());
-        dialog.setContentView(R.layout.qr_code_layout);
+        dialog.setContentView(R.layout.dialog_qr);
         dialog.show();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();

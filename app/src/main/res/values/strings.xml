@@ -33,7 +33,22 @@
     <string name="moves">Moves</string>
     <string name="edit_pokemon">Edit</string>
     <string name="qr_code">QR code</string>
-    <string name="go_back">Go back</string>
+    <string name="delete">Delete</string>
+
+    <string name="add_pokemon">Add pokemon</string>
+    <string name="choose_species">Choose species</string>
+    <string name="choose_ability">Choose ability</string>
+    <string name="choose_stats_related">Choose stats related</string>
+    <string name="choose_moves">Choose moves</string>
+    <string name="change_species">Change species</string>
+    <string name="change_ability">Change ability</string>
+    <string name="change_stats_related">Change stats related</string>
+    <string name="change_moves">Change moves</string>
+    <string name="level">Level:</string>
+    <string name="nature">Nature:</string>
+    <string name="final_stats">Final stats:</string>
+    <string name="ok">OK</string>
+
 
     <string name="todo">TODO</string>
 </resources>

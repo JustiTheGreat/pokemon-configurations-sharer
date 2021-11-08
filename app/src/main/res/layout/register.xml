@@ -13,6 +13,7 @@
         android:layout_marginBottom="50dp"
         android:text="@string/username"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/register_textview_password"
         app:layout_constraintEnd_toStartOf="@+id/register_textbox_username"
         app:layout_constraintHorizontal_bias="0.5"
@@ -37,6 +38,7 @@
         android:layout_marginBottom="50dp"
         android:text="@string/password"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/register_textview_email"
         app:layout_constraintStart_toStartOf="@+id/register_textview_username" />
 
@@ -57,6 +59,7 @@
         android:layout_marginBottom="50dp"
         android:text="@string/email"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/register_button_registerbutton"
         app:layout_constraintStart_toStartOf="@+id/register_textview_password" />
 
@@ -74,6 +77,7 @@
         android:id="@+id/register_button_registerbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/main_color"
         android:text="@string/register"
         android:textAlignment="center"
         android:textSize="20sp"

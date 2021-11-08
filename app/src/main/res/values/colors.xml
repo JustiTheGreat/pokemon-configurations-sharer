@@ -10,7 +10,8 @@
 
     <color name="link_blue">#0645AD</color>
 
-    <color name="main_color">#a40447</color>
+    <color name="main_color">#A40447</color>
+    <color name="main_color_tint">#C86891</color>
     <color name="analogous_1">#42CBC9</color>
     <color name="analogous_2">#4C98CF</color>
     <color name="analogous_3">#4872A6</color>

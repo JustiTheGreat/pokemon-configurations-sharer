@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 
 import com.example.testapp.R;
 
@@ -21,7 +19,7 @@ public class QRDialog extends Dialog implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.qr_code_layout);
+        setContentView(R.layout.dialog_qr);
     }
 
     @Override
