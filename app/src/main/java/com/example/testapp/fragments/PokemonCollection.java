@@ -1,10 +1,11 @@
-package com.example.testapp.activities;
+package com.example.testapp.fragments;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
@@ -15,40 +16,44 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.testapp.R;
 import com.example.testapp.Storage;
-import com.example.testapp.communication.GetPokemonConfigurations;
+import com.example.testapp.async_tasks.GetPokemonConfigurations;
 import com.example.testapp.data_objects.PokemonConfiguration;
-import com.example.testapp.databinding.PokemonCollectionBinding;
+import com.example.testapp.databinding.CollectionBinding;
 
 import java.util.ArrayList;
 
 public class PokemonCollection extends Fragment {
-    private PokemonCollectionBinding binding;
+    private CollectionBinding binding;
     private GridView gridView;
     private ArrayList<PokemonConfiguration> pokemonConfigurations = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = PokemonCollectionBinding.inflate(inflater, container, false);
+        binding = CollectionBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        gridView = binding.pokemoncollectionGridviewCollection;
+        gridView = binding.collectionGridview;
         new GetPokemonConfigurations().execute(this);
 
-        gridView.setOnItemClickListener((adapterView, view1, position, id) -> {
-            Storage.setPokemonConfiguration(getPokemonConfiguration(id));
-            NavHostFragment
-                    .findNavController(PokemonCollection.this)
-                    .navigate(R.id.action_pokemonCollection_to_pokemonDetails);
-        });
+        gridView.setOnItemClickListener(this::seePokemonDetails);
+        binding.collectionButton.setOnClickListener(this::addNewPokemon);
+    }
 
-        binding.pokemoncollectionButtonAddbutton.setOnClickListener(v -> NavHostFragment
+    public void seePokemonDetails(AdapterView<?>adapterView, View view, int position, long id){
+        Storage.setPokemonConfiguration(getPokemonConfiguration(id));
+        NavHostFragment
                 .findNavController(PokemonCollection.this)
-                .navigate(R.id.action_pokemonCollection_to_addPokemon)
-        );
+                .navigate(R.id.action_pokemonCollection_to_pokemonDetails);
+    }
+
+    public void addNewPokemon(View view){
+        NavHostFragment
+                .findNavController(PokemonCollection.this)
+                .navigate(R.id.action_pokemonCollection_to_addPokemon);
     }
 
     public PokemonConfiguration getPokemonConfiguration(long id) {

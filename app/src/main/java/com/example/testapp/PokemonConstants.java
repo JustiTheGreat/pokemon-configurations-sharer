@@ -4,6 +4,10 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.testapp.async_tasks.Helper;
+import com.example.testapp.data_objects.NATURE;
+import com.example.testapp.data_objects.TYPE;
+
 import java.util.ArrayList;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
@@ -11,6 +15,9 @@ public interface PokemonConstants {
     int POKEDEX_NUMBER_LIMIT = 10;
     String MALE = "♂";
     String FEMALE = "♀";
+    String PHYSICAL = "Physical";
+    String SPECIAL = "Special";
+    String STATUS = "Status";
 
     TYPE TYPE_NORMAL = new TYPE("normal", R.color.normal);
     TYPE TYPE_FIGHTING = new TYPE("fighting", R.color.fighting);
@@ -51,24 +58,6 @@ public interface PokemonConstants {
         add(TYPE_DARK);
         add(TYPE_FAIRY);
     }};
-
-    class TYPE {
-        private String name;
-        private int color;
-
-        public TYPE(String name, int color) {
-            this.name = name;
-            this.color = color;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getColor() {
-            return color;
-        }
-    }
 
     NATURE NATURE_ADAMANT = new NATURE("Adamant (+Atk, -SpA)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 0.9, 1, 1}));
     NATURE NATURE_BASHFUL = new NATURE("Bashful", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
@@ -123,22 +112,4 @@ public interface PokemonConstants {
         add(NATURE_SERIOUS);
         add(NATURE_TIMID);
     }};
-
-    class NATURE {
-        private String name;
-        private ArrayList<Double> nature;
-
-        public NATURE(String name, ArrayList<Double> nature) {
-            this.name = name;
-            this.nature = nature;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public ArrayList<Double> getNature() {
-            return nature;
-        }
-    }
 }

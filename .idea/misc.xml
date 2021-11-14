@@ -10,10 +10,14 @@
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/ac_textview_layout.xml" value="0.1" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/add_pokemon.xml" value="0.25" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/collection.xml" value="0.18659420289855072" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/content_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_delete.xml" value="0.21" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_qr.xml" value="0.18659420289855072" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_search.xml" value="0.22" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_stats.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_statsrelated.xml" value="0.22" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/f_collection.xml" value="0.18659420289855072" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/fragment_first.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/fragment_second.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_layout.xml" value="0.1852355072463768" />
@@ -23,6 +27,7 @@
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_abilities.xml" value="0.22" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_collection.xml" value="0.15081521739130435" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_species.xml" value="0.15081521739130435" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_textview.xml" value="0.15081521739130435" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/login.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_collection.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/pokemon_details.xml" value="0.25" />

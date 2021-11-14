@@ -1,4 +1,4 @@
-package com.example.testapp.activities;
+package com.example.testapp.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.testapp.communication.Login;
+import com.example.testapp.async_tasks.LoginTask;
 import com.example.testapp.R;
 import com.example.testapp.databinding.LoginBinding;
 
-public class LoginActivity extends Fragment {
+public class Login extends Fragment {
 
     private LoginBinding binding;
     private EditText username, password;
@@ -30,14 +30,17 @@ public class LoginActivity extends Fragment {
         username = binding.loginTextboxUsername;
         password = binding.loginTextboxPassword;
         binding.loginButtonLoginbutton.setOnClickListener(this::login);
-        binding.loginTextviewRegisterlink.setOnClickListener(v -> NavHostFragment
-                .findNavController(LoginActivity.this)
-                .navigate(R.id.action_login_to_register)
-        );
+        binding.loginTextviewRegisterlink.setOnClickListener(this::goToRegisterPage);
     }
 
     public void login(View view) {
-        new Login(this).execute(username.getText().toString(), password.getText().toString());
+        new LoginTask().execute(this, username.getText().toString(), password.getText().toString());
+    }
+
+    public void goToRegisterPage(View view) {
+        NavHostFragment
+                .findNavController(Login.this)
+                .navigate(R.id.action_login_to_register);
     }
 
     @Override

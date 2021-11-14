@@ -98,12 +98,8 @@ public class SpeciesAdapter extends ArrayAdapter<SpeciesRow> implements PokemonC
             convertView.findViewById(R.id.l_species_type2).setVisibility(View.GONE);
         }
         types.forEach(t -> {
-            t.setText(speciesRow.getTypes().get(types.indexOf(t)));
-            TYPES.forEach(T -> {
-                if (T.getName().equalsIgnoreCase(speciesRow.getTypes().get(types.indexOf(t)))) {
-                    t.setBackgroundResource(T.getColor());
-                }
-            });
+            t.setText(speciesRow.getTypes().get(types.indexOf(t)).getName());
+            t.setText(speciesRow.getTypes().get(types.indexOf(t)).getColor());
         });
 
         return convertView;

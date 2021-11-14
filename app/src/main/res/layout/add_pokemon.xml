@@ -298,7 +298,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/addpokemon_health"
+                        android:id="@+id/addpokemon_hp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="16"

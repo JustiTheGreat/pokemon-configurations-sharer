@@ -5,24 +5,24 @@ import com.example.testapp.PokemonConstants;
 import java.util.ArrayList;
 
 public class PokemonConfiguration implements PokemonConstants {
-    private long id;
-    private String species;
-    private String name;
-    private String gender;
-    private String ability;
-    private String nature;
-    private int level;
-    private ArrayList<Integer> IVs;
-    private ArrayList<Integer> EVs;
-    private ArrayList<Move> moves;
+    private final long id;
+    private final String species;
+    private final String name;
+    private final String gender;
+    private final String ability;
+    private final String natureName;
+    private final int level;
+    private final ArrayList<Integer> IVs;
+    private final ArrayList<Integer> EVs;
+    private final ArrayList<Move> moves;
 
-    public PokemonConfiguration(long id, String species, String name, String gender, String ability, String nature, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves) {
+    public PokemonConfiguration(long id, String species, String name, String gender, String ability, String natureName, int level, ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves) {
         this.id = id;
         this.species = species;
         this.name = name;
         this.gender = gender;
         this.ability = ability;
-        this.nature = nature;
+        this.natureName = natureName;
         this.level = level;
         this.IVs = IVs;
         this.EVs = EVs;
@@ -49,8 +49,8 @@ public class PokemonConfiguration implements PokemonConstants {
         return ability;
     }
 
-    public String getNature() {
-        return nature;
+    public String getNatureName() {
+        return natureName;
     }
 
     public int getLevel() {
@@ -71,10 +71,10 @@ public class PokemonConfiguration implements PokemonConstants {
 
     @Override
     public String toString() {
-        String s = "" + species + ";" + name + ";" + gender + ";" + ability + ";" + nature + ";" + level;
-        for (int iv : IVs) s += ":" + iv;
-        s += ";";
-        for (int ev : EVs) s += ":" + ev;
-        return s;
+        StringBuilder s = new StringBuilder("" + species + ";" + name + ";" + gender + ";" + ability + ";" + natureName + ";" + level);
+        for (int iv : IVs) s.append(":").append(iv);
+        s.append(";");
+        for (int ev : EVs) s.append(":").append(ev);
+        return s.toString();
     }
 }

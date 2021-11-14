@@ -1,4 +1,4 @@
-package com.example.testapp.communication;
+package com.example.testapp.async_tasks;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -8,10 +8,11 @@ import android.widget.BaseAdapter;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.Helper;
 import com.example.testapp.LoggedUser;
 import com.example.testapp.PokemonConstants;
-import com.example.testapp.activities.PokemonCollection;
+import com.example.testapp.StringConstants;
+import com.example.testapp.data_objects.TYPE;
+import com.example.testapp.fragments.PokemonCollection;
 import com.example.testapp.data_objects.GridViewCell;
 import com.example.testapp.data_objects.PokemonConfiguration;
 import com.example.testapp.layout_adapters.PokemonConfigurationAdapter;
@@ -27,10 +28,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
-public class GetPokemonConfigurations extends AsyncTask implements PokemonConstants {
+public class GetPokemonConfigurations extends AsyncTask implements PokemonConstants, StringConstants {
     private Fragment fragment;
     private ArrayList<PokemonConfiguration> pokemonConfigurations;
 
@@ -38,10 +39,12 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
     private ArrayList<PokemonConfiguration> readFromDatabase() {
         ArrayList<PokemonConfiguration> pokemonConfigurations = new ArrayList<>();
         try {
-            String link = "http://192.168.0.11/get_pokemon.php";
-            String data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(LoggedUser.getUsername(), "UTF-8");
+            String data = encodeStrings(
+                    new String[]{"username"},
+                    new String[]{LoggedUser.getUsername()}
+            );
 
-            URL url = new URL(link);
+            URL url = new URL(GET_POKEMON_FROM_DATABASE_LINK);
             URLConnection conn = url.openConnection();
             conn.setDoOutput(true);
 
@@ -94,10 +97,9 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
         this.fragment = (Fragment) objects[0];
         ArrayList<GridViewCell> gridViewCells = new ArrayList<>();
         pokemonConfigurations = readFromDatabase();
-
         Document doc = null;
         try {
-            doc = Jsoup.connect("https://pokemondb.net/pokedex/all").get();
+            doc = Jsoup.connect(ALL_POKEMON_LINK).get();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -106,25 +108,20 @@ public class GetPokemonConfigurations extends AsyncTask implements PokemonConsta
         Elements elements = doc.getElementsByClass("ent-name");
         pokemonConfigurations.forEach(pc -> {
             for (Element e : elements) {
-                if(Integer.parseInt(e.parent().parent().getElementsByClass("infocard-cell-data").text())>POKEDEX_NUMBER_LIMIT)
+                if (Integer.parseInt(e.parent().parent().getElementsByClass("infocard-cell-data").text()) > POKEDEX_NUMBER_LIMIT)
                     break;
                 if (e.text().equals(pc.getSpecies())) {
-                    try {
-                        long id = pc.getId();
-                        Bitmap image = Helper.getBitmapImageFromElement(e);
-                        String species = pc.getSpecies();
-                        String name = pc.getName();
-                        ArrayList<String> types = Helper.getTypesFromElement(e);
-                        gridViewCells.add(new GridViewCell(id, image, species, name, types));
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                        System.exit(-1);
-                    }
+                    long id = pc.getId();
+                    Bitmap image = Helper.getBitmapImageFromElement(e);
+                    String species = pc.getSpecies();
+                    String name = pc.getName();
+                    ArrayList<TYPE> types = (ArrayList<TYPE>) Helper.getTypesFromElement(e)
+                            .stream().map(t->TYPE.getType(t)).collect(Collectors.toList());
+                    gridViewCells.add(new GridViewCell(id, image, species, name, types));
                     break;
                 }
             }
         });
-
         return new PokemonConfigurationAdapter(fragment.getContext(), gridViewCells);
     }
 

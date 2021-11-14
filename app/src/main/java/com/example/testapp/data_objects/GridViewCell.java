@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 
 public class GridViewCell {
-    private long id;
-    private Bitmap image;
-    private String species;
-    private String name;
-    private ArrayList<String> types;
+    private final long id;
+    private final Bitmap image;
+    private final String species;
+    private final String name;
+    private final ArrayList<TYPE> types;
 
-    public GridViewCell(long id, Bitmap image, String species, String name, ArrayList<String> types) {
+    public GridViewCell(long id, Bitmap image, String species, String name, ArrayList<TYPE> types) {
         this.id = id;
         this.image = image;
         this.species = species;
@@ -35,7 +35,7 @@ public class GridViewCell {
         return name;
     }
 
-    public ArrayList<String> getTypes() {
+    public ArrayList<TYPE> getTypes() {
         return types;
     }
 }

@@ -9,12 +9,12 @@
         android:orientation="vertical">
 
         <AutoCompleteTextView
-            android:id="@+id/searchdialog_search"
+            android:id="@+id/d_search_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/search_dialog_button"
+            android:id="@+id/d_search_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/main_color"

@@ -1,11 +1,4 @@
-package com.example.testapp.communication;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+package com.example.testapp.async_tasks;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -15,29 +8,39 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.testapp.LoggedUser;
 import com.example.testapp.R;
-import com.example.testapp.ToastMessages;
+import com.example.testapp.StringConstants;
 
-public class Login extends AsyncTask implements ToastMessages {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+
+public class LoginTask extends AsyncTask implements StringConstants {
     private Fragment fragment;
     private String username;
     private String password;
 
-    public Login(Fragment fragment) {
-        this.fragment = fragment;
-    }
-
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
-            username = (String) objects[0];
-            password = (String) objects[1];
+            fragment = (Fragment) objects[0];
+            username = (String) objects[1];
+            password = (String) objects[2];
 
-            String link = "http://192.168.0.11/login.php";
-            String data = URLEncoder.encode("username", "UTF-8") + "=" + URLEncoder.encode(username, "UTF-8");
-            data += "&" + URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+            String data = encodeStrings(
+                    new String[]{"username", "password"},
+                    new String[]{username, password}
+            );
 
-            URL url = new URL(link);
-            URLConnection conn = url.openConnection();
+            URL url = new URL(LOGIN_LINK);
+            URLConnection conn;
+            try {
+                conn = url.openConnection();
+            } catch (IOException e1) {
+                return SERVER_IS_OFFLINE;
+            }
             conn.setDoOutput(true);
 
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
@@ -54,14 +57,14 @@ public class Login extends AsyncTask implements ToastMessages {
             }
 
             return sb.toString();
-        } catch (Exception e) {
-            return "Exception: " + e.getMessage();
+        } catch (IOException e) {
+            return LOGIN_PROBLEMS;
         }
     }
 
     @Override
     protected void onPostExecute(Object o) {
-        Toast toast = Toast.makeText(fragment.getActivity(), "", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_LONG);
         if (o.equals(LOGIN_SUCCESS)) {
             LoggedUser.setUsername(username);
             LoggedUser.setPassword(password);
@@ -69,7 +72,6 @@ public class Login extends AsyncTask implements ToastMessages {
                     .findNavController(fragment)
                     .navigate(R.id.action_login_to_pokemonCollection);
         }
-        toast.setText((String) o);
         toast.show();
     }
 }

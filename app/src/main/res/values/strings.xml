@@ -34,6 +34,9 @@
     <string name="edit_pokemon">Edit</string>
     <string name="qr_code">QR code</string>
     <string name="delete">Delete</string>
+    <string name="do_you_really_want_to_delete_this_pokemon">Do you really want to delete this pokemon?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
     <string name="add_pokemon">Add pokemon</string>
     <string name="choose_species">Choose species</string>

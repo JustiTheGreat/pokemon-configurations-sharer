@@ -1,4 +1,4 @@
-package com.example.testapp.communication;
+package com.example.testapp.async_tasks;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -7,9 +7,10 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.Helper;
 import com.example.testapp.PokemonConstants;
-import com.example.testapp.activities.AddPokemon;
+import com.example.testapp.StringConstants;
+import com.example.testapp.data_objects.TYPE;
+import com.example.testapp.fragments.AddPokemon;
 import com.example.testapp.data_objects.SpeciesRow;
 
 import org.jsoup.Jsoup;
@@ -19,8 +20,9 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
-public class GetSpecies extends AsyncTask implements PokemonConstants {
+public class GetSpecies extends AsyncTask implements PokemonConstants, StringConstants {
     private Fragment fragment;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -29,7 +31,7 @@ public class GetSpecies extends AsyncTask implements PokemonConstants {
         ArrayList<SpeciesRow> speciesRows = new ArrayList<>();
         Document doc = null;
         try {
-            doc = Jsoup.connect("https://pokemondb.net/pokedex/all").get();
+            doc = Jsoup.connect(ALL_POKEMON_LINK).get();
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
@@ -48,20 +50,17 @@ public class GetSpecies extends AsyncTask implements PokemonConstants {
                 }
             }
             if (!already_exists) {
-                try {
-                    Bitmap image = Helper.getBitmapIconFromElement(e);
-                    String species = e.text();
-                    ArrayList<String> types = Helper.getTypesFromElement(e);
-                    speciesRows.add(new SpeciesRow(image, species, types));
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                    System.exit(-1);
-                }
+                Bitmap image = Helper.getBitmapIconFromElement(e);
+                String species = e.text();
+                ArrayList<TYPE> types = (ArrayList<TYPE>) Helper.getTypesFromElement(e)
+                        .stream().map(t-> TYPE.getType(t)).collect(Collectors.toList());
+                speciesRows.add(new SpeciesRow(image, species, types));
             }
         }
         return speciesRows;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onPostExecute(Object object) {
         ((AddPokemon) fragment).setSpeciesRows((ArrayList<SpeciesRow>) object);

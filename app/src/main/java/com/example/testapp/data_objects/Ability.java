@@ -1,8 +1,8 @@
 package com.example.testapp.data_objects;
 
 public class Ability {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
 
     public Ability(String name, String description) {
         this.name = name;

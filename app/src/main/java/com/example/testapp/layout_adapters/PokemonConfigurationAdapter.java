@@ -70,14 +70,9 @@ public class PokemonConfigurationAdapter extends BaseAdapter implements PokemonC
             convertView.findViewById(R.id.type2).setVisibility(View.GONE);
         }
         types.forEach(t -> {
-            t.setText(gridViewCell.getTypes().get(types.indexOf(t)));
-            TYPES.forEach(T -> {
-                if (T.getName().equalsIgnoreCase(gridViewCell.getTypes().get(types.indexOf(t)))) {
-                    t.setBackgroundResource(T.getColor());
-                }
-            });
+            t.setText(gridViewCell.getTypes().get(types.indexOf(t)).getName());
+            t.setText(gridViewCell.getTypes().get(types.indexOf(t)).getColor());
         });
-
         return convertView;
     }
 }
