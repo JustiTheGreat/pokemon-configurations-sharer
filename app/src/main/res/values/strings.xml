@@ -22,8 +22,8 @@
     <string name="hp">HP:</string>
     <string name="attack">Attack:</string>
     <string name="defense">Defense:</string>
-    <string name="special_attack">Special Attack:</string>
-    <string name="special_defense">Special Defense:</string>
+    <string name="special_attack">Sp. Atk:</string>
+    <string name="special_defense">Sp. Def:</string>
     <string name="speed">Speed:</string>
 
     <string name="value">Value</string>
@@ -38,6 +38,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <string name="empty"></string>
     <string name="add_pokemon">Add pokemon</string>
     <string name="choose_species">Choose species</string>
     <string name="choose_ability">Choose ability</string>
@@ -52,6 +53,21 @@
     <string name="final_stats">Final stats:</string>
     <string name="ok">OK</string>
 
+    <string name="move">MOVE</string>
+    <string name="type">TYPE</string>
+    <string name="category">CATEGORY</string>
+    <string name="power">POWER</string>
+    <string name="accuracy">ACCURACY</string>
+    <string name="pp">PP</string>
+    <string name="change">Chg</string>
+    <string name="del">Del</string>
+    <string name="add_move">Add move</string>
+    <string name="finalize">Finalize</string>
+    <string name="give_your_setup_a_name">Give your setup a name:</string>
+
+    <string name="cat">CAT</string>
+    <string name="pow">POW</string>
+    <string name="acc">ACC</string>
 
     <string name="todo">TODO</string>
 </resources>

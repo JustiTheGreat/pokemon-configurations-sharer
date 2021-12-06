@@ -51,5 +51,9 @@
     <fragment
         android:id="@+id/addPokemon"
         android:name="com.example.testapp.fragments.AddPokemon"
-        android:label="@string/add_pokemon" />
+        android:label="@string/add_pokemon" >
+        <action
+            android:id="@+id/action_addPokemon_to_pokemonCollection"
+            app:destination="@id/pokemonCollection" />
+    </fragment>
 </navigation>

@@ -24,11 +24,11 @@ public class RegisterTask extends AsyncTask implements StringConstants {
         try {
             fragment = (Fragment) objects[0];
             String username = (String) objects[1];
-            String password = (String) objects[2];
-            String email = (String) objects[3];
+            String email = (String) objects[2];
+            String password = (String) objects[3];
 
             String data = encodeStrings(
-                    new String[]{"username", "password", "email"},
+                    new String[]{"username", "email", "password"},
                     new String[]{username, password, email}
             );
 
@@ -50,25 +50,23 @@ public class RegisterTask extends AsyncTask implements StringConstants {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
                 sb.append(line);
                 break;
             }
 
             return sb.toString();
         } catch (IOException e) {
-            return LOGIN_PROBLEMS;
+            return REGISTER_PROBLEMS;
         }
     }
 
     @Override
     protected void onPostExecute(Object o) {
-        Toast toast = Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_SHORT);
         if (o.equals(REGISTER_SUCCESS)) {
             NavHostFragment
                     .findNavController(fragment)
                     .navigate(R.id.action_register_to_login);
         }
-        toast.show();
+        Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_SHORT).show();
     }
 }

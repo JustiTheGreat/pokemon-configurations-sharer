@@ -5,7 +5,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.testapp.async_tasks.Helper;
-import com.example.testapp.data_objects.NATURE;
+import com.example.testapp.data_objects.Nature;
 import com.example.testapp.data_objects.TYPE;
 
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ public interface PokemonConstants {
     String PHYSICAL = "Physical";
     String SPECIAL = "Special";
     String STATUS = "Status";
+    int NUMBER_OF_STATS = 6;
 
     TYPE TYPE_NORMAL = new TYPE("normal", R.color.normal);
     TYPE TYPE_FIGHTING = new TYPE("fighting", R.color.fighting);
@@ -59,33 +60,33 @@ public interface PokemonConstants {
         add(TYPE_FAIRY);
     }};
 
-    NATURE NATURE_ADAMANT = new NATURE("Adamant (+Atk, -SpA)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 0.9, 1, 1}));
-    NATURE NATURE_BASHFUL = new NATURE("Bashful", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    NATURE NATURE_BOLD = new NATURE("Bold (+Def, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1.1, 1, 1, 1}));
-    NATURE NATURE_BRAVE = new NATURE("Brave (+Atk, -Spe)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 1, 0.9}));
-    NATURE NATURE_CALM = new NATURE("Calm (+SpD, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1.1, 1}));
-    NATURE NATURE_CAREFUL = new NATURE("Careful (+SpD, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1.1, 1}));
-    NATURE NATURE_DOCILE = new NATURE("Docile", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    NATURE NATURE_GENTLE = new NATURE("Gentle (+SpD, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1.1, 1}));
-    NATURE NATURE_HARDY = new NATURE("Hardy", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    NATURE NATURE_HASTY = new NATURE("Hasty (+Spe, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1, 1.1}));
-    NATURE NATURE_IMPISH = new NATURE("Impish (+Def, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 0.9, 1, 1}));
-    NATURE NATURE_JOLLY = new NATURE("Jolly (+Spe, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1, 1.1}));
-    NATURE NATURE_LAX = new NATURE("Lax (+Def, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 0.9, 1}));
-    NATURE NATURE_LONELY = new NATURE("Lonely (+Atk, -Def)", Helper.createArrayListOfDouble(new double[]{1.1, 0.9, 1, 1, 1}));
-    NATURE NATURE_MILD = new NATURE("Mild (+SpA, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1.1, 1, 1}));
-    NATURE NATURE_MODEST = new NATURE("Modest (+SpA, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1.1, 1, 1}));
-    NATURE NATURE_NAIVE = new NATURE("Naive (+Spe, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 0.9, 1.1}));
-    NATURE NATURE_NAUGHTY = new NATURE("Naughty (+Atk, -SpD)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 0.9, 1}));
-    NATURE NATURE_QUIET = new NATURE("Quiet (+SpA, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 1, 0.9}));
-    NATURE NATURE_QUIRKY = new NATURE("Quirky", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    NATURE NATURE_RASH = new NATURE("Rash (+SpA, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 0.9, 1}));
-    NATURE NATURE_RELAXED = new NATURE("Relaxed (+Def, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 1, 0.9}));
-    NATURE NATURE_SASSY = new NATURE("Sassy (+SpD, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1.1, 0.9}));
-    NATURE NATURE_SERIOUS = new NATURE("Serious", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    NATURE NATURE_TIMID = new NATURE("Timid (+Spe, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1, 1.1}));
+    Nature NATURE_ADAMANT = new Nature("Adamant (+Atk, -SpA)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 0.9, 1, 1}));
+    Nature NATURE_BASHFUL = new Nature("Bashful", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_BOLD = new Nature("Bold (+Def, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1.1, 1, 1, 1}));
+    Nature NATURE_BRAVE = new Nature("Brave (+Atk, -Spe)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 1, 0.9}));
+    Nature NATURE_CALM = new Nature("Calm (+SpD, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1.1, 1}));
+    Nature NATURE_CAREFUL = new Nature("Careful (+SpD, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1.1, 1}));
+    Nature NATURE_DOCILE = new Nature("Docile", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_GENTLE = new Nature("Gentle (+SpD, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1.1, 1}));
+    Nature NATURE_HARDY = new Nature("Hardy", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_HASTY = new Nature("Hasty (+Spe, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1, 1.1}));
+    Nature NATURE_IMPISH = new Nature("Impish (+Def, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 0.9, 1, 1}));
+    Nature NATURE_JOLLY = new Nature("Jolly (+Spe, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1, 1.1}));
+    Nature NATURE_LAX = new Nature("Lax (+Def, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 0.9, 1}));
+    Nature NATURE_LONELY = new Nature("Lonely (+Atk, -Def)", Helper.createArrayListOfDouble(new double[]{1.1, 0.9, 1, 1, 1}));
+    Nature NATURE_MILD = new Nature("Mild (+SpA, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1.1, 1, 1}));
+    Nature NATURE_MODEST = new Nature("Modest (+SpA, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1.1, 1, 1}));
+    Nature NATURE_NAIVE = new Nature("Naive (+Spe, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 0.9, 1.1}));
+    Nature NATURE_NAUGHTY = new Nature("Naughty (+Atk, -SpD)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 0.9, 1}));
+    Nature NATURE_QUIET = new Nature("Quiet (+SpA, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 1, 0.9}));
+    Nature NATURE_QUIRKY = new Nature("Quirky", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_RASH = new Nature("Rash (+SpA, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 0.9, 1}));
+    Nature NATURE_RELAXED = new Nature("Relaxed (+Def, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 1, 0.9}));
+    Nature NATURE_SASSY = new Nature("Sassy (+SpD, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1.1, 0.9}));
+    Nature NATURE_SERIOUS = new Nature("Serious", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_TIMID = new Nature("Timid (+Spe, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1, 1.1}));
 
-    ArrayList<NATURE> NATURES = new ArrayList<NATURE>() {{
+    ArrayList<Nature> NATURES = new ArrayList<Nature>() {{
         add(NATURE_ADAMANT);
         add(NATURE_BASHFUL);
         add(NATURE_BOLD);

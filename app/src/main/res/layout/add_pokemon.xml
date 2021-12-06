@@ -8,26 +8,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/addpokemon_chosenspecies"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="92"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/addpokemon_icon"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="80"
-                android:background="@color/analogous_1"
-                android:minHeight="70dp" />
+                android:background="@color/analogous_1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="60"
+                android:background="@color/analogous_2"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -39,15 +42,11 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/analogous_1" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="90"
+                android:background="@color/analogous_3"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -59,15 +58,11 @@
                     android:textSize="24sp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/analogous_1" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="70"
+                android:background="@color/analogous_4"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -101,67 +96,66 @@
         <Button
             android:id="@+id/addpokemon_speciesbutton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="94"
             android:background="@color/analogous_1"
             android:text="@string/choose_species" />
 
         <LinearLayout
             android:id="@+id/addpokemon_chosenability"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="95"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/addpokemon_abilityname"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="70"
-                android:background="@color/analogous_2"
-                android:gravity="center"
-                android:minHeight="50dp"
-                android:text="@string/unknown" />
-
-            <View
-                android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/analogous_2" />
+                android:layout_weight="70"
+                android:background="@color/analogous_1"
+                android:gravity="center"
+                android:text="@string/unknown" />
 
             <TextView
                 android:id="@+id/addpokemon_abilitydescription"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
                 android:layout_weight="30"
+                android:background="@color/analogous_2"
                 android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="@string/unknown" />
         </LinearLayout>
 
         <Button
             android:id="@+id/addpokemon_abilitiesbutton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="94"
             android:background="@color/main_color"
             android:text="@string/choose_ability" />
 
         <LinearLayout
             android:id="@+id/addpokemon_chosenstats"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="84"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="75"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView22"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/analogous_3"
+                    android:background="@color/analogous_1"
                     android:gravity="center"
-                    android:minHeight="50dp"
                     android:text="@string/level" />
 
                 <TextView
@@ -169,15 +163,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@color/analogous_1"
                     android:gravity="center"
                     android:text="@string/unknown" />
 
                 <TextView
-                    android:id="@+id/textView19"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/analogous_3"
+                    android:background="@color/analogous_2"
                     android:gravity="center"
                     android:text="@string/nature" />
 
@@ -186,37 +180,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="@color/analogous_2"
                     android:gravity="center"
                     android:text="@string/unknown" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textView23"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="75"
                 android:background="@color/analogous_3"
                 android:gravity="center"
-                android:minHeight="50dp"
                 android:text="@string/final_stats" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="50"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/analogous_4"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView25"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:minHeight="50dp"
                         android:text="@string/hp" />
 
                     <View
@@ -225,7 +220,6 @@
                         android:background="@android:color/darker_gray" />
 
                     <TextView
-                        android:id="@+id/textView28"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="16"
@@ -238,7 +232,6 @@
                         android:background="@android:color/darker_gray" />
 
                     <TextView
-                        android:id="@+id/textView30"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="16"
@@ -251,7 +244,6 @@
                         android:background="@android:color/darker_gray" />
 
                     <TextView
-                        android:id="@+id/textView32"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="16"
@@ -264,7 +256,6 @@
                         android:background="@android:color/darker_gray" />
 
                     <TextView
-                        android:id="@+id/textView35"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="16"
@@ -277,7 +268,6 @@
                         android:background="@android:color/darker_gray" />
 
                     <TextView
-                        android:id="@+id/textView37"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="16"
@@ -286,24 +276,20 @@
 
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@android:color/darker_gray" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/analogous_5"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/addpokemon_hp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:minHeight="50dp"
                         android:text="@string/unknown" />
 
                     <View
@@ -379,163 +365,503 @@
         <Button
             android:id="@+id/addpokemon_statsbutton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="94"
             android:background="@color/main_color"
             android:text="@string/choose_stats_related" />
 
         <LinearLayout
-            android:id="@+id/addpokemon_chosenmoves"
+            android:id="@+id/addpokemon_moves_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="97"
+            android:background="@color/analogous_1"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"
+                android:gravity="center"
+                android:text="@string/move" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="80"
+                android:gravity="center"
+                android:text="@string/type" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                android:gravity="center"
+                android:text="@string/cat" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                android:gravity="center"
+                android:text="@string/pow" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                android:gravity="center"
+                android:text="@string/acc" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                android:gravity="center"
+                android:text="@string/pp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addpokemon_moves_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="89"
+            android:background="@color/analogous_2"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/addpokemon_move1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_weight="60"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
 
                 <TextView
-                    android:id="@+id/addpokemon_move1_name"
+                    android:id="@+id/addpokemon_moves_1_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:background="@color/analogous_4"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
                     android:gravity="center"
-                    android:minHeight="50dp"
                     android:text="@string/unknown" />
 
                 <TextView
-                    android:id="@+id/addpokemon_move1_type"
+                    android:id="@+id/addpokemon_moves_1_type"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="80"
                     android:gravity="center"
                     android:text="@string/unknown" />
 
-                <TextView
-                    android:id="@+id/addpokemon_move1_description"
+                <ImageView
+                    android:id="@+id/addpokemon_moves_1_category"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_1_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
                     android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_1_accuracy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_1_pp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/addpokemon_move2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="40"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/addpokemon_move2_name"
+                    android:id="@+id/addpokemon_moves_1_description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:background="@color/analogous_4"
+                    android:layout_weight="30"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/unknown"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_1_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/change"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_1_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/del"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addpokemon_moves_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="89"
+            android:background="@color/analogous_3"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_2_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
                     android:gravity="center"
-                    android:minHeight="50dp"
                     android:text="@string/unknown" />
 
                 <TextView
-                    android:id="@+id/addpokemon_move2_type"
+                    android:id="@+id/addpokemon_moves_2_type"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="80"
                     android:gravity="center"
                     android:text="@string/unknown" />
 
-                <TextView
-                    android:id="@+id/addpokemon_move2_description"
+                <ImageView
+                    android:id="@+id/addpokemon_moves_2_category"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_2_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
                     android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_2_accuracy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_2_pp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/addpokemon_move3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="40"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/addpokemon_move3_name"
+                    android:id="@+id/addpokemon_moves_2_description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:background="@color/analogous_4"
+                    android:layout_weight="30"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/unknown"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_2_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/change"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_2_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/del"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addpokemon_moves_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="89"
+            android:background="@color/analogous_4"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_3_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
                     android:gravity="center"
-                    android:minHeight="50dp"
                     android:text="@string/unknown" />
 
                 <TextView
-                    android:id="@+id/addpokemon_move3_type"
+                    android:id="@+id/addpokemon_moves_3_type"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="80"
                     android:gravity="center"
                     android:text="@string/unknown" />
 
-                <TextView
-                    android:id="@+id/addpokemon_move3_description"
+                <ImageView
+                    android:id="@+id/addpokemon_moves_3_category"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_3_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
                     android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_3_accuracy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_3_pp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/addpokemon_move4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="40"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/addpokemon_move4_name"
+                    android:id="@+id/addpokemon_moves_3_description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:background="@color/analogous_4"
+                    android:layout_weight="30"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/unknown"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_3_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/change"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_3_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/del"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/addpokemon_moves_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="89"
+            android:background="@color/analogous_5"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_4_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="60"
                     android:gravity="center"
-                    android:minHeight="50dp"
                     android:text="@string/unknown" />
 
                 <TextView
-                    android:id="@+id/addpokemon_move4_type"
+                    android:id="@+id/addpokemon_moves_4_type"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="80"
                     android:gravity="center"
                     android:text="@string/unknown" />
 
+                <ImageView
+                    android:id="@+id/addpokemon_moves_4_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    tools:srcCompat="@tools:sample/avatars" />
+
                 <TextView
-                    android:id="@+id/addpokemon_move4_description"
+                    android:id="@+id/addpokemon_moves_4_power"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_4_accuracy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_4_pp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="90"
+                    android:gravity="center"
+                    android:text="@string/unknown" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/addpokemon_moves_4_description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/unknown" />
+                    android:layout_weight="30"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
+                    android:text="@string/unknown"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_4_change"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/change"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/addpokemon_moves_4_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="85"
+                    android:background="@color/main_color"
+                    android:text="@string/del"
+                    android:textSize="12sp" />
+
             </LinearLayout>
+
         </LinearLayout>
 
         <Button
-            android:id="@+id/addpokemon_movesbutton"
+            android:id="@+id/addpokemon_addmove"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="90"
+            android:text="@string/add_move"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/addpokemon_space"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="100" />
+
+        <Button
+            android:id="@+id/addpokemon_finalize"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="94"
             android:background="@color/main_color"
-            android:text="@string/choose_moves" />
+            android:text="@string/finalize" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

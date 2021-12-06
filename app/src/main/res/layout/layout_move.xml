@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_color"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="68"
+                android:gravity="center"
+                android:text="@string/move"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="76"
+                android:gravity="center"
+                android:text="@string/type"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="88"
+                android:gravity="center"
+                android:text="@string/cat"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="88"
+                android:gravity="center"
+                android:text="@string/pow"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="88"
+                android:gravity="center"
+                android:text="@string/acc"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="92"
+                android:gravity="center"
+                android:text="@string/pp"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/l_move_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="68"
+                android:gravity="center"
+                android:text="@string/unknown" />
+
+            <TextView
+                android:id="@+id/l_move_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="76"
+                android:gravity="center"
+                android:text="@string/unknown" />
+
+            <ImageView
+                android:id="@+id/l_move_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="88"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/l_move_power"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="88"
+                android:gravity="center"
+                android:text="@string/unknown" />
+
+            <TextView
+                android:id="@+id/l_move_accuracy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="88"
+                android:gravity="center"
+                android:text="@string/unknown" />
+
+            <TextView
+                android:id="@+id/l_move_pp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="92"
+                android:gravity="center"
+                android:text="@string/unknown" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

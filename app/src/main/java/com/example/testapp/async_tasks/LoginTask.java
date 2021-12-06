@@ -64,7 +64,6 @@ public class LoginTask extends AsyncTask implements StringConstants {
 
     @Override
     protected void onPostExecute(Object o) {
-        Toast toast = Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_LONG);
         if (o.equals(LOGIN_SUCCESS)) {
             LoggedUser.setUsername(username);
             LoggedUser.setPassword(password);
@@ -72,6 +71,6 @@ public class LoginTask extends AsyncTask implements StringConstants {
                     .findNavController(fragment)
                     .navigate(R.id.action_login_to_pokemonCollection);
         }
-        toast.show();
+        Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_SHORT).show();
     }
 }

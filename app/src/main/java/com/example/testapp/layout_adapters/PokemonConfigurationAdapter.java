@@ -1,7 +1,7 @@
 package com.example.testapp.layout_adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +11,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
-import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
 import com.example.testapp.data_objects.GridViewCell;
 
 import java.util.ArrayList;
 
-public class PokemonConfigurationAdapter extends BaseAdapter implements PokemonConstants {
+public class PokemonConfigurationAdapter extends BaseAdapter {
     private final Context context;
     private final ArrayList<GridViewCell> gridViewCells;
 
@@ -42,8 +42,7 @@ public class PokemonConfigurationAdapter extends BaseAdapter implements PokemonC
         return gridViewCells.get(position).getId();
     }
 
-    @SuppressLint("ResourceAsColor")
-    @RequiresApi(api = Build.VERSION_CODES.R)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         GridViewCell gridViewCell = (GridViewCell) getItem(position);
@@ -55,6 +54,12 @@ public class PokemonConfigurationAdapter extends BaseAdapter implements PokemonC
         ImageView image = convertView.findViewById(R.id.image);
         image.setImageBitmap(gridViewCell.getImage());
         image.setContentDescription(gridViewCell.getSpecies());
+        GradientDrawable gradientDrawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{ContextCompat.getColor(image.getContext(), R.color.white),
+                        ContextCompat.getColor(image.getContext(), R.color.main_color)
+                });
+        image.setBackground(gradientDrawable);
 
         TextView species = convertView.findViewById(R.id.species);
         species.setText(gridViewCell.getSpecies());
@@ -70,8 +75,8 @@ public class PokemonConfigurationAdapter extends BaseAdapter implements PokemonC
             convertView.findViewById(R.id.type2).setVisibility(View.GONE);
         }
         types.forEach(t -> {
-            t.setText(gridViewCell.getTypes().get(types.indexOf(t)).getName());
-            t.setText(gridViewCell.getTypes().get(types.indexOf(t)).getColor());
+            t.setText(gridViewCell.getTypes().get(types.indexOf(t)).getName().toUpperCase());
+            t.setBackgroundResource(gridViewCell.getTypes().get(types.indexOf(t)).getColor());
         });
         return convertView;
     }

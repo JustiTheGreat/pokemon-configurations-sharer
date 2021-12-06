@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                         ContextCompat.getColor(this, R.color.analogous_2),
                         ContextCompat.getColor(this, R.color.analogous_3),
                         ContextCompat.getColor(this, R.color.analogous_4),
-                        ContextCompat.getColor(this, R.color.analogous_5),
+                        ContextCompat.getColor(this, R.color.analogous_5)
                 });
         getWindow().getDecorView().setBackground(gradientDrawable);
 

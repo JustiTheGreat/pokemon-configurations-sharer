@@ -20,9 +20,8 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-public class GetSpecies extends AsyncTask implements PokemonConstants, StringConstants {
+public class GetAllSpecies extends AsyncTask implements PokemonConstants, StringConstants {
     private Fragment fragment;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -50,11 +49,10 @@ public class GetSpecies extends AsyncTask implements PokemonConstants, StringCon
                 }
             }
             if (!already_exists) {
-                Bitmap image = Helper.getBitmapIconFromElement(e);
+                Bitmap sprite = Helper.getPokemonSprite(e.text());
                 String species = e.text();
-                ArrayList<TYPE> types = (ArrayList<TYPE>) Helper.getTypesFromElement(e)
-                        .stream().map(t-> TYPE.getType(t)).collect(Collectors.toList());
-                speciesRows.add(new SpeciesRow(image, species, types));
+                ArrayList<TYPE> types = Helper.getPokemonTypes(e);
+                speciesRows.add(new SpeciesRow(sprite, species, types));
             }
         }
         return speciesRows;

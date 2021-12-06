@@ -12,7 +12,9 @@
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/add_pokemon.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/collection.xml" value="0.18659420289855072" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/content_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_addname.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_delete.xml" value="0.21" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_moves.xml" value="0.25" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_qr.xml" value="0.18659420289855072" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_search.xml" value="0.22" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/dialog_stats.xml" value="0.25" />
@@ -26,6 +28,8 @@
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/grid_view_template.xml" value="0.33" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_abilities.xml" value="0.22" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_collection.xml" value="0.15081521739130435" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_move.xml" value="0.25" />
+        <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_moves.xml" value="0.33" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_species.xml" value="0.15081521739130435" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/layout_textview.xml" value="0.15081521739130435" />
         <entry key="..\:/Users/justi/Desktop/TestApp/app/src/main/res/layout/login.xml" value="0.25" />

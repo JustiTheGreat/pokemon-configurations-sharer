@@ -8,11 +8,11 @@ import com.example.testapp.PokemonConstants;
 
 import java.util.ArrayList;
 
-public class NATURE {
+public class Nature implements PokemonConstants{
     private final String name;
     private final ArrayList<Double> effects;
 
-    public NATURE(String name, ArrayList<Double> effects) {
+    public Nature(String name, ArrayList<Double> effects) {
         this.name = name;
         this.effects = effects;
     }
@@ -26,8 +26,8 @@ public class NATURE {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public static NATURE getNature(String natureName) {
-        for (NATURE N : PokemonConstants.NATURES) {
+    public static Nature getNature(String natureName) {
+        for (Nature N : NATURES) {
             if (natureName.equals(N.getName())) {
                 return N;
             }

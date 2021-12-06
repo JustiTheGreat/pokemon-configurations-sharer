@@ -1,5 +1,7 @@
 package com.example.testapp.fragments;
 
+import static com.example.testapp.PokemonConstants.NUMBER_OF_STATS;
+
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -17,14 +19,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.data_objects.NATURE;
-import com.example.testapp.async_tasks.Helper;
-import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
-import com.example.testapp.Storage;
-import com.example.testapp.async_tasks.GetPokemonDetails;
-import com.example.testapp.data_objects.Ability;
-import com.example.testapp.data_objects.PokemonConfiguration;
+import com.example.testapp.SelectedPokemon;
+import com.example.testapp.async_tasks.Helper;
+import com.example.testapp.data_objects.Pokemon;
 import com.example.testapp.databinding.PokemonDetailsBinding;
 import com.google.zxing.WriterException;
 
@@ -33,8 +31,8 @@ import java.util.ArrayList;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 
-public class PokemonDetails extends Fragment implements PokemonConstants {
-    private PokemonConfiguration pokemonConfiguration;
+public class PokemonDetails extends Fragment {
+    private Pokemon pokemon;
     private PokemonDetailsBinding binding;
 
     @Override
@@ -43,18 +41,12 @@ public class PokemonDetails extends Fragment implements PokemonConstants {
         return binding.getRoot();
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pokemonConfiguration = Storage.getPokemonConfiguration();
-        new GetPokemonDetails().execute(this, pokemonConfiguration.getSpecies(), pokemonConfiguration.getAbility());
-
-        binding.pokemondetailsName.setText(pokemonConfiguration.getName());
-        String text = pokemonConfiguration.getSpecies()
-                + " " + pokemonConfiguration.getGender()
-                + " Lv. " + pokemonConfiguration.getLevel();
-        binding.pokemondetailsSpecies.setText(text);
-        binding.pokemondetailsNature.setText(pokemonConfiguration.getNatureName());
+        pokemon = SelectedPokemon.getPokemon();
+        setPageInfo();
         //adapting layouts when open clicking one
         {
             LinearLayout ability = binding.pokemondetailsAbility;
@@ -116,11 +108,12 @@ public class PokemonDetails extends Fragment implements PokemonConstants {
             });
         }
         //end of adapting layouts
-        binding.pokemondetailsQrcode.setOnClickListener(v -> showQRCode());
         binding.pokemondetailsDelete.setOnClickListener(v -> deletePokemon());
+        binding.pokemondetailsQrcode.setOnClickListener(v -> showQRCode());
+        binding.pokemondetailsEdit.setOnClickListener(v -> editPokemon());
     }
 
-    public void deletePokemon() {
+    private void deletePokemon() {
         Dialog dialog = new Dialog(this.getActivity());
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_delete);
@@ -128,21 +121,21 @@ public class PokemonDetails extends Fragment implements PokemonConstants {
 
         dialog.findViewById(R.id.d_delete_yes).setOnClickListener(v -> {
             //delete from database
-            Toast toast = Toast.makeText(this.getActivity(), pokemonConfiguration.getName() + "was deleted!", Toast.LENGTH_LONG);
+            Toast.makeText(this.getActivity(), pokemon.getName() + "was deleted!", Toast.LENGTH_SHORT).show();
         });
         dialog.findViewById(R.id.d_delete_no).setOnClickListener(v -> dialog.dismiss());
     }
 
-    public void showQRCode() {
+    private void showQRCode() {
         Dialog dialog = new Dialog(this.getActivity());
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_qr);
         dialog.show();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels / 2;
-        QRGEncoder qrgEncoder = new QRGEncoder(pokemonConfiguration.toString(), null, QRGContents.Type.TEXT, width);
+        QRGEncoder qrgEncoder = new QRGEncoder(pokemon.toString(), null, QRGContents.Type.TEXT, width);
 
         try {
             Bitmap bitmap = qrgEncoder.encodeAsBitmap();
@@ -153,31 +146,34 @@ public class PokemonDetails extends Fragment implements PokemonConstants {
         }
     }
 
+    private void editPokemon() {
+        Toast.makeText(this.getActivity(), "Edit not yet implemented!", Toast.LENGTH_SHORT).show();
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public void set(Bitmap bitmap, ArrayList<String> types, Ability ability, ArrayList<Integer> baseStats) {
-        //bitmap
-        binding.pokemondetailsImage.setImageBitmap(bitmap);
-        //types
-        binding.pokemondetailsType1.setText(types.get(0));
-        TYPES.forEach(T -> {
-            if (T.getName().equalsIgnoreCase(types.get(0))) {
-                binding.pokemondetailsType1.setBackgroundResource(T.getColor());
-            }
-        });
-        if (types.size() == 1) {
+    private void setPageInfo() {
+        binding.pokemondetailsName.setText(pokemon.getName());
+        binding.pokemondetailsImage.setImageBitmap(pokemon.getOfficialArt());
+
+        String text = pokemon.getSpecies()
+                + " " + pokemon.getGender()
+                + " Lv. " + pokemon.getLevel();
+        binding.pokemondetailsSpecies.setText(text);
+        binding.pokemondetailsNature.setText(pokemon.getNature().getName());
+
+        binding.pokemondetailsType1.setText(pokemon.getTypes().get(0).getName().toUpperCase());
+        binding.pokemondetailsType1.setBackgroundResource(pokemon.getTypes().get(0).getColor());
+        if (pokemon.getTypes().size() == 1) {
             binding.pokemondetailsType2.setVisibility(View.GONE);
-        } else if (types.size() == 2) {
-            binding.pokemondetailsType2.setText(types.get(1));
-            TYPES.forEach(T -> {
-                if (T.getName().equalsIgnoreCase(types.get(1))) {
-                    binding.pokemondetailsType2.setBackgroundResource(T.getColor());
-                }
-            });
+        } else {
+            binding.pokemondetailsType2.setText(pokemon.getTypes().get(1).getName().toUpperCase());
+            binding.pokemondetailsType2.setBackgroundResource(pokemon.getTypes().get(1).getColor());
         }
-        //ability
-        binding.pokemondetailsAbilityname.setText(ability.getName());
-        binding.pokemondetailsAbilitydescription.setText(ability.getDescription());
-        //stats
+
+        binding.pokemondetailsAbilityname.setText(pokemon.getAbility().getName());
+        binding.pokemondetailsAbilitydescription.setText(pokemon.getAbility().getDescription());
+
         ArrayList<ArrayList<TextView>> statsViews = new ArrayList<ArrayList<TextView>>() {{
             add(
                     new ArrayList<TextView>() {{
@@ -221,23 +217,18 @@ public class PokemonDetails extends Fragment implements PokemonConstants {
             );
         }};
 
-        for (int i = 0; i < baseStats.size(); i++) {
-            statsViews.get(1).get(i).setText(String.valueOf(baseStats.get(i)));
+        for (int i = 0; i < NUMBER_OF_STATS; i++) {
+            statsViews.get(1).get(i).setText(String.valueOf(pokemon.getBaseStats().get(i)));
+            statsViews.get(2).get(i).setText(String.valueOf(pokemon.getIVs().get(i)));
+            statsViews.get(3).get(i).setText(String.valueOf(pokemon.getEVs().get(i)));
         }
-        for (int i = 0; i < pokemonConfiguration.getIVs().size(); i++) {
-            statsViews.get(2).get(i).setText(String.valueOf(pokemonConfiguration.getIVs().get(i)));
-        }
-        for (int i = 0; i < pokemonConfiguration.getEVs().size(); i++) {
-            statsViews.get(3).get(i).setText(String.valueOf(pokemonConfiguration.getEVs().get(i)));
-        }
-        ArrayList<Double> nature = NATURE.getNature(pokemonConfiguration.getNatureName()).getEffects();
         ArrayList<Integer> totalStats = Helper.calculateStats(
-                baseStats,
-                pokemonConfiguration.getIVs(),
-                pokemonConfiguration.getEVs(),
-                pokemonConfiguration.getLevel(),
-                nature);
-        for (int i = 0; i < totalStats.size(); i++) {
+                pokemon.getBaseStats(),
+                pokemon.getIVs(),
+                pokemon.getEVs(),
+                pokemon.getLevel(),
+                pokemon.getNature());
+        for (int i = 0; i < NUMBER_OF_STATS; i++) {
             statsViews.get(0).get(i).setText(String.valueOf(totalStats.get(i)));
         }
     }

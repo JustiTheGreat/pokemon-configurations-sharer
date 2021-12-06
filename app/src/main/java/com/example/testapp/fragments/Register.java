@@ -14,7 +14,7 @@ import com.example.testapp.databinding.RegisterBinding;
 
 public class Register extends Fragment {
     private RegisterBinding binding;
-    private EditText username, password, email;
+    private EditText username, email, password;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -25,13 +25,13 @@ public class Register extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         username = binding.registerTextboxUsername;
-        password = binding.registerTextboxPassword;
         email = binding.registerTextboxEmail;
+        password = binding.registerTextboxPassword;
         binding.registerButtonRegisterbutton.setOnClickListener(this::register);
     }
 
     public void register(View view) {
-        new RegisterTask().execute(this, username.getText().toString(), password.getText().toString(), email.getText().toString());
+        new RegisterTask().execute(this, username.getText().toString(), email.getText().toString(), password.getText().toString());
     }
 
     @Override

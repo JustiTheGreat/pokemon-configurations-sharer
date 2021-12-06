@@ -13,14 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
 import com.example.testapp.data_objects.SpeciesRow;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpeciesAdapter extends ArrayAdapter<SpeciesRow> implements PokemonConstants {
+public class SpeciesAdapter extends ArrayAdapter<SpeciesRow> {
     private final Context context;
     private final ArrayList<SpeciesRow> speciesRows;
 
@@ -84,7 +83,7 @@ public class SpeciesAdapter extends ArrayAdapter<SpeciesRow> implements PokemonC
         }
 
         ImageView image = convertView.findViewById(R.id.l_species_image);
-        image.setImageBitmap(speciesRow.getIcon());
+        image.setImageBitmap(speciesRow.getSprite());
         image.setContentDescription(speciesRow.getSpecies());
 
         TextView species = convertView.findViewById(R.id.l_species_species);
@@ -98,8 +97,8 @@ public class SpeciesAdapter extends ArrayAdapter<SpeciesRow> implements PokemonC
             convertView.findViewById(R.id.l_species_type2).setVisibility(View.GONE);
         }
         types.forEach(t -> {
-            t.setText(speciesRow.getTypes().get(types.indexOf(t)).getName());
-            t.setText(speciesRow.getTypes().get(types.indexOf(t)).getColor());
+            t.setText(speciesRow.getTypes().get(types.indexOf(t)).getName().toUpperCase());
+            t.setBackgroundResource(speciesRow.getTypes().get(types.indexOf(t)).getColor());
         });
 
         return convertView;

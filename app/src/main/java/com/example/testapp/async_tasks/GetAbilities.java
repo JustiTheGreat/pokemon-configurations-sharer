@@ -6,20 +6,19 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.PokemonConstants;
-import com.example.testapp.fragments.AddPokemon;
 import com.example.testapp.data_objects.Ability;
+import com.example.testapp.fragments.AddPokemon;
 
 import java.util.ArrayList;
 
-public class GetAbilities extends AsyncTask implements PokemonConstants {
+public class GetAbilities extends AsyncTask {
     private Fragment fragment;
     private ArrayList<Ability> abilities;
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     protected Object doInBackground(Object[] objects) {
         fragment = (Fragment) objects[0];
-        abilities = Helper.getAbilitiesFromString((String) objects[1]);
+        abilities = Helper.getPokemonAbilities((String) objects[1]);
         return null;
     }
 
@@ -29,4 +28,3 @@ public class GetAbilities extends AsyncTask implements PokemonConstants {
         ((AddPokemon) fragment).setAbilitiesRows(abilities);
     }
 }
-

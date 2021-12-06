@@ -15,7 +15,7 @@ public class SpeciesRow {
         this.types = types;
     }
 
-    public Bitmap getIcon() {
+    public Bitmap getSprite() {
         return icon;
     }
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,25 +15,25 @@ import androidx.annotation.RequiresApi;
 
 import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
-import com.example.testapp.data_objects.Ability;
-import com.example.testapp.data_objects.SpeciesRow;
+import com.example.testapp.data_objects.Move;
+import com.example.testapp.data_objects.TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilitiesAdapter extends ArrayAdapter<Ability> implements PokemonConstants {
+public class MoveAdapter extends ArrayAdapter<Move> implements PokemonConstants {
     private final Context context;
-    private final ArrayList<Ability> abilitiesRows;
+    private final ArrayList<Move> movesRows;
 
-    public AbilitiesAdapter(Context context, ArrayList<Ability> abilitiesRows) {
-        super(context, R.layout.layout_abilities, abilitiesRows);
+    public MoveAdapter(Context context, ArrayList<Move> movesRows) {
+        super(context, R.layout.layout_move, movesRows);
         this.context = context;
-        this.abilitiesRows = new ArrayList<>(abilitiesRows);
+        this.movesRows = new ArrayList<>(movesRows);
     }
 
     @Override
-    public Ability getItem(int index) {
-        return abilitiesRows.get(index);
+    public Move getItem(int index) {
+        return movesRows.get(index);
     }
 
     @NonNull
@@ -45,12 +46,12 @@ public class AbilitiesAdapter extends ArrayAdapter<Ability> implements PokemonCo
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<Ability> suggestions = new ArrayList<>();
+            ArrayList<Move> suggestions = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                suggestions.addAll(abilitiesRows);
+                suggestions.addAll(movesRows);
             } else {
                 String pattern = constraint.toString().toLowerCase().trim();
-                abilitiesRows.forEach(abilityRow -> {
+                movesRows.forEach(abilityRow -> {
                     if (abilityRow.getName().toLowerCase().contains(pattern)) {
                         suggestions.add(abilityRow);
                     }
@@ -71,25 +72,39 @@ public class AbilitiesAdapter extends ArrayAdapter<Ability> implements PokemonCo
 
         @Override
         public CharSequence convertResultToString(Object resultValue) {
-            return ((Ability) resultValue).getName();
+            return ((Move) resultValue).getName();
         }
     };
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public View getView(int position, View convertView, ViewGroup parent) {
-        Ability speciesRow = getItem(position);
+        Move move = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.layout_abilities, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.layout_move, parent, false);
         }
 
-        TextView name = convertView.findViewById(R.id.l_abilities_name);
-        name.setText(speciesRow.getName());
+        TextView name = convertView.findViewById(R.id.l_move_name);
+        name.setText(move.getName());
 
-        TextView description = convertView.findViewById(R.id.l_abilities_description);
-        description.setText(speciesRow.getDescription());
+        TextView type = convertView.findViewById(R.id.l_move_type);
+        type.setText(move.getType().getName().toUpperCase());
+        type.setBackgroundResource(move.getType().getColor());
+
+        ImageView category = convertView.findViewById(R.id.l_move_category);
+        category.setImageBitmap(move.getCategory().getIcon());
+
+        TextView power = convertView.findViewById(R.id.l_move_power);
+        power.setText(""+move.getPower());
+
+        TextView accuracy = convertView.findViewById(R.id.l_move_accuracy);
+        accuracy.setText(""+move.getAccuracy());
+
+        TextView PP = convertView.findViewById(R.id.l_move_pp);
+        PP.setText(""+move.getPP());
 
         return convertView;
     }
 }
+
 

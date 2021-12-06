@@ -7,15 +7,15 @@ import java.util.ArrayList;
 public class GridViewCell {
     private final long id;
     private final Bitmap image;
-    private final String species;
     private final String name;
+    private final String species;
     private final ArrayList<TYPE> types;
 
-    public GridViewCell(long id, Bitmap image, String species, String name, ArrayList<TYPE> types) {
+    public GridViewCell(long id, Bitmap image, String name, String species, ArrayList<TYPE> types) {
         this.id = id;
         this.image = image;
-        this.species = species;
         this.name = name;
+        this.species = species;
         this.types = types;
     }
 
@@ -27,12 +27,12 @@ public class GridViewCell {
         return image;
     }
 
-    public String getSpecies() {
-        return species;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public String getSpecies() {
+        return species;
     }
 
     public ArrayList<TYPE> getTypes() {
