@@ -4,9 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.async_tasks.Helper;
 import com.example.testapp.data_objects.Nature;
-import com.example.testapp.data_objects.TYPE;
+import com.example.testapp.data_objects.Type;
 
 import java.util.ArrayList;
 
@@ -15,31 +14,28 @@ public interface PokemonConstants {
     int POKEDEX_NUMBER_LIMIT = 10;
     String MALE = "♂";
     String FEMALE = "♀";
-    String PHYSICAL = "Physical";
-    String SPECIAL = "Special";
-    String STATUS = "Status";
     int NUMBER_OF_STATS = 6;
 
-    TYPE TYPE_NORMAL = new TYPE("normal", R.color.normal);
-    TYPE TYPE_FIGHTING = new TYPE("fighting", R.color.fighting);
-    TYPE TYPE_FLYING = new TYPE("flying", R.color.flying);
-    TYPE TYPE_POISON = new TYPE("poison", R.color.poison);
-    TYPE TYPE_GROUND = new TYPE("ground", R.color.ground);
-    TYPE TYPE_ROCK = new TYPE("rock", R.color.rock);
-    TYPE TYPE_BUG = new TYPE("bug", R.color.bug);
-    TYPE TYPE_GHOST = new TYPE("ghost", R.color.ghost);
-    TYPE TYPE_STEEL = new TYPE("steel", R.color.steel);
-    TYPE TYPE_FIRE = new TYPE("fire", R.color.fire);
-    TYPE TYPE_WATER = new TYPE("water", R.color.water);
-    TYPE TYPE_GRASS = new TYPE("grass", R.color.grass);
-    TYPE TYPE_ELECTRIC = new TYPE("electric", R.color.electric);
-    TYPE TYPE_PSYCHIC = new TYPE("psychic", R.color.psychic);
-    TYPE TYPE_ICE = new TYPE("ice", R.color.ice);
-    TYPE TYPE_DRAGON = new TYPE("dragon", R.color.dragon);
-    TYPE TYPE_DARK = new TYPE("dark", R.color.dark);
-    TYPE TYPE_FAIRY = new TYPE("fairy", R.color.fairy);
+    Type TYPE_NORMAL = new Type("normal", R.color.normal);
+    Type TYPE_FIGHTING = new Type("fighting", R.color.fighting);
+    Type TYPE_FLYING = new Type("flying", R.color.flying);
+    Type TYPE_POISON = new Type("poison", R.color.poison);
+    Type TYPE_GROUND = new Type("ground", R.color.ground);
+    Type TYPE_ROCK = new Type("rock", R.color.rock);
+    Type TYPE_BUG = new Type("bug", R.color.bug);
+    Type TYPE_GHOST = new Type("ghost", R.color.ghost);
+    Type TYPE_STEEL = new Type("steel", R.color.steel);
+    Type TYPE_FIRE = new Type("fire", R.color.fire);
+    Type TYPE_WATER = new Type("water", R.color.water);
+    Type TYPE_GRASS = new Type("grass", R.color.grass);
+    Type TYPE_ELECTRIC = new Type("electric", R.color.electric);
+    Type TYPE_PSYCHIC = new Type("psychic", R.color.psychic);
+    Type TYPE_ICE = new Type("ice", R.color.ice);
+    Type TYPE_DRAGON = new Type("dragon", R.color.dragon);
+    Type TYPE_DARK = new Type("dark", R.color.dark);
+    Type TYPE_FAIRY = new Type("fairy", R.color.fairy);
 
-    ArrayList<TYPE> TYPES = new ArrayList<TYPE>() {{
+    ArrayList<Type> TYPES = new ArrayList<Type>() {{
         add(TYPE_NORMAL);
         add(TYPE_FIGHTING);
         add(TYPE_FLYING);
@@ -60,31 +56,39 @@ public interface PokemonConstants {
         add(TYPE_FAIRY);
     }};
 
-    Nature NATURE_ADAMANT = new Nature("Adamant (+Atk, -SpA)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 0.9, 1, 1}));
-    Nature NATURE_BASHFUL = new Nature("Bashful", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    Nature NATURE_BOLD = new Nature("Bold (+Def, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1.1, 1, 1, 1}));
-    Nature NATURE_BRAVE = new Nature("Brave (+Atk, -Spe)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 1, 0.9}));
-    Nature NATURE_CALM = new Nature("Calm (+SpD, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1.1, 1}));
-    Nature NATURE_CAREFUL = new Nature("Careful (+SpD, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1.1, 1}));
-    Nature NATURE_DOCILE = new Nature("Docile", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    Nature NATURE_GENTLE = new Nature("Gentle (+SpD, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1.1, 1}));
-    Nature NATURE_HARDY = new Nature("Hardy", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    Nature NATURE_HASTY = new Nature("Hasty (+Spe, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1, 1, 1.1}));
-    Nature NATURE_IMPISH = new Nature("Impish (+Def, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 0.9, 1, 1}));
-    Nature NATURE_JOLLY = new Nature("Jolly (+Spe, -SpA)", Helper.createArrayListOfDouble(new double[]{1, 1, 0.9, 1, 1.1}));
-    Nature NATURE_LAX = new Nature("Lax (+Def, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 0.9, 1}));
-    Nature NATURE_LONELY = new Nature("Lonely (+Atk, -Def)", Helper.createArrayListOfDouble(new double[]{1.1, 0.9, 1, 1, 1}));
-    Nature NATURE_MILD = new Nature("Mild (+SpA, -Def)", Helper.createArrayListOfDouble(new double[]{1, 0.9, 1.1, 1, 1}));
-    Nature NATURE_MODEST = new Nature("Modest (+SpA, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1.1, 1, 1}));
-    Nature NATURE_NAIVE = new Nature("Naive (+Spe, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 0.9, 1.1}));
-    Nature NATURE_NAUGHTY = new Nature("Naughty (+Atk, -SpD)", Helper.createArrayListOfDouble(new double[]{1.1, 1, 1, 0.9, 1}));
-    Nature NATURE_QUIET = new Nature("Quiet (+SpA, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 1, 0.9}));
-    Nature NATURE_QUIRKY = new Nature("Quirky", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    Nature NATURE_RASH = new Nature("Rash (+SpA, -SpD)", Helper.createArrayListOfDouble(new double[]{1, 1, 1.1, 0.9, 1}));
-    Nature NATURE_RELAXED = new Nature("Relaxed (+Def, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1.1, 1, 1, 0.9}));
-    Nature NATURE_SASSY = new Nature("Sassy (+SpD, -Spe)", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1.1, 0.9}));
-    Nature NATURE_SERIOUS = new Nature("Serious", Helper.createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
-    Nature NATURE_TIMID = new Nature("Timid (+Spe, -Atk)", Helper.createArrayListOfDouble(new double[]{0.9, 1, 1, 1, 1.1}));
+    static ArrayList<Double> createArrayListOfDouble(double[] list) {
+        ArrayList<Double> arrayList = new ArrayList<>();
+        for (double v : list) {
+            arrayList.add(v);
+        }
+        return arrayList;
+    }
+
+    Nature NATURE_ADAMANT = new Nature("Adamant (+Atk, -SpA)", createArrayListOfDouble(new double[]{1.1, 1, 0.9, 1, 1}));
+    Nature NATURE_BASHFUL = new Nature("Bashful", createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_BOLD = new Nature("Bold (+Def, -Atk)", createArrayListOfDouble(new double[]{0.9, 1.1, 1, 1, 1}));
+    Nature NATURE_BRAVE = new Nature("Brave (+Atk, -Spe)", createArrayListOfDouble(new double[]{1.1, 1, 1, 1, 0.9}));
+    Nature NATURE_CALM = new Nature("Calm (+SpD, -Atk)", createArrayListOfDouble(new double[]{0.9, 1, 1, 1.1, 1}));
+    Nature NATURE_CAREFUL = new Nature("Careful (+SpD, -SpA)", createArrayListOfDouble(new double[]{1, 1, 0.9, 1.1, 1}));
+    Nature NATURE_DOCILE = new Nature("Docile", createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_GENTLE = new Nature("Gentle (+SpD, -Def)", createArrayListOfDouble(new double[]{1, 0.9, 1, 1.1, 1}));
+    Nature NATURE_HARDY = new Nature("Hardy", createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_HASTY = new Nature("Hasty (+Spe, -Def)", createArrayListOfDouble(new double[]{1, 0.9, 1, 1, 1.1}));
+    Nature NATURE_IMPISH = new Nature("Impish (+Def, -SpA)", createArrayListOfDouble(new double[]{1, 1.1, 0.9, 1, 1}));
+    Nature NATURE_JOLLY = new Nature("Jolly (+Spe, -SpA)", createArrayListOfDouble(new double[]{1, 1, 0.9, 1, 1.1}));
+    Nature NATURE_LAX = new Nature("Lax (+Def, -SpD)", createArrayListOfDouble(new double[]{1, 1.1, 1, 0.9, 1}));
+    Nature NATURE_LONELY = new Nature("Lonely (+Atk, -Def)", createArrayListOfDouble(new double[]{1.1, 0.9, 1, 1, 1}));
+    Nature NATURE_MILD = new Nature("Mild (+SpA, -Def)", createArrayListOfDouble(new double[]{1, 0.9, 1.1, 1, 1}));
+    Nature NATURE_MODEST = new Nature("Modest (+SpA, -Atk)", createArrayListOfDouble(new double[]{0.9, 1, 1.1, 1, 1}));
+    Nature NATURE_NAIVE = new Nature("Naive (+Spe, -SpD)", createArrayListOfDouble(new double[]{1, 1, 1, 0.9, 1.1}));
+    Nature NATURE_NAUGHTY = new Nature("Naughty (+Atk, -SpD)", createArrayListOfDouble(new double[]{1.1, 1, 1, 0.9, 1}));
+    Nature NATURE_QUIET = new Nature("Quiet (+SpA, -Spe)", createArrayListOfDouble(new double[]{1, 1, 1.1, 1, 0.9}));
+    Nature NATURE_QUIRKY = new Nature("Quirky", createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_RASH = new Nature("Rash (+SpA, -SpD)", createArrayListOfDouble(new double[]{1, 1, 1.1, 0.9, 1}));
+    Nature NATURE_RELAXED = new Nature("Relaxed (+Def, -Spe)", createArrayListOfDouble(new double[]{1, 1.1, 1, 1, 0.9}));
+    Nature NATURE_SASSY = new Nature("Sassy (+SpD, -Spe)", createArrayListOfDouble(new double[]{1, 1, 1, 1.1, 0.9}));
+    Nature NATURE_SERIOUS = new Nature("Serious", createArrayListOfDouble(new double[]{1, 1, 1, 1, 1}));
+    Nature NATURE_TIMID = new Nature("Timid (+Spe, -Atk)", createArrayListOfDouble(new double[]{0.9, 1, 1, 1, 1.1}));
 
     ArrayList<Nature> NATURES = new ArrayList<Nature>() {{
         add(NATURE_ADAMANT);
@@ -113,4 +117,25 @@ public interface PokemonConstants {
         add(NATURE_SERIOUS);
         add(NATURE_TIMID);
     }};
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    static ArrayList<Integer> calculateStats(ArrayList<Integer> base, ArrayList<Integer> ivs,
+                                             ArrayList<Integer> evs, int level, Nature nature) {
+        ArrayList<Integer> total = new ArrayList<>(base);
+        ArrayList<Double> natureMultipliers = nature.getEffects();
+        for (int i = 0; i < total.size(); i++) {
+            total.set(i, (int) (i == 0 ?
+                    (2 * total.get(i)
+                            + ivs.get(total.indexOf(total.get(i)))
+                            + evs.get(total.indexOf(total.get(i))) / 4.0
+                    ) * level / 100 + level + 10
+                    :
+                    ((2 * total.get(i)
+                            + ivs.get(total.indexOf(total.get(i)))
+                            + evs.get(total.indexOf(total.get(i))) / 4.0
+                    ) * level / 100 + 5) * natureMultipliers.get(i - 1)
+            ));
+        }
+        return total;
+    }
 }

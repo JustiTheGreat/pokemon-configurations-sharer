@@ -32,7 +32,7 @@
         android:id="@+id/pokemonCollection"
         android:name="com.example.testapp.fragments.PokemonCollection"
         android:label="@string/my_pokemon_collection"
-        tools:layout="@layout/collection">
+        tools:layout="@layout/fragment_collection">
         <action
             android:id="@+id/action_pokemonCollection_to_pokemonDetails"
             app:destination="@id/pokemonDetails" />

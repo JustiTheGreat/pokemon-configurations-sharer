@@ -7,7 +7,7 @@
     tools:context=".fragments.PokemonCollection">
 
     <GridView
-        android:id="@+id/collection_gridview"
+        android:id="@+id/f_c_gridview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
@@ -22,11 +22,13 @@
         android:verticalSpacing="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"></GridView>
 
     <Button
-        android:id="@+id/collection_button"
+        android:id="@+id/f_c_add_options_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"

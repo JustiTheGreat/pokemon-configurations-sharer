@@ -19,13 +19,14 @@ public class GetPokemonMoves extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         fragment = (Fragment) objects[0];
-        moves = Helper.getPokemonMoves((String) objects[1]);
+        moves = TaskHelper.getPokemonMoves((String) objects[1]);
         return null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onPostExecute(Object o) {
+        if (isCancelled()) return;
         ((AddPokemon) fragment).setMoves(moves);
     }
 }

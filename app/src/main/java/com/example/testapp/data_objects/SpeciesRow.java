@@ -7,9 +7,9 @@ import java.util.ArrayList;
 public class SpeciesRow {
     private final Bitmap icon;
     private final String species;
-    private final ArrayList<TYPE> types;
+    private final ArrayList<Type> types;
 
-    public SpeciesRow(Bitmap icon, String species, ArrayList<TYPE> types) {
+    public SpeciesRow(Bitmap icon, String species, ArrayList<Type> types) {
         this.icon = icon;
         this.species = species;
         this.types = types;
@@ -23,7 +23,7 @@ public class SpeciesRow {
         return species;
     }
 
-    public ArrayList<TYPE> getTypes() {
+    public ArrayList<Type> getTypes() {
         return types;
     }
 }

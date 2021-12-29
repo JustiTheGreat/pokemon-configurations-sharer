@@ -18,13 +18,14 @@ public class GetAbilities extends AsyncTask {
     @RequiresApi(api = Build.VERSION_CODES.R)
     protected Object doInBackground(Object[] objects) {
         fragment = (Fragment) objects[0];
-        abilities = Helper.getPokemonAbilities((String) objects[1]);
+        abilities = TaskHelper.getPokemonAbilities((String) objects[1]);
         return null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onPostExecute(Object object) {
-        ((AddPokemon) fragment).setAbilitiesRows(abilities);
+        if (isCancelled()) return;
+        ((AddPokemon) fragment).setAbilities(abilities);
     }
 }

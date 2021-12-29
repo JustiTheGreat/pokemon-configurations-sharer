@@ -2,7 +2,6 @@ package com.example.testapp.async_tasks;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -12,8 +11,8 @@ import com.example.testapp.StringConstants;
 import com.example.testapp.data_objects.Ability;
 import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.MoveCategory;
-import com.example.testapp.data_objects.Nature;
-import com.example.testapp.data_objects.TYPE;
+import com.example.testapp.data_objects.SpeciesRow;
+import com.example.testapp.data_objects.Type;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -27,39 +26,38 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Helper extends AsyncTask implements PokemonConstants, StringConstants {
-    @Override
-    protected Object doInBackground(Object[] objects) {
-        return null;
-    }
+public class TaskHelper implements PokemonConstants, StringConstants {
 
-    public static ArrayList<Double> createArrayListOfDouble(double[] list) {
-        ArrayList<Double> arrayList = new ArrayList<>();
-        for (double v : list) {
-            arrayList.add(v);
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static ArrayList<SpeciesRow> getAllSpecies(){
+        ArrayList<SpeciesRow> speciesRows = new ArrayList<>();
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(ALL_POKEMON_LINK).get();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return arrayList;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static ArrayList<Integer> calculateStats(ArrayList<Integer> base, ArrayList<Integer> ivs,
-                                                    ArrayList<Integer> evs, int level, Nature nature) {
-        ArrayList<Integer> total = new ArrayList<>(base);
-        ArrayList<Double> natureMultipliers = nature.getEffects();
-        for (int i = 0; i < total.size(); i++) {
-            total.set(i, (int) (i == 0 ?
-                    (2 * total.get(i)
-                            + ivs.get(total.indexOf(total.get(i)))
-                            + evs.get(total.indexOf(total.get(i))) / 4.0
-                    ) * level / 100 + level + 10
-                    :
-                    ((2 * total.get(i)
-                            + ivs.get(total.indexOf(total.get(i)))
-                            + evs.get(total.indexOf(total.get(i))) / 4.0
-                    ) * level / 100 + 5) * natureMultipliers.get(i - 1)
-            ));
+        assert doc != null;
+        Elements elements = doc.getElementsByClass("ent-name");
+        boolean already_exists;
+        for (Element e : elements) {
+            if (Integer.parseInt(e.parent().parent().getElementsByClass("infocard-cell-data").text()) > POKEDEX_NUMBER_LIMIT)
+                break;
+            already_exists = false;
+            for (SpeciesRow speciesRow : speciesRows) {
+                if (speciesRow.getSpecies().equals(e.text())) {
+                    already_exists = true;
+                    break;
+                }
+            }
+            if (!already_exists) {
+                Bitmap sprite = getPokemonSprite(e.text());
+                String species = e.text();
+                ArrayList<Type> types = getPokemonTypes(e);
+                speciesRows.add(new SpeciesRow(sprite, species, types));
+            }
         }
-        return total;
+        return speciesRows;
     }
 
     public static Ability getPokemonAbility(String s) {
@@ -68,7 +66,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             doc = Jsoup.connect(ALL_ABILITIES_LINK).get();
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         assert doc != null;
         Elements elements = doc.getElementsByClass("ent-name");
@@ -84,22 +81,21 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static ArrayList<TYPE> getPokemonTypes(String s) {
+    public static ArrayList<Type> getPokemonTypes(String s) {
         Document doc = null;
         try {
             doc = Jsoup.connect(ALL_POKEMON_LINK).get();
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         assert doc != null;
         Elements elements = doc.getElementsByClass("ent-name");
         for (Element e : elements) {
             if (e.text().equals(s)) {
-                return (ArrayList<TYPE>) e.parent().parent().getElementsByClass("type-icon")
+                return (ArrayList<Type>) e.parent().parent().getElementsByClass("type-icon")
                         .stream()
                         .map(Element::text)
-                        .map(TYPE::getType)
+                        .map(Type::getType)
                         .collect(Collectors.toList());
             }
         }
@@ -107,11 +103,11 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static ArrayList<TYPE> getPokemonTypes(Element element) {
-        return (ArrayList<TYPE>) element.parent().parent().getElementsByClass("type-icon")
+    public static ArrayList<Type> getPokemonTypes(Element element) {
+        return (ArrayList<Type>) element.parent().parent().getElementsByClass("type-icon")
                 .stream()
                 .map(Element::text)
-                .map(TYPE::getType)
+                .map(Type::getType)
                 .collect(Collectors.toList());
     }
 
@@ -122,7 +118,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             doc = Jsoup.connect(ALL_POKEMON_LINK).get();
         } catch (IOException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         assert doc != null;
         Elements elements = doc.getElementsByClass("ent-name");
@@ -155,7 +150,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             }
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         return null;
     }
@@ -176,7 +170,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             return BitmapFactory.decodeStream(input);
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         return null;
     }
@@ -188,7 +181,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             doc = Jsoup.connect(MOVES_LINK).get();
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         assert doc != null;
         Elements elements = doc.select("a[href^=/move/]");
@@ -199,12 +191,11 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
                     doc = Jsoup.connect(MOVE_LINK.replace("?", s)).get();
                 } catch (IOException | NullPointerException e1) {
                     e1.printStackTrace();
-                    System.exit(-1);
                 }
 
                 Element element = doc.select("a[href^=/type/]").get(1);
 
-                TYPE type = TYPE.getType(element.text());
+                Type type = Type.getType(element.text());
 
                 String categoryName = element.parent().parent().parent().child(1).child(1).text().split(" ")[1].trim().toLowerCase();
                 MoveCategory moveCategory = getMoveCategory(categoryName);
@@ -244,7 +235,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             doc = Jsoup.connect(POKEMON_PAGE_LINK.replace("?", formatedPokemonName)).get();
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         assert doc != null;
         Elements elements = doc.select("a[href^=/ability/]");
@@ -266,7 +256,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             doc = Jsoup.connect(POKEMON_MOVES_LINK.replace("?", formattedPokemonName)).get();
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-            System.exit(-1);
         }
         assert doc != null;
         Elements elements = doc.select("a[href^=/move/]");
@@ -286,14 +275,13 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
                     doc = Jsoup.connect(MOVE_LINK.replace("?", s)).get();
                 } catch (IOException | NullPointerException e1) {
                     e1.printStackTrace();
-                    System.exit(-1);
                 }
 
                 String name = doc.select("h1").text().replace(" (move)", "");
 
                 Element element = doc.select("a[href^=/type/]").get(1);
 
-                TYPE type = TYPE.getType(element.text());
+                Type type = Type.getType(element.text());
 
                 String categoryName = element.parent().parent().parent().child(1).child(1).text().split(" ")[1].trim().toLowerCase();
                 MoveCategory moveCategory = getMoveCategory(categoryName);
@@ -331,7 +319,6 @@ public class Helper extends AsyncTask implements PokemonConstants, StringConstan
             categoryIcon = BitmapFactory.decodeStream(input);
         } catch (IOException e1) {
             e1.printStackTrace();
-            System.exit(-1);
         }
         return new MoveCategory(categoryName, categoryIcon);
     }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,25 +20,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
-import com.example.testapp.SelectedPokemon;
-import com.example.testapp.async_tasks.Helper;
+import com.example.testapp.Storage;
+import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.Pokemon;
-import com.example.testapp.databinding.PokemonDetailsBinding;
+import com.example.testapp.databinding.FragmentPokemonDetailsBinding;
+import com.example.testapp.layout_adapters.MoveItemAdapterForDetails;
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
-
 public class PokemonDetails extends Fragment {
     private Pokemon pokemon;
-    private PokemonDetailsBinding binding;
+    private FragmentPokemonDetailsBinding binding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = PokemonDetailsBinding.inflate(inflater, container, false);
+        binding = FragmentPokemonDetailsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -45,19 +47,23 @@ public class PokemonDetails extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        pokemon = SelectedPokemon.getPokemon();
+        if(!Storage.pokemonIsSelected()){
+            System.err.println("Call on PokemonDetails with null pokemon in storage");
+            System.exit(-1);
+        }
+        pokemon = Storage.getSelectedPokemon();
         setPageInfo();
         //adapting layouts when open clicking one
         {
-            LinearLayout ability = binding.pokemondetailsAbility;
-            LinearLayout hideAbility = binding.pokemondetailsHideability;
-            LinearLayout stats = binding.pokemondetailsStats;
-            LinearLayout hideStats = binding.pokemondetailsHidestats;
-            LinearLayout moves = binding.pokemondetailsMoves;
-            LinearLayout hideMoves = binding.pokemondetailsHidemoves;
-            LinearLayout space = binding.pokemondetailsSpace;
+            LinearLayout ability = binding.fPDAbility;
+            LinearLayout hideAbility = binding.fPDHideAbility;
+            LinearLayout stats = binding.fPDStats;
+            LinearLayout hideStats = binding.fPDHideStats;
+            ListView moves = binding.fPDMoves;
+            LinearLayout hideMoves = binding.fPDHideMoves;
+            LinearLayout space = binding.fPDSpace;
 
-            int ability_weight = 7, stats_weight = 27, moves_weight = 16;
+            int ability_weight = 5, stats_weight = 25, moves_weight = 27;
             int space_weight = 100 - ability_weight - stats_weight - moves_weight;
             ability.setVisibility(View.GONE);
             stats.setVisibility(View.GONE);
@@ -108,9 +114,9 @@ public class PokemonDetails extends Fragment {
             });
         }
         //end of adapting layouts
-        binding.pokemondetailsDelete.setOnClickListener(v -> deletePokemon());
-        binding.pokemondetailsQrcode.setOnClickListener(v -> showQRCode());
-        binding.pokemondetailsEdit.setOnClickListener(v -> editPokemon());
+        binding.fPDDelete.setOnClickListener(v -> deletePokemon());
+        binding.fPDQrCode.setOnClickListener(v -> showQRCode());
+        binding.fPDEdit.setOnClickListener(v -> editPokemon());
     }
 
     private void deletePokemon() {
@@ -135,12 +141,11 @@ public class PokemonDetails extends Fragment {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels / 2;
-        QRGEncoder qrgEncoder = new QRGEncoder(pokemon.toString(), null, QRGContents.Type.TEXT, width);
-
         try {
-            Bitmap bitmap = qrgEncoder.encodeAsBitmap();
-            ImageView iv = dialog.findViewById(R.id.d_qr_image);
-            iv.setImageBitmap(bitmap);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.encodeBitmap(pokemon.toStringOfTransmisibleData(), BarcodeFormat.QR_CODE, width, width);
+            ImageView imageViewQrCode = dialog.findViewById(R.id.d_qr_image);
+            imageViewQrCode.setImageBitmap(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -153,66 +158,66 @@ public class PokemonDetails extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     private void setPageInfo() {
-        binding.pokemondetailsName.setText(pokemon.getName());
-        binding.pokemondetailsImage.setImageBitmap(pokemon.getOfficialArt());
+        binding.fPDName.setText(pokemon.getName());
+        binding.fPDImage.setImageBitmap(pokemon.getOfficialArt());
 
         String text = pokemon.getSpecies()
                 + " " + pokemon.getGender()
                 + " Lv. " + pokemon.getLevel();
-        binding.pokemondetailsSpecies.setText(text);
-        binding.pokemondetailsNature.setText(pokemon.getNature().getName());
+        binding.fPDSpecies.setText(text);
+        binding.fPDNature.setText(pokemon.getNature().getName());
 
-        binding.pokemondetailsType1.setText(pokemon.getTypes().get(0).getName().toUpperCase());
-        binding.pokemondetailsType1.setBackgroundResource(pokemon.getTypes().get(0).getColor());
+        binding.fPDType1.setText(pokemon.getTypes().get(0).getName().toUpperCase());
+        binding.fPDType1.setBackgroundResource(pokemon.getTypes().get(0).getColor());
         if (pokemon.getTypes().size() == 1) {
-            binding.pokemondetailsType2.setVisibility(View.GONE);
+            binding.fPDType2.setVisibility(View.GONE);
         } else {
-            binding.pokemondetailsType2.setText(pokemon.getTypes().get(1).getName().toUpperCase());
-            binding.pokemondetailsType2.setBackgroundResource(pokemon.getTypes().get(1).getColor());
+            binding.fPDType2.setText(pokemon.getTypes().get(1).getName().toUpperCase());
+            binding.fPDType2.setBackgroundResource(pokemon.getTypes().get(1).getColor());
         }
 
-        binding.pokemondetailsAbilityname.setText(pokemon.getAbility().getName());
-        binding.pokemondetailsAbilitydescription.setText(pokemon.getAbility().getDescription());
+        binding.fPDAbilityName.setText(pokemon.getAbility().getName());
+        binding.fPDAbilityDescription.setText(pokemon.getAbility().getDescription());
 
         ArrayList<ArrayList<TextView>> statsViews = new ArrayList<ArrayList<TextView>>() {{
             add(
                     new ArrayList<TextView>() {{
-                        add(binding.pokemondetailsTotalhp);
-                        add(binding.pokemondetailsTotalattack);
-                        add(binding.pokemondetailsTotaldefense);
-                        add(binding.pokemondetailsTotalspecialattack);
-                        add(binding.pokemondetailsTotalspecialdefense);
-                        add(binding.pokemondetailsTotalspeed);
+                        add(binding.fPDTotalHp);
+                        add(binding.fPDTotalAttack);
+                        add(binding.fPDTotalDefense);
+                        add(binding.fPDTotalSpecialAttack);
+                        add(binding.fPDTotalSpecialDefense);
+                        add(binding.fPDTotalSpeed);
                     }}
             );
             add(
                     new ArrayList<TextView>() {{
-                        add(binding.pokemondetailsBasehp);
-                        add(binding.pokemondetailsBaseattack);
-                        add(binding.pokemondetailsBasedefense);
-                        add(binding.pokemondetailsBasespecialattack);
-                        add(binding.pokemondetailsBasespecialdefense);
-                        add(binding.pokemondetailsBasespeed);
+                        add(binding.fPDBaseHp);
+                        add(binding.fPDBaseAttack);
+                        add(binding.fPDBaseDefense);
+                        add(binding.fPDBaseSpecialAttack);
+                        add(binding.fPDBaseSpecialDefense);
+                        add(binding.fPDBaseSpeed);
                     }}
             );
             add(
                     new ArrayList<TextView>() {{
-                        add(binding.pokemondetailsIvshp);
-                        add(binding.pokemondetailsIvsattack);
-                        add(binding.pokemondetailsIvsdefense);
-                        add(binding.pokemondetailsIvsspecialattack);
-                        add(binding.pokemondetailsIvsspecialdefense);
-                        add(binding.pokemondetailsIvsspeed);
+                        add(binding.fPDIvsHp);
+                        add(binding.fPDIvsAttack);
+                        add(binding.fPDIvsDefense);
+                        add(binding.fPDIvsSpecialAttack);
+                        add(binding.fPDIvsSpecialDefense);
+                        add(binding.fPDIvsSpeed);
                     }}
             );
             add(
                     new ArrayList<TextView>() {{
-                        add(binding.pokemondetailsEvshp);
-                        add(binding.pokemondetailsEvsattack);
-                        add(binding.pokemondetailsEvsdefense);
-                        add(binding.pokemondetailsEvsspecialattack);
-                        add(binding.pokemondetailsEvsspecialdefense);
-                        add(binding.pokemondetailsEvsspeed);
+                        add(binding.fPDEvsHp);
+                        add(binding.fPDEvsAttack);
+                        add(binding.fPDEvsDefense);
+                        add(binding.fPDEvsSpecialAttack);
+                        add(binding.fPDEvsSpecialDefense);
+                        add(binding.fPDEvsSpeed);
                     }}
             );
         }};
@@ -222,7 +227,7 @@ public class PokemonDetails extends Fragment {
             statsViews.get(2).get(i).setText(String.valueOf(pokemon.getIVs().get(i)));
             statsViews.get(3).get(i).setText(String.valueOf(pokemon.getEVs().get(i)));
         }
-        ArrayList<Integer> totalStats = Helper.calculateStats(
+        ArrayList<Integer> totalStats = PokemonConstants.calculateStats(
                 pokemon.getBaseStats(),
                 pokemon.getIVs(),
                 pokemon.getEVs(),
@@ -231,6 +236,11 @@ public class PokemonDetails extends Fragment {
         for (int i = 0; i < NUMBER_OF_STATS; i++) {
             statsViews.get(0).get(i).setText(String.valueOf(totalStats.get(i)));
         }
+
+        ArrayList<Move> moves = new ArrayList<>();
+        pokemon.getMoves().forEach(move->{if(move!=null)moves.add(move);});
+        MoveItemAdapterForDetails moveItemsAdapter = new MoveItemAdapterForDetails(this.getContext(), moves);
+        binding.fPDMoves.setAdapter(moveItemsAdapter);
     }
 
     @Override

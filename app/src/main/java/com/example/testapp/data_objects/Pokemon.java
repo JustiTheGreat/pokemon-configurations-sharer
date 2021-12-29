@@ -19,14 +19,14 @@ public class Pokemon implements PokemonConstants {
     private ArrayList<Integer> IVs;
     private ArrayList<Integer> EVs;
     private ArrayList<Move> moves;
-    private ArrayList<TYPE> types;
+    private ArrayList<Type> types;
     private Bitmap officialArt;
     private Bitmap sprite;
     private ArrayList<Integer> baseStats;
 
     public Pokemon(long ID, String name, String species, String gender, int level, Ability ability, Nature nature,
                    ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves,
-                   ArrayList<TYPE> types, ArrayList<Integer> baseStats, Bitmap officialArt, Bitmap sprite) {
+                   ArrayList<Type> types, ArrayList<Integer> baseStats, Bitmap officialArt, Bitmap sprite) {
         this.ID = ID;
         this.name = name;
         this.species = species;
@@ -83,7 +83,7 @@ public class Pokemon implements PokemonConstants {
         return moves;
     }
 
-    public ArrayList<TYPE> getTypes() {
+    public ArrayList<Type> getTypes() {
         return types;
     }
 
@@ -139,7 +139,7 @@ public class Pokemon implements PokemonConstants {
         this.moves = moves;
     }
 
-    public void setTypes(ArrayList<TYPE> types) {
+    public void setTypes(ArrayList<Type> types) {
         this.types = types;
     }
 
@@ -156,30 +156,24 @@ public class Pokemon implements PokemonConstants {
     }
 
     @NonNull
-    @Override
-    public String toString() {
+    public String toStringOfTransmisibleData() {
         StringBuilder s = new StringBuilder(""
                 + name + ";"
                 + species + ";"
                 + gender + ";"
                 + level + ";"
                 + ability.getName() + ";"
-                + nature.getName() + ";"
+                + nature.getName()
         );
-        for (int iv : IVs) {
-            if (IVs.indexOf(iv) != 0) s.append(":");
-            s.append(iv);
-        }
-        s.append(";");
-        for (int ev : EVs) {
-            if (EVs.indexOf(ev) != 0) s.append(":");
-            s.append(ev);
-        }
-        s.append(";");
         for (Move move : moves) {
-            if (moves.indexOf(move) != 0) s.append(":");
-            if (move == null) s.append("");
-            else s.append(move.getName());
+            s.append(";");
+            if (move != null) s.append(move.getName());
+        }
+        for (int iv : IVs) {
+             s.append(";").append(iv);
+        }
+        for (int ev : EVs) {
+            s.append(";").append(ev);
         }
         s.append(";");
         return s.toString();
