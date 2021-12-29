@@ -17,13 +17,14 @@ public class GetBaseStats extends AsyncTask {
     @RequiresApi(api = Build.VERSION_CODES.R)
     protected Object doInBackground(Object[] objects) {
         fragment = (Fragment) objects[0];
-        baseStats = Helper.getPokemonBaseStats((String) objects[1]);
+        baseStats = TaskHelper.getPokemonBaseStats((String) objects[1]);
         return null;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onPostExecute(Object object) {
-        ((AddPokemon) fragment).setStatsRows(baseStats);
+        if (isCancelled()) return;
+        ((AddPokemon) fragment).setBaseStats(baseStats);
     }
 }

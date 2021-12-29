@@ -13,21 +13,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
 import com.example.testapp.data_objects.Move;
-import com.example.testapp.data_objects.TYPE;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MoveAdapter extends ArrayAdapter<Move> implements PokemonConstants {
-    private final Context context;
+public class MoveAdapter extends ArrayAdapter<Move> {
     private final ArrayList<Move> movesRows;
 
     public MoveAdapter(Context context, ArrayList<Move> movesRows) {
         super(context, R.layout.layout_move, movesRows);
-        this.context = context;
         this.movesRows = new ArrayList<>(movesRows);
     }
 
@@ -81,7 +77,7 @@ public class MoveAdapter extends ArrayAdapter<Move> implements PokemonConstants 
         Move move = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.layout_move, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_move, parent, false);
         }
 
         TextView name = convertView.findViewById(R.id.l_move_name);
@@ -95,13 +91,13 @@ public class MoveAdapter extends ArrayAdapter<Move> implements PokemonConstants 
         category.setImageBitmap(move.getCategory().getIcon());
 
         TextView power = convertView.findViewById(R.id.l_move_power);
-        power.setText(""+move.getPower());
+        power.setText(String.valueOf(move.getPower()));
 
         TextView accuracy = convertView.findViewById(R.id.l_move_accuracy);
-        accuracy.setText(""+move.getAccuracy());
+        accuracy.setText(String.valueOf(move.getAccuracy()));
 
         TextView PP = convertView.findViewById(R.id.l_move_pp);
-        PP.setText(""+move.getPP());
+        PP.setText(String.valueOf(move.getPP()));
 
         return convertView;
     }

@@ -74,6 +74,7 @@ public class PokemonConfigurationAdapter extends BaseAdapter {
         } else {
             convertView.findViewById(R.id.type2).setVisibility(View.GONE);
         }
+
         types.forEach(t -> {
             t.setText(gridViewCell.getTypes().get(types.indexOf(t)).getName().toUpperCase());
             t.setBackgroundResource(gridViewCell.getTypes().get(types.indexOf(t)).getColor());

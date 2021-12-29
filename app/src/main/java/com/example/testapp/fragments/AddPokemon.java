@@ -2,21 +2,23 @@ package com.example.testapp.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,21 +30,22 @@ import androidx.fragment.app.Fragment;
 
 import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
-import com.example.testapp.SelectedPokemon;
+import com.example.testapp.Storage;
 import com.example.testapp.async_tasks.GetAbilities;
-import com.example.testapp.async_tasks.GetPokemonMoves;
 import com.example.testapp.async_tasks.GetAllSpecies;
 import com.example.testapp.async_tasks.GetBaseStats;
-import com.example.testapp.async_tasks.Helper;
+import com.example.testapp.async_tasks.GetPokemonMoves;
 import com.example.testapp.async_tasks.InsertTask;
+import com.example.testapp.async_tasks.UpdateTask;
 import com.example.testapp.data_objects.Ability;
 import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.Nature;
 import com.example.testapp.data_objects.Pokemon;
 import com.example.testapp.data_objects.SpeciesRow;
-import com.example.testapp.databinding.AddPokemonBinding;
+import com.example.testapp.databinding.FragmentAddPokemonBinding;
 import com.example.testapp.layout_adapters.AbilityAdapter;
 import com.example.testapp.layout_adapters.MoveAdapter;
+import com.example.testapp.layout_adapters.MoveItemAdapterForAddEdit;
 import com.example.testapp.layout_adapters.SpeciesAdapter;
 
 import java.util.ArrayList;
@@ -51,14 +54,18 @@ import java.util.stream.Collectors;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class AddPokemon extends Fragment implements PokemonConstants {
-    private AddPokemonBinding binding;
-    private final int species_header_height = 6, species_weight = 8, ability_header_weight = 6, ability_weight = 5,
-            stats_header_weight = 6, stats_weight = 20, moves_header_weight = 3, move_weight = 10, finalize_weight = 6;
-    private final int space_weight = 100 - species_weight - ability_weight - stats_weight - moves_header_weight - 3 * move_weight;
+    private GetAllSpecies getAllSpeciesTask;
+    private GetAbilities getAbilitiesTask;
+    private GetBaseStats getBaseStatsTask;
+    private GetPokemonMoves getPokemonMovesTask;
+    private FragmentAddPokemonBinding binding;
+    private MoveItemAdapterForAddEdit adapter;
+    private final int species_weight = 10, ability_weight = 6, stats_weight = 16, move_weight = 11;
+    private final int space_weight = 100 - species_weight - ability_weight - stats_weight - 3 * move_weight;
     private int current_space_weight = space_weight;
-    private ArrayList<SpeciesRow> speciesRows;
-    private ArrayList<Ability> abilitiesRows;
-    private ArrayList<Move> movesRows;
+    private ArrayList<SpeciesRow> allSpeciesData;
+    private ArrayList<Ability> allAbilitiesData;
+    private ArrayList<Move> allMovesData;
     private Pokemon pokemon = new Pokemon(
             -1,
             null,
@@ -66,7 +73,7 @@ public class AddPokemon extends Fragment implements PokemonConstants {
             MALE,
             1,
             null,
-            NATURE_BASHFUL,
+            NATURE_SERIOUS,
             new ArrayList<Integer>() {{
                 add(0);
                 add(0);
@@ -98,59 +105,10 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     private final ArrayList<EditText> ivsET = new ArrayList<>();
     private final ArrayList<EditText> evsET = new ArrayList<>();
     private final ArrayList<TextView> totalTV = new ArrayList<>();
-    private final ArrayList<LinearLayout> movesLL = new ArrayList<>();
-    private final ArrayList<TextView> movesNamesTV = new ArrayList<>();
-    private final ArrayList<TextView> movesTypesTV = new ArrayList<>();
-    private final ArrayList<ImageView> movesCategoriesIV = new ArrayList<>();
-    private final ArrayList<TextView> movesPowersTV = new ArrayList<>();
-    private final ArrayList<TextView> movesAccuraciesTV = new ArrayList<>();
-    private final ArrayList<TextView> movesPPsTV = new ArrayList<>();
-    private final ArrayList<TextView> movesDescriptionsTV = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = AddPokemonBinding.inflate(inflater, container, false);
-        {
-            movesLL.add(binding.addpokemonMoves1);
-            movesLL.add(binding.addpokemonMoves2);
-            movesLL.add(binding.addpokemonMoves3);
-            movesLL.add(binding.addpokemonMoves4);
-
-            movesNamesTV.add(binding.addpokemonMoves1Name);
-            movesNamesTV.add(binding.addpokemonMoves2Name);
-            movesNamesTV.add(binding.addpokemonMoves3Name);
-            movesNamesTV.add(binding.addpokemonMoves4Name);
-
-            movesTypesTV.add(binding.addpokemonMoves1Type);
-            movesTypesTV.add(binding.addpokemonMoves2Type);
-            movesTypesTV.add(binding.addpokemonMoves3Type);
-            movesTypesTV.add(binding.addpokemonMoves4Type);
-
-            movesCategoriesIV.add(binding.addpokemonMoves1Category);
-            movesCategoriesIV.add(binding.addpokemonMoves2Category);
-            movesCategoriesIV.add(binding.addpokemonMoves3Category);
-            movesCategoriesIV.add(binding.addpokemonMoves4Category);
-
-            movesPowersTV.add(binding.addpokemonMoves1Power);
-            movesPowersTV.add(binding.addpokemonMoves2Power);
-            movesPowersTV.add(binding.addpokemonMoves3Power);
-            movesPowersTV.add(binding.addpokemonMoves4Power);
-
-            movesAccuraciesTV.add(binding.addpokemonMoves1Accuracy);
-            movesAccuraciesTV.add(binding.addpokemonMoves2Accuracy);
-            movesAccuraciesTV.add(binding.addpokemonMoves3Accuracy);
-            movesAccuraciesTV.add(binding.addpokemonMoves4Accuracy);
-
-            movesPPsTV.add(binding.addpokemonMoves1Pp);
-            movesPPsTV.add(binding.addpokemonMoves2Pp);
-            movesPPsTV.add(binding.addpokemonMoves3Pp);
-            movesPPsTV.add(binding.addpokemonMoves4Pp);
-
-            movesDescriptionsTV.add(binding.addpokemonMoves1Description);
-            movesDescriptionsTV.add(binding.addpokemonMoves2Description);
-            movesDescriptionsTV.add(binding.addpokemonMoves3Description);
-            movesDescriptionsTV.add(binding.addpokemonMoves4Description);
-        }
+        binding = FragmentAddPokemonBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -158,82 +116,64 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (pokemon.getID() != -1) {
-            pokemon = SelectedPokemon.getPokemon();
+        if (Storage.pokemonIsSelected()) {
+            pokemon = Storage.getSelectedPokemon();
+            adapter = new MoveItemAdapterForAddEdit(getContext(), pokemon.getMoves());
+            binding.fAPMoves.setAdapter(adapter);
             initializePageWithData();
-            binding.addpokemonSpeciesbutton.setText(R.string.empty);
-            int space_weight = 100 - species_weight - ability_weight - stats_weight - moves_header_weight - 3 * move_weight;
-            current_space_weight = space_weight + species_weight + ability_weight + stats_weight + moves_header_weight + 4 * move_weight;
-            if (pokemon.getMoves().get(3) == null) {
-                current_space_weight -= move_weight;
-                movesLL.get(3).setVisibility(View.GONE);
-                if (pokemon.getMoves().get(2) == null) {
-                    current_space_weight -= move_weight;
-                    movesLL.get(2).setVisibility(View.GONE);
-                    if (pokemon.getMoves().get(1) == null) {
-                        current_space_weight -= move_weight;
-                        movesLL.get(1).setVisibility(View.GONE);
-                    }
-                }
-            }
+            binding.fAPSpeciesButton.setText(R.string.empty);
         } else {
-            binding.addpokemonChosenspecies.setVisibility(View.GONE);
-            binding.addpokemonChosenability.setVisibility(View.GONE);
-            binding.addpokemonChosenstats.setVisibility(View.GONE);
-            binding.addpokemonMovesHeader.setVisibility(View.GONE);
-            movesLL.get(0).setVisibility(View.GONE);
-            movesLL.get(1).setVisibility(View.GONE);
-            movesLL.get(2).setVisibility(View.GONE);
-            movesLL.get(3).setVisibility(View.GONE);
-            binding.addpokemonAddmove.setVisibility(View.VISIBLE);
+            getAllSpeciesTask = new GetAllSpecies();
+            getAllSpeciesTask.execute(this);
+            adapter = new MoveItemAdapterForAddEdit(getContext(), pokemon.getMoves());
+            binding.fAPMoves.setAdapter(adapter);
+            binding.fAPChosenSpecies.setVisibility(View.GONE);
+            binding.fAPChosenAbility.setVisibility(View.GONE);
+            binding.fAPChosenStats.setVisibility(View.GONE);
+            binding.fAPMoves.setVisibility(View.GONE);
+            binding.fAPAddMove.setVisibility(View.VISIBLE);
 
-            binding.addpokemonFinalize.setEnabled(false);
-            new GetAllSpecies().execute(this);
-            binding.addpokemonSpeciesbutton.setOnClickListener(v -> speciesDialog());
-            binding.addpokemonGender.setOnClickListener((v) -> {
-                if (binding.addpokemonGender.getText().equals(MALE)) {
-                    pokemon.setGender(FEMALE);
-                    binding.addpokemonGender.setText(pokemon.getGender());
-                } else {
-                    pokemon.setGender(MALE);
-                    binding.addpokemonGender.setText(pokemon.getGender());
-                }
-            });
+            binding.fAPFinalize.setEnabled(false);
+
+            binding.fAPSpeciesButton.setOnClickListener(v -> speciesDialog());
         }
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.addpokemonSpace.getLayoutParams();
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fAPSpace.getLayoutParams();
         params.weight = current_space_weight;
-        binding.addpokemonSpace.setLayoutParams(params);
+        binding.fAPSpace.setLayoutParams(params);
 
-        binding.addpokemonSpeciesbutton.setEnabled(false);
-        binding.addpokemonAbilitiesbutton.setEnabled(false);
-        binding.addpokemonStatsbutton.setEnabled(false);
-        binding.addpokemonAddmove.setEnabled(false);
+        binding.fAPSpeciesButton.setEnabled(false);
+        binding.fAPAbilitiesButton.setEnabled(false);
+        binding.fAPStatsButton.setEnabled(false);
+        binding.fAPAddMove.setEnabled(false);
 
-        binding.addpokemonAbilitiesbutton.setOnClickListener(v -> abilitiesDialog());
-        binding.addpokemonStatsbutton.setOnClickListener(v -> statsDialog());
-        binding.addpokemonAddmove.setOnClickListener(v -> movesDialog());
-        binding.addpokemonFinalize.setOnClickListener(v -> nameDialog());
+        binding.fAPGender.setOnClickListener(v -> changeGender());
+        binding.fAPAbilitiesButton.setOnClickListener(v -> abilitiesDialog());
+        binding.fAPStatsButton.setOnClickListener(v -> statsDialog());
+        binding.fAPAddMove.setOnClickListener(v -> movesDialog());
+        binding.fAPFinalize.setOnClickListener(v -> nameDialog());
     }
 
-    private void initializePageWithData(){
-        new GetAbilities().execute(this, pokemon.getSpecies());
-        new GetBaseStats().execute(this, pokemon.getSpecies());
-        new GetPokemonMoves().execute(this, pokemon.getSpecies());
+    private void initializePageWithData() {
+        getAbilitiesTask = new GetAbilities();
+        getAbilitiesTask.execute(this, pokemon.getSpecies());
+        getBaseStatsTask = new GetBaseStats();
+        getBaseStatsTask.execute(this, pokemon.getSpecies());
+        getPokemonMovesTask = new GetPokemonMoves();
+        getPokemonMovesTask.execute(this, pokemon.getSpecies());
 
         //load species
         {
-            binding.addpokemonIcon.setImageBitmap(pokemon.getSprite());
-            binding.addpokemonSpecies.setText(pokemon.getSpecies());
-            binding.addpokemonGender.setText(pokemon.getGender());
+            binding.fAPSprite.setImageBitmap(pokemon.getSprite());
+            binding.fAPSpecies.setText(pokemon.getSpecies());
+            binding.fAPGender.setText(pokemon.getGender());
             typesTV = new ArrayList<TextView>() {{
-                add(binding.addpokemonType1);
+                add(binding.fAPType1);
             }};
-            TextView type2 = binding.addpokemonType2;
             if (pokemon.getTypes().size() == 2) {
-                type2.setVisibility(View.VISIBLE);
-                typesTV.add(type2);
+                binding.fAPType2.setVisibility(View.VISIBLE);
+                typesTV.add(binding.fAPType2);
             } else {
-                type2.setVisibility(View.GONE);
+                binding.fAPType2.setVisibility(View.GONE);
             }
             typesTV.forEach(t -> {
                 t.setText(pokemon.getTypes().get(typesTV.indexOf(t)).getName().toUpperCase());
@@ -242,74 +182,61 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         }
         //load ability
         {
-            binding.addpokemonAbilityname.setText(pokemon.getAbility().getName());
-            binding.addpokemonAbilitydescription.setText(pokemon.getAbility().getDescription());
-            binding.addpokemonAbilitiesbutton.setText(R.string.change_ability);
+            binding.fAPAbilityName.setText(pokemon.getAbility().getName());
+            binding.fAPAbilityDescription.setText(pokemon.getAbility().getDescription());
+            binding.fAPAbilitiesButton.setText(R.string.change_ability);
         }
         //load stats related
         {
-            binding.addpokemonLevel.setText(String.valueOf(pokemon.getLevel()));
-            binding.addpokemonNature.setText(pokemon.getNature().getName());
-            ArrayList<Integer> totalStats = Helper.calculateStats(
+            binding.fAPLevel.setText(String.valueOf(pokemon.getLevel()));
+            binding.fAPNature.setText(pokemon.getNature().getName());
+            ArrayList<Integer> totalStats = PokemonConstants.calculateStats(
                     pokemon.getBaseStats(),
                     pokemon.getIVs(),
                     pokemon.getEVs(),
                     pokemon.getLevel(),
                     pokemon.getNature()
             );
-            binding.addpokemonHp.setText(String.valueOf(totalStats.get(0)));
-            binding.addpokemonAttack.setText(String.valueOf(totalStats.get(1)));
-            binding.addpokemonDefense.setText(String.valueOf(totalStats.get(2)));
-            binding.addpokemonSpecialattack.setText(String.valueOf(totalStats.get(3)));
-            binding.addpokemonSpecialdefense.setText(String.valueOf(totalStats.get(4)));
-            binding.addpokemonSpeed.setText(String.valueOf(totalStats.get(5)));
-            binding.addpokemonStatsbutton.setText(R.string.change_stats_related);
+            binding.fAPHp.setText(String.valueOf(totalStats.get(0)));
+            binding.fAPAttack.setText(String.valueOf(totalStats.get(1)));
+            binding.fAPDefense.setText(String.valueOf(totalStats.get(2)));
+            binding.fAPSpecialAttack.setText(String.valueOf(totalStats.get(3)));
+            binding.fAPSpecialDefense.setText(String.valueOf(totalStats.get(4)));
+            binding.fAPSpeed.setText(String.valueOf(totalStats.get(5)));
+            binding.fAPStatsButton.setText(R.string.change_stats_related);
         }
         //load moves
+        adapter.notifyDataSetChanged();
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fAPMoves.getLayoutParams();
+        params.weight = 100 - pokemon.getMoves().size() * move_weight;
+        binding.fAPMoves.setLayoutParams(params);
+
+        binding.fAPAddMove.setVisibility(View.VISIBLE);
+
+        if (pokemon.getMoves().size() == 4) {
+            binding.fAPAddMove.setVisibility(View.GONE);
+        }
+
+        params = (LinearLayout.LayoutParams) binding.fAPSpace.getLayoutParams();
+        current_space_weight = 100 - (4 - pokemon.getMoves().size()) * move_weight;
+        params.weight = current_space_weight;
+        binding.fAPSpace.setLayoutParams(params);
     }
 
-    private void seeIfFinalizingIsPossible() {
-        if (binding.addpokemonChosenability.getVisibility() == View.VISIBLE
-                && binding.addpokemonChosenstats.getVisibility() == View.VISIBLE
-                && binding.addpokemonMoves1.getVisibility() == View.VISIBLE) {
-            binding.addpokemonFinalize.setEnabled(true);
+    private void changeGender() {
+        if (binding.fAPGender.getText().equals(MALE)) {
+            pokemon.setGender(FEMALE);
+            binding.fAPGender.setText(pokemon.getGender());
+        } else {
+            pokemon.setGender(MALE);
+            binding.fAPGender.setText(pokemon.getGender());
         }
     }
 
-    private void nameDialog() {
-        Dialog dialog = new Dialog(this.getActivity());
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setContentView(R.layout.dialog_addname);
-        dialog.show();
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels * 80 / 100;
-        dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-
-        dialog.findViewById(R.id.d_addname_button).setOnClickListener(v -> {
-            EditText name = dialog.findViewById(R.id.d_addname_name);
-            if (name.getText().toString().trim().equals("")) {
-                Toast.makeText(dialog.getContext(), "Empty name!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            pokemon.setName(name.getText().toString().trim());
-            int n = 4-pokemon.getMoves().size();
-            for(int i=0;i<n;i++)
-                pokemon.getMoves().add(null);
-            if(pokemon.getID()!=-1){
-                //new UpdateTask().execute(this,pokemon);
-            }
-            else {
-                new InsertTask().execute(this, pokemon);
-            }
-            dialog.dismiss();
-        });
-    }
-
-    public void setSpeciesRows(ArrayList<SpeciesRow> speciesRows) {
-        this.speciesRows = speciesRows;
-        binding.addpokemonSpeciesbutton.setEnabled(true);
+    public void setAllSpeciesData(ArrayList<SpeciesRow> allSpeciesData) {
+        this.allSpeciesData = allSpeciesData;
+        binding.fAPSpeciesButton.setEnabled(true);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -317,6 +244,10 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         Dialog dialog = new Dialog(this.getActivity());
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_search);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.gravity = Gravity.TOP;
+        window.setAttributes(layoutParams);
         dialog.show();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -325,7 +256,7 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         speciesTV = dialog.findViewById(R.id.d_search_search);
-        speciesTV.setAdapter(new SpeciesAdapter(this.getContext(), speciesRows));
+        speciesTV.setAdapter(new SpeciesAdapter(this.getContext(), allSpeciesData));
         speciesTV.setThreshold(1);
         if (pokemon.getSpecies() != null) {
             speciesTV.setText(pokemon.getSpecies());
@@ -339,64 +270,77 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         dialog.findViewById(R.id.d_search_button).setOnClickListener(v -> setSpeciesInfo(dialog, speciesRow.get()));
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void setSpeciesInfo(Dialog dialog, SpeciesRow speciesRow) {
         if (speciesRow != null) {
+            binding.fAPAbilitiesButton.setEnabled(false);
+            binding.fAPStatsButton.setEnabled(false);
+            binding.fAPMoves.setEnabled(false);
+            binding.fAPFinalize.setEnabled(false);
+
+            if (getAllSpeciesTask.getStatus() != AsyncTask.Status.FINISHED)
+                getAllSpeciesTask.cancel(true);
+            if (getAbilitiesTask.getStatus() != AsyncTask.Status.FINISHED)
+                getAbilitiesTask.cancel(true);
+            if (getBaseStatsTask.getStatus() != AsyncTask.Status.FINISHED)
+                getBaseStatsTask.cancel(true);
+            if (getPokemonMovesTask.getStatus() != AsyncTask.Status.FINISHED)
+                getPokemonMovesTask.cancel(true);
+
+            getAbilitiesTask = new GetAbilities();
+            getAbilitiesTask.execute(this, pokemon.getSpecies());
+            getBaseStatsTask = new GetBaseStats();
+            getBaseStatsTask.execute(this, pokemon.getSpecies());
+            getPokemonMovesTask = new GetPokemonMoves();
+            getPokemonMovesTask.execute(this, pokemon.getSpecies());
+
             pokemon.setSprite(speciesRow.getSprite());
             pokemon.setSpecies(speciesRow.getSpecies());
             pokemon.setTypes(speciesRow.getTypes());
-            binding.addpokemonAbilitiesbutton.setEnabled(false);
-            binding.addpokemonStatsbutton.setEnabled(false);
-            binding.addpokemonAddmove.setEnabled(false);
-            new GetAbilities().execute(this, pokemon.getSpecies());
-            new GetBaseStats().execute(this, pokemon.getSpecies());
-            new GetPokemonMoves().execute(this, pokemon.getSpecies());
-            binding.addpokemonIcon.setImageBitmap(pokemon.getSprite());
-            binding.addpokemonSpecies.setText(pokemon.getSpecies());
-            binding.addpokemonGender.setText(pokemon.getGender());
-
+            pokemon.getMoves().clear();
+            adapter.notifyDataSetChanged();
+            binding.fAPSprite.setImageBitmap(pokemon.getSprite());
+            binding.fAPSpecies.setText(pokemon.getSpecies());
+            binding.fAPGender.setText(pokemon.getGender());
             typesTV = new ArrayList<TextView>() {{
-                add(binding.addpokemonType1);
+                add(binding.fAPType1);
             }};
-            TextView type2 = binding.addpokemonType2;
             if (pokemon.getTypes().size() == 2) {
-                type2.setVisibility(View.VISIBLE);
-                typesTV.add(type2);
+                binding.fAPType2.setVisibility(View.VISIBLE);
+                typesTV.add(binding.fAPType2);
             } else {
-                type2.setVisibility(View.GONE);
+                binding.fAPType2.setVisibility(View.GONE);
             }
             typesTV.forEach(t -> {
                 t.setText(pokemon.getTypes().get(typesTV.indexOf(t)).getName().toUpperCase());
                 t.setBackgroundResource(pokemon.getTypes().get(typesTV.indexOf(t)).getColor());
             });
 
-            binding.addpokemonChosenspecies.setVisibility(View.VISIBLE);
-            binding.addpokemonChosenability.setVisibility(View.GONE);
-            binding.addpokemonChosenstats.setVisibility(View.GONE);
-            binding.addpokemonMovesHeader.setVisibility(View.GONE);
-            binding.addpokemonMoves1.setVisibility(View.GONE);
-            binding.addpokemonMoves2.setVisibility(View.GONE);
-            binding.addpokemonMoves3.setVisibility(View.GONE);
-            binding.addpokemonMoves4.setVisibility(View.GONE);
-            binding.addpokemonAddmove.setVisibility(View.VISIBLE);
+            binding.fAPChosenSpecies.setVisibility(View.VISIBLE);
+            binding.fAPChosenAbility.setVisibility(View.GONE);
+            binding.fAPChosenStats.setVisibility(View.GONE);
 
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.addpokemonSpace.getLayoutParams();
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fAPMoves.getLayoutParams();
+            params.weight = 0;
+            binding.fAPMoves.setLayoutParams(params);
+            binding.fAPMoves.setVisibility(View.GONE);
+            binding.fAPAddMove.setVisibility(View.VISIBLE);
+
+            params = (LinearLayout.LayoutParams) binding.fAPSpace.getLayoutParams();
             current_space_weight = space_weight + species_weight;
             params.weight = current_space_weight;
-            binding.addpokemonSpace.setLayoutParams(params);
+            binding.fAPSpace.setLayoutParams(params);
 
-            binding.addpokemonSpeciesbutton.setText(R.string.change_species);
-            binding.addpokemonAbilitiesbutton.setText(R.string.choose_ability);
-            binding.addpokemonStatsbutton.setText(R.string.choose_stats_related);
-            pokemon.setMoves(new ArrayList<>());
-
-            binding.addpokemonFinalize.setEnabled(false);
+            binding.fAPSpeciesButton.setText(R.string.change_species);
+            binding.fAPAbilitiesButton.setText(R.string.choose_ability);
+            binding.fAPStatsButton.setText(R.string.choose_stats_related);
         }
         dialog.dismiss();
     }
 
-    public void setAbilitiesRows(ArrayList<Ability> abilitiesRows) {
-        this.abilitiesRows = abilitiesRows;
-        binding.addpokemonAbilitiesbutton.setEnabled(true);
+    public void setAbilities(ArrayList<Ability> allAbilitiesData) {
+        this.allAbilitiesData = allAbilitiesData;
+        binding.fAPAbilitiesButton.setEnabled(true);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -404,6 +348,10 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         Dialog dialog = new Dialog(this.getActivity());
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_search);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.gravity = Gravity.TOP;
+        window.setAttributes(layoutParams);
         dialog.show();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -412,11 +360,9 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         AutoCompleteTextView abilities = dialog.findViewById(R.id.d_search_search);
-        abilities.setAdapter(new AbilityAdapter(this.getContext(), abilitiesRows));
+        abilities.setAdapter(new AbilityAdapter(this.getContext(), allAbilitiesData));
         abilities.setThreshold(1);
-        if (pokemon.getAbility() != null) {
-            abilities.setText(pokemon.getAbility().getName());
-        }
+        if (pokemon.getAbility() != null) abilities.setText(pokemon.getAbility().getName());
         abilities.setOnTouchListener((View v, MotionEvent event) -> {
             abilities.showDropDown();
             return false;
@@ -430,26 +376,25 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     private void setAbilityInfo(Dialog dialog, Ability ability) {
         if (ability != null) {
             pokemon.setAbility(ability);
-            binding.addpokemonAbilityname.setText(pokemon.getAbility().getName());
-            binding.addpokemonAbilitydescription.setText(pokemon.getAbility().getDescription());
-            binding.addpokemonAbilitiesbutton.setText(R.string.change_ability);
-            if (binding.addpokemonChosenability.getVisibility() == View.GONE) {
-                binding.addpokemonChosenability.setVisibility(View.VISIBLE);
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.addpokemonSpace.getLayoutParams();
+            binding.fAPAbilityName.setText(pokemon.getAbility().getName());
+            binding.fAPAbilityDescription.setText(pokemon.getAbility().getDescription());
+            binding.fAPAbilitiesButton.setText(R.string.change_ability);
+            if (binding.fAPChosenAbility.getVisibility() == View.GONE) {
+                binding.fAPChosenAbility.setVisibility(View.VISIBLE);
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fAPSpace.getLayoutParams();
                 current_space_weight = current_space_weight + ability_weight;
                 params.weight = current_space_weight;
-                binding.addpokemonSpace.setLayoutParams(params);
+                binding.fAPSpace.setLayoutParams(params);
             }
             seeIfFinalizingIsPossible();
         }
         dialog.dismiss();
     }
 
-    public void setStatsRows(ArrayList<Integer> baseStats) {
+    public void setBaseStats(ArrayList<Integer> baseStats) {
         pokemon.setBaseStats(baseStats);
-        binding.addpokemonStatsbutton.setEnabled(true);
+        binding.fAPStatsButton.setEnabled(true);
     }
-
 
     private void statsDialog() {
         Dialog dialog = new Dialog(this.getActivity());
@@ -526,25 +471,26 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     private void setStatsInfo(Dialog dialog) {
         setTotalStatsTVs();
         pokemon.setLevel(Integer.parseInt(levelET.getText().toString()));
-        binding.addpokemonLevel.setText(String.valueOf(pokemon.getLevel()));
         pokemon.setNature(Nature.getNature(natureSpinner.getSelectedItem().toString()));
-        binding.addpokemonNature.setText(pokemon.getNature().getName());
         pokemon.getIVs().forEach(iv -> pokemon.getIVs().set(pokemon.getIVs().indexOf(iv), Integer.parseInt(ivsET.get(pokemon.getIVs().indexOf(iv)).getText().toString())));
         pokemon.getEVs().forEach(ev -> pokemon.getEVs().set(pokemon.getEVs().indexOf(ev), Integer.parseInt(evsET.get(pokemon.getEVs().indexOf(ev)).getText().toString())));
-        binding.addpokemonHp.setText(totalTV.get(0).getText());
-        binding.addpokemonAttack.setText(totalTV.get(1).getText());
-        binding.addpokemonDefense.setText(totalTV.get(2).getText());
-        binding.addpokemonSpecialattack.setText(totalTV.get(3).getText());
-        binding.addpokemonSpecialdefense.setText(totalTV.get(4).getText());
-        binding.addpokemonSpeed.setText(totalTV.get(5).getText());
-        binding.addpokemonStatsbutton.setText(R.string.change_stats_related);
 
-        if (binding.addpokemonChosenstats.getVisibility() == View.GONE) {
-            binding.addpokemonChosenstats.setVisibility(View.VISIBLE);
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.addpokemonSpace.getLayoutParams();
+        binding.fAPLevel.setText(String.valueOf(pokemon.getLevel()));
+        binding.fAPNature.setText(pokemon.getNature().getName());
+        binding.fAPHp.setText(totalTV.get(0).getText());
+        binding.fAPAttack.setText(totalTV.get(1).getText());
+        binding.fAPDefense.setText(totalTV.get(2).getText());
+        binding.fAPSpecialAttack.setText(totalTV.get(3).getText());
+        binding.fAPSpecialDefense.setText(totalTV.get(4).getText());
+        binding.fAPSpeed.setText(totalTV.get(5).getText());
+        binding.fAPStatsButton.setText(R.string.change_stats_related);
+
+        if (binding.fAPChosenStats.getVisibility() == View.GONE) {
+            binding.fAPChosenStats.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fAPSpace.getLayoutParams();
             current_space_weight = current_space_weight + stats_weight;
             params.weight = current_space_weight;
-            binding.addpokemonSpace.setLayoutParams(params);
+            binding.fAPSpace.setLayoutParams(params);
         }
         seeIfFinalizingIsPossible();
         dialog.dismiss();
@@ -593,13 +539,13 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         ArrayList<Integer> ivs = (ArrayList<Integer>) ivsET.stream().map(ivET -> Integer.parseInt(ivET.getText().toString())).collect(Collectors.toList());
         ArrayList<Integer> evs = (ArrayList<Integer>) evsET.stream().map(evET -> Integer.parseInt(evET.getText().toString())).collect(Collectors.toList());
         assert nature != null;
-        ArrayList<Integer> totalStats = Helper.calculateStats(pokemon.getBaseStats(), ivs, evs, level, nature);
+        ArrayList<Integer> totalStats = PokemonConstants.calculateStats(pokemon.getBaseStats(), ivs, evs, level, nature);
         totalTV.forEach(totTV -> totTV.setText(String.valueOf(totalStats.get(totalTV.indexOf(totTV)))));
     }
 
-    public void setMoves(ArrayList<Move> movesRows) {
-        this.movesRows = movesRows;
-        binding.addpokemonAddmove.setEnabled(true);
+    public void setMoves(ArrayList<Move> allMovesData) {
+        this.allMovesData = allMovesData;
+        binding.fAPAddMove.setEnabled(true);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -607,6 +553,10 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         Dialog dialog = new Dialog(this.getActivity());
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_search);
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
+        layoutParams.gravity = Gravity.TOP;
+        window.setAttributes(layoutParams);
         dialog.show();
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -615,7 +565,7 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         AutoCompleteTextView movesTV = dialog.findViewById(R.id.d_search_search);
-        movesTV.setAdapter(new MoveAdapter(this.getContext(), movesRows));
+        movesTV.setAdapter(new MoveAdapter(this.getContext(), allMovesData));
         movesTV.setThreshold(1);
         movesTV.setOnTouchListener((View v, MotionEvent event) -> {
             movesTV.showDropDown();
@@ -638,39 +588,76 @@ public class AddPokemon extends Fragment implements PokemonConstants {
                 }
             }
             if (!moveAlreadyExists) {
-                int index = pokemon.getMoves().size();
                 pokemon.getMoves().add(move);
-                movesNamesTV.get(index).setText(move.getName());
-                movesTypesTV.get(index).setText(move.getType().getName().toUpperCase());
-                movesTypesTV.get(index).setBackgroundResource(move.getType().getColor());
-                movesCategoriesIV.get(index).setImageBitmap(move.getCategory().getIcon());
-                movesPowersTV.get(index).setText(String.valueOf(move.getPower()));
-                movesAccuraciesTV.get(index).setText(String.valueOf(move.getAccuracy()));
-                movesPPsTV.get(index).setText(String.valueOf(move.getPP()));
-                movesDescriptionsTV.get(index).setText(move.getDescription());
-                if (index == 3) {
-                    binding.addpokemonAddmove.setVisibility(View.GONE);
+                adapter.notifyDataSetChanged();
+
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fAPMoves.getLayoutParams();
+                params.weight = 100 - pokemon.getMoves().size() * move_weight;
+                binding.fAPMoves.setLayoutParams(params);
+
+                binding.fAPMoves.setVisibility(View.VISIBLE);
+
+                if (pokemon.getMoves().size() == 4) {
+                    binding.fAPAddMove.setVisibility(View.GONE);
                 }
-                if (movesLL.get(index).getVisibility() == View.GONE) {
-                    if (index == 0) {
-                        binding.addpokemonMovesHeader.setVisibility(View.VISIBLE);
-                        current_space_weight += 3;
-                    }
-                    movesLL.get(index).setVisibility(View.VISIBLE);
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.addpokemonSpace.getLayoutParams();
-                    current_space_weight += move_weight;
-                    params.weight = current_space_weight;
-                    binding.addpokemonSpace.setLayoutParams(params);
-                }
+
+                params = (LinearLayout.LayoutParams) binding.fAPSpace.getLayoutParams();
+                current_space_weight += move_weight;
+                params.weight = current_space_weight;
+                binding.fAPSpace.setLayoutParams(params);
             }
         }
         seeIfFinalizingIsPossible();
         dialog.dismiss();
     }
 
+    private void seeIfFinalizingIsPossible() {
+        if (binding.fAPChosenAbility.getVisibility() == View.VISIBLE
+                && binding.fAPChosenStats.getVisibility() == View.VISIBLE
+                && pokemon.getMoves().size() > 0) {
+            binding.fAPFinalize.setEnabled(true);
+        }
+    }
+
+    private void nameDialog() {
+        Dialog dialog = new Dialog(this.getActivity());
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setContentView(R.layout.dialog_addname);
+        dialog.show();
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels * 80 / 100;
+        dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        dialog.findViewById(R.id.d_addname_button).setOnClickListener(v -> {
+            EditText name = dialog.findViewById(R.id.d_addname_name);
+            if (name.getText().toString().trim().equals("")) {
+                Toast.makeText(dialog.getContext(), "Empty name!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            pokemon.setName(name.getText().toString().trim());
+            ArrayList<Move> arrayCopy = new ArrayList<>(pokemon.getMoves());
+            pokemon.setMoves(arrayCopy);
+            int n = 4 - pokemon.getMoves().size();
+            for (int i = 0; i < n; i++) pokemon.getMoves().add(null);
+            if (pokemon.getID() == -1) new InsertTask().execute(this, pokemon);
+            else new UpdateTask().execute(this, pokemon);
+            dialog.dismiss();
+        });
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        if (getAllSpeciesTask != null && getAllSpeciesTask.getStatus() != AsyncTask.Status.FINISHED)
+            getAllSpeciesTask.cancel(true);
+        if (getAbilitiesTask.getStatus() != AsyncTask.Status.FINISHED)
+            getAbilitiesTask.cancel(true);
+        if (getBaseStatsTask.getStatus() != AsyncTask.Status.FINISHED)
+            getBaseStatsTask.cancel(true);
+        if (getPokemonMovesTask.getStatus() != AsyncTask.Status.FINISHED)
+            getPokemonMovesTask.cancel(true);
     }
 }

@@ -20,12 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpeciesAdapter extends ArrayAdapter<SpeciesRow> {
-    private final Context context;
     private final ArrayList<SpeciesRow> speciesRows;
 
     public SpeciesAdapter(Context context, ArrayList<SpeciesRow> speciesRows) {
         super(context, R.layout.layout_species, speciesRows);
-        this.context = context;
         this.speciesRows = new ArrayList<>(speciesRows);
     }
 
@@ -79,7 +77,7 @@ public class SpeciesAdapter extends ArrayAdapter<SpeciesRow> {
         SpeciesRow speciesRow = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.layout_species, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_species, parent, false);
         }
 
         ImageView image = convertView.findViewById(R.id.l_species_image);

@@ -14,13 +14,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="94"
+            android:layout_weight="93"
             android:background="@color/analogous_1"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/pokemondetails_name"
+                android:id="@+id/f_p_d_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -34,24 +34,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="80"
+            android:layout_weight="86"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/f_p_d_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/pokemondetails_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    android:contentDescription="@string/todo"
-                    android:scaleType="fitXY" />
-            </LinearLayout>
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,13 +53,13 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/pokemondetails_species"
+                    android:id="@+id/f_p_d_species"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5sp"
                     android:gravity="center"
                     android:text="@string/unknown"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -75,47 +67,48 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <TextView
-                        android:id="@+id/pokemondetails_type1"
+                        android:id="@+id/f_p_d_type1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
+                        android:layout_weight="1"
                         android:padding="3sp"
                         android:text="@string/unknown"
                         android:textAlignment="center"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_type_2"
+                        android:id="@+id/f_p_d_type_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="50"
+                        android:layout_weight="1"
                         android:padding="3sp"
                         android:text="@string/unknown"
                         android:textAlignment="center"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/pokemondetails_nature"
+                    android:id="@+id/f_p_d_nature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5sp"
                     android:gravity="center"
                     android:text="@string/unknown"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pokemondetails_hideability"
+            android:id="@+id/f_p_d_hide_ability"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="94"
+            android:layout_weight="95"
             android:background="@color/analogous_2"
             android:gravity="center"
             android:orientation="horizontal">
@@ -132,47 +125,39 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pokemondetails_ability"
+            android:id="@+id/f_p_d_ability"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="94"
+            android:layout_weight="95"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/f_p_d_ability_name"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:text="@string/unknown"
+                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/pokemondetails_abilityname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/unknown"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/f_p_d_ability_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="@string/unknown"
+                android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/pokemondetails_abilitydescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/unknown" />
-            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pokemondetails_hidestats"
+            android:id="@+id/f_p_d_hide_stats"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="94"
+            android:layout_weight="95"
             android:background="@color/analogous_3"
             android:gravity="center"
             android:orientation="horizontal">
@@ -189,10 +174,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pokemondetails_stats"
+            android:id="@+id/f_p_d_stats"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="73"
+            android:layout_weight="75"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -269,7 +254,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_totalhp"
+                        android:id="@+id/f_p_d_total_hp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -277,7 +262,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_totalattack"
+                        android:id="@+id/f_p_d_total_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -285,7 +270,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_totaldefense"
+                        android:id="@+id/f_p_d_total_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -293,7 +278,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_totalspecialattack"
+                        android:id="@+id/f_p_d_total_special_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -301,7 +286,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_totalspecialdefense"
+                        android:id="@+id/f_p_d_total_special_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -309,7 +294,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_totalspeed"
+                        android:id="@+id/f_p_d_total_speed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -333,7 +318,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_basehp"
+                        android:id="@+id/f_p_d_base_hp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -341,7 +326,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_baseattack"
+                        android:id="@+id/f_p_d_base_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -349,7 +334,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_basedefense"
+                        android:id="@+id/f_p_d_base_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -357,7 +342,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_basespecialattack"
+                        android:id="@+id/f_p_d_base_special_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -365,7 +350,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_basespecialdefense"
+                        android:id="@+id/f_p_d_base_special_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -373,7 +358,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_basespeed"
+                        android:id="@+id/f_p_d_base_speed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -396,7 +381,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_ivshp"
+                        android:id="@+id/f_p_d_ivs_hp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -404,7 +389,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_ivsattack"
+                        android:id="@+id/f_p_d_ivs_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -412,7 +397,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_ivsdefense"
+                        android:id="@+id/f_p_d_ivs_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -420,7 +405,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_ivsspecialattack"
+                        android:id="@+id/f_p_d_Ivs_special_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -428,7 +413,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_ivsspecialdefense"
+                        android:id="@+id/f_p_d_ivs_special_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -436,7 +421,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_ivsspeed"
+                        android:id="@+id/f_p_d_ivs_speed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -460,7 +445,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_evshp"
+                        android:id="@+id/f_p_d_evs_hp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -468,7 +453,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_evsattack"
+                        android:id="@+id/f_p_d_evs_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -476,7 +461,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_evsdefense"
+                        android:id="@+id/f_p_d_evs_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -484,7 +469,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_evsspecialattack"
+                        android:id="@+id/f_p_d_evs_special_attack"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -492,7 +477,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_evsspecialdefense"
+                        android:id="@+id/f_p_d_evs_special_defense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -500,7 +485,7 @@
                         android:textAlignment="center" />
 
                     <TextView
-                        android:id="@+id/pokemondetails_evsspeed"
+                        android:id="@+id/f_p_d_evs_speed"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -512,10 +497,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pokemondetails_hidemoves"
+            android:id="@+id/f_p_d_hide_moves"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="94"
+            android:layout_weight="95"
             android:background="@color/analogous_4"
             android:gravity="center"
             android:orientation="horizontal">
@@ -531,164 +516,30 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/pokemondetails_moves"
+        <ListView
+            android:id="@+id/f_p_d_moves"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="84"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="75"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/pokemondetails_move1_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move1_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="80"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move1_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/unknown" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="75"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/pokemondetails_move2_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move2_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="80"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move2_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/unknown" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="75"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/pokemondetails_move3_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move3_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="80"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move3_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/unknown" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="75"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/pokemondetails_move4_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="70"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move4_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="80"
-                    android:gravity="center"
-                    android:text="@string/unknown" />
-
-                <TextView
-                    android:id="@+id/pokemondetails_move4_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="@string/unknown" />
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_weight="73" />
 
         <LinearLayout
-            android:id="@+id/pokemondetails_space"
+            android:id="@+id/f_p_d_space"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="100"
             android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
-            android:id="@+id/pokemondetails_buttons"
+            android:id="@+id/f_p_d_buttons"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="94"
+            android:layout_weight="93"
             android:background="@color/main_color"
             android:orientation="horizontal"
             android:weightSum="3">
 
             <Button
-                android:id="@+id/pokemondetails_delete"
+                android:id="@+id/f_p_d_delete"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -696,7 +547,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/pokemondetails_qrcode"
+                android:id="@+id/f_p_d_qr_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -704,7 +555,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/pokemondetails_edit"
+                android:id="@+id/f_p_d_edit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

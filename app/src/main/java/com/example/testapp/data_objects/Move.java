@@ -2,14 +2,14 @@ package com.example.testapp.data_objects;
 
 public class Move {
     private final String name;
-    private final TYPE type;
+    private final Type type;
     private final MoveCategory category;
     private final int power;
     private final int accuracy;
     private final int PP;
     private final String description;
 
-    public Move(String name, TYPE type, MoveCategory category, int power, int accuracy, int PP, String description) {
+    public Move(String name, Type type, MoveCategory category, int power, int accuracy, int PP, String description) {
         this.name = name;
         this.type = type;
         this.category = category;
@@ -23,7 +23,7 @@ public class Move {
         return name;
     }
 
-    public TYPE getType() {
+    public Type getType() {
         return type;
     }
 

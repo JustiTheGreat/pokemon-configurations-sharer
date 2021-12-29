@@ -10,12 +10,15 @@ public interface StringConstants {
     String REGISTER_PROBLEMS = "Register problems!";
     String INSERT_SUCCESS = "You added a new pokemon!";
     String INSERT_PROBLEMS = "Insert problems!";
+    String UPDATE_SUCCESS = "You updated your pokemon!";
+    String UPDATE_PROBLEMS = "Update problems!";
     String SERVER_IS_OFFLINE = "Server is offline!";
 
-    String LOGIN_LINK = "http://192.168.0.11/login.php";
-    String REGISTER_LINK = "http://192.168.0.11/register.php";
-    String GET_POKEMON_FROM_DATABASE_LINK = "http://192.168.0.11/get_pokemon.php";
-    String INSERT_POKEMON_LINK = "http://192.168.0.11/insert_pokemon.php";
+    String LOGIN_LINK = "http://192.168.0.14/login.php";
+    String REGISTER_LINK = "http://192.168.0.14/register.php";
+    String GET_POKEMON_FROM_DATABASE_LINK = "http://192.168.0.14/get_pokemon.php";
+    String INSERT_POKEMON_LINK = "http://192.168.0.14/insert_pokemon.php";
+    String UPDATE_POKEMON_LINK = "http://192.168.0.14/update_pokemon.php";
 
     String ALL_POKEMON_LINK = "https://pokemondb.net/pokedex/all";
     String ALL_ABILITIES_LINK = "https://pokemondb.net/ability";

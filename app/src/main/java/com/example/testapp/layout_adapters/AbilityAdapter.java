@@ -12,20 +12,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
 import com.example.testapp.data_objects.Ability;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilityAdapter extends ArrayAdapter<Ability> implements PokemonConstants {
-    private final Context context;
+public class AbilityAdapter extends ArrayAdapter<Ability> {
     private final ArrayList<Ability> abilitiesRows;
 
     public AbilityAdapter(Context context, ArrayList<Ability> abilitiesRows) {
         super(context, R.layout.layout_ability, abilitiesRows);
-        this.context = context;
         this.abilitiesRows = new ArrayList<>(abilitiesRows);
     }
 
@@ -79,7 +76,7 @@ public class AbilityAdapter extends ArrayAdapter<Ability> implements PokemonCons
         Ability speciesRow = getItem(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.layout_ability, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_ability, parent, false);
         }
 
         TextView name = convertView.findViewById(R.id.l_abilities_name);

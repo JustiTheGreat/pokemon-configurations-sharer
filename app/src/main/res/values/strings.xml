@@ -50,7 +50,6 @@
     <string name="change_moves">Change moves</string>
     <string name="level">Level:</string>
     <string name="nature">Nature:</string>
-    <string name="final_stats">Final stats:</string>
     <string name="ok">OK</string>
 
     <string name="move">MOVE</string>
@@ -69,5 +68,8 @@
     <string name="pow">POW</string>
     <string name="acc">ACC</string>
 
+    <string name="scan_qr_code">Scan QR Code</string>
+
     <string name="todo">TODO</string>
+    <string name="final_stats">Final stats</string>
 </resources>

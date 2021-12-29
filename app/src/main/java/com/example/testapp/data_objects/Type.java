@@ -6,11 +6,11 @@ import androidx.annotation.RequiresApi;
 
 import com.example.testapp.PokemonConstants;
 
-public class TYPE implements PokemonConstants{
+public class Type implements PokemonConstants{
     private final String name;
     private final int color;
 
-    public TYPE(String name, int color) {
+    public Type(String name, int color) {
         this.name = name;
         this.color = color;
     }
@@ -24,8 +24,8 @@ public class TYPE implements PokemonConstants{
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public static TYPE getType(String typeName) {
-        for (TYPE T : TYPES) {
+    public static Type getType(String typeName) {
+        for (Type T : TYPES) {
             if (typeName.equalsIgnoreCase(T.getName())) {
                 return T;
             }

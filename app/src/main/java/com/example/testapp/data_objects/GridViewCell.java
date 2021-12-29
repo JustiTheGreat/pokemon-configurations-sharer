@@ -9,9 +9,9 @@ public class GridViewCell {
     private final Bitmap image;
     private final String name;
     private final String species;
-    private final ArrayList<TYPE> types;
+    private final ArrayList<Type> types;
 
-    public GridViewCell(long id, Bitmap image, String name, String species, ArrayList<TYPE> types) {
+    public GridViewCell(long id, Bitmap image, String name, String species, ArrayList<Type> types) {
         this.id = id;
         this.image = image;
         this.name = name;
@@ -35,7 +35,7 @@ public class GridViewCell {
         return species;
     }
 
-    public ArrayList<TYPE> getTypes() {
+    public ArrayList<Type> getTypes() {
         return types;
     }
 }
