@@ -9,51 +9,54 @@
         android:id="@+id/login"
         android:name="com.example.testapp.fragments.Login"
         android:label="@string/login"
-        tools:layout="@layout/login">
+        tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_login_to_register"
             app:destination="@id/register" />
         <action
-            android:id="@+id/action_login_to_pokemonCollection"
-            app:destination="@id/pokemonCollection" />
+            android:id="@+id/action_login_to_collection"
+            app:destination="@id/collection" />
     </fragment>
     <fragment
         android:id="@+id/register"
         android:name="com.example.testapp.fragments.Register"
         android:label="@string/register"
-        tools:layout="@layout/register">
+        tools:layout="@layout/fragment_register">
 
         <action
             android:id="@+id/action_register_to_login"
             app:destination="@id/login" />
     </fragment>
     <fragment
-        android:id="@+id/pokemonCollection"
+        android:id="@+id/collection"
         android:name="com.example.testapp.fragments.PokemonCollection"
         android:label="@string/my_pokemon_collection"
         tools:layout="@layout/fragment_collection">
         <action
-            android:id="@+id/action_pokemonCollection_to_pokemonDetails"
-            app:destination="@id/pokemonDetails" />
+            android:id="@+id/action_collection_to_details"
+            app:destination="@id/details" />
         <action
-            android:id="@+id/action_pokemonCollection_to_addPokemon"
-            app:destination="@id/addPokemon" />
+            android:id="@+id/action_collection_to_add"
+            app:destination="@id/add" />
     </fragment>
     <fragment
-        android:id="@+id/pokemonDetails"
+        android:id="@+id/details"
         android:name="com.example.testapp.fragments.PokemonDetails"
         android:label="@string/pokemon_details">
         <action
-            android:id="@+id/action_pokemonDetails_to_pokemonCollection"
-            app:destination="@id/pokemonCollection" />
+            android:id="@+id/action_details_to_collection"
+            app:destination="@id/collection" />
+        <action
+            android:id="@+id/action_details_to_add"
+            app:destination="@id/add" />
     </fragment>
     <fragment
-        android:id="@+id/addPokemon"
+        android:id="@+id/add"
         android:name="com.example.testapp.fragments.AddPokemon"
         android:label="@string/add_pokemon" >
         <action
-            android:id="@+id/action_addPokemon_to_pokemonCollection"
-            app:destination="@id/pokemonCollection" />
+            android:id="@+id/action_add_to_collection"
+            app:destination="@id/collection" />
     </fragment>
 </navigation>

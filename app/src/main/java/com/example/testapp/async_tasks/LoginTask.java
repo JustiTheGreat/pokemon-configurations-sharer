@@ -69,7 +69,7 @@ public class LoginTask extends AsyncTask implements StringConstants {
             LoggedUser.setPassword(password);
             NavHostFragment
                     .findNavController(fragment)
-                    .navigate(R.id.action_login_to_pokemonCollection);
+                    .navigate(R.id.action_login_to_collection);
         }
         Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_SHORT).show();
     }

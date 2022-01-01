@@ -12,16 +12,16 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.testapp.async_tasks.LoginTask;
 import com.example.testapp.R;
-import com.example.testapp.databinding.LoginBinding;
+import com.example.testapp.databinding.FragmentLoginBinding;
 
 public class Login extends Fragment {
 
-    private LoginBinding binding;
+    private FragmentLoginBinding binding;
     private EditText username, password;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = LoginBinding.inflate(inflater, container, false);
+        binding = FragmentLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

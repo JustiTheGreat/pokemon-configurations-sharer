@@ -87,7 +87,7 @@ public class InsertTask extends AsyncTask implements StringConstants {
         if (o.equals(INSERT_SUCCESS)) {
             NavHostFragment
                     .findNavController(fragment)
-                    .navigate(R.id.action_addPokemon_to_pokemonCollection);
+                    .navigate(R.id.action_add_to_collection);
         }
         Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_SHORT).show();
     }

@@ -10,15 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.testapp.async_tasks.RegisterTask;
-import com.example.testapp.databinding.RegisterBinding;
+import com.example.testapp.databinding.FragmentRegisterBinding;
 
 public class Register extends Fragment {
-    private RegisterBinding binding;
+    private FragmentRegisterBinding binding;
     private EditText username, email, password;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = RegisterBinding.inflate(inflater, container, false);
+        binding = FragmentRegisterBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 

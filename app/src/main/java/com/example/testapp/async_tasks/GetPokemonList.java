@@ -95,7 +95,6 @@ public class GetPokemonList extends AsyncTask implements StringConstants {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.exit(-1);
         }
     }
 
@@ -106,31 +105,12 @@ public class GetPokemonList extends AsyncTask implements StringConstants {
         readFromDatabase();
         ArrayList<GridViewCell> gridViewCells = new ArrayList<>();
         for (Pokemon pokemon : pokemonList) {
-            AtomicLong ID = new AtomicLong();
-            AtomicReference<Bitmap> officialArt = new AtomicReference<>();
-            AtomicReference<String> name = new AtomicReference<>();
-            AtomicReference<String> species = new AtomicReference<>();
-            AtomicReference<ArrayList<Type>> types = new AtomicReference<>();
-            ArrayList<Thread> threads = new ArrayList<>();
-            threads.add(new Thread(() -> ID.set(pokemon.getID())));
-            threads.add(new Thread(() -> officialArt.set(pokemon.getOfficialArt())));
-            threads.add(new Thread(() -> name.set(pokemon.getName())));
-            threads.add(new Thread(() -> species.set(pokemon.getSpecies())));
-            threads.add(new Thread(() -> types.set(pokemon.getTypes())));
-            threads.forEach(Thread::start);
-            threads.forEach(thread -> {
-                try {
-                    thread.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
             gridViewCells.add(new GridViewCell(
-                    ID.get(),
-                    officialArt.get(),
-                    name.get(),
-                    species.get(),
-                    types.get()
+                    pokemon.getID(),
+                    pokemon.getOfficialArt(),
+                    pokemon.getName(),
+                    pokemon.getSpecies(),
+                    pokemon.getTypes()
             ));
             if (isCancelled()) break;
         }

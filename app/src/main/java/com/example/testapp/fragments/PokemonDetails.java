@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
@@ -152,7 +153,10 @@ public class PokemonDetails extends Fragment {
     }
 
     private void editPokemon() {
-        Toast.makeText(this.getActivity(), "Edit not yet implemented!", Toast.LENGTH_SHORT).show();
+        Storage.setSelectedPokemon(pokemon);
+        NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.action_details_to_add);
     }
 
 
