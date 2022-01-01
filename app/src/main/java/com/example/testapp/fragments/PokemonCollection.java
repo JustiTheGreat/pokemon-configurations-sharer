@@ -23,7 +23,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.testapp.R;
 import com.example.testapp.Storage;
 import com.example.testapp.async_tasks.CreatePokemon;
-import com.example.testapp.async_tasks.GetPokemonList;
+import com.example.testapp.async_tasks.database.GetPokemonList;
 import com.example.testapp.data_objects.Pokemon;
 import com.example.testapp.databinding.FragmentCollectionBinding;
 import com.journeyapps.barcodescanner.ScanContract;

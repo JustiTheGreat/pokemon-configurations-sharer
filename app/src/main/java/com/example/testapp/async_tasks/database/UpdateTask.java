@@ -1,4 +1,4 @@
-package com.example.testapp.async_tasks;
+package com.example.testapp.async_tasks.database;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -70,10 +70,7 @@ public class UpdateTask extends AsyncTask implements StringConstants {
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-                break;
-            }
+            if ((line = reader.readLine()) != null) sb.append(line);
 
             return sb.toString();
         } catch (IOException e) {

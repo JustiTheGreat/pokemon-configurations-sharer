@@ -1,4 +1,4 @@
-package com.example.testapp.async_tasks;
+package com.example.testapp.async_tasks.database;
 
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -6,9 +6,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.testapp.LoggedUser;
 import com.example.testapp.R;
 import com.example.testapp.StringConstants;
+import com.example.testapp.data_objects.Pokemon;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,24 +17,18 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class LoginTask extends AsyncTask implements StringConstants {
+public class DeleteTask extends AsyncTask implements StringConstants {
     private Fragment fragment;
-    private String username;
-    private String password;
 
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
             fragment = (Fragment) objects[0];
-            username = (String) objects[1];
-            password = (String) objects[2];
+            Pokemon pokemon = (Pokemon) objects[1];
 
-            String data = encodeStrings(
-                    new String[]{"username", "password"},
-                    new String[]{username, password}
-            );
+            String data = encodeStrings(new String[]{"id_pokemon"}, new String[]{"" + pokemon.getID()});
 
-            URL url = new URL(LOGIN_LINK);
+            URL url = new URL(DELETE_POKEMON_LINK);
             URLConnection conn;
             try {
                 conn = url.openConnection();
@@ -50,26 +44,20 @@ public class LoginTask extends AsyncTask implements StringConstants {
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;
-
-            while ((line = reader.readLine()) != null) {
-                sb.append(line);
-                break;
-            }
+            if ((line = reader.readLine()) != null) sb.append(line);
 
             return sb.toString();
         } catch (IOException e) {
-            return LOGIN_PROBLEMS;
+            return DELETE_PROBLEMS;
         }
     }
 
     @Override
     protected void onPostExecute(Object o) {
-        if (o.equals(LOGIN_SUCCESS)) {
-            LoggedUser.setUsername(username);
-            LoggedUser.setPassword(password);
+        if (o.equals(DELETE_SUCCESS)) {
             NavHostFragment
                     .findNavController(fragment)
-                    .navigate(R.id.action_login_to_collection);
+                    .navigate(R.id.action_details_to_collection);
         }
         Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_SHORT).show();
     }

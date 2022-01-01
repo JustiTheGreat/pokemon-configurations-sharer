@@ -9,7 +9,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.async_tasks.RegisterTask;
+import com.example.testapp.async_tasks.database.RegisterTask;
 import com.example.testapp.databinding.FragmentRegisterBinding;
 
 public class Register extends Fragment {

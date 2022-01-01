@@ -12,6 +12,8 @@ public interface StringConstants {
     String INSERT_PROBLEMS = "Insert problems!";
     String UPDATE_SUCCESS = "Update successful!";
     String UPDATE_PROBLEMS = "Update problems!";
+    String DELETE_SUCCESS = "Delete successful!";
+    String DELETE_PROBLEMS = "Delete problems!";
     String SERVER_IS_OFFLINE = "Server is offline!";
 
     String LOGIN_LINK = "http://192.168.0.14/login.php";
@@ -19,6 +21,7 @@ public interface StringConstants {
     String GET_POKEMON_FROM_DATABASE_LINK = "http://192.168.0.14/get_pokemon.php";
     String INSERT_POKEMON_LINK = "http://192.168.0.14/insert_pokemon.php";
     String UPDATE_POKEMON_LINK = "http://192.168.0.14/update_pokemon.php";
+    String DELETE_POKEMON_LINK = "http://192.168.0.14/delete_pokemon.php";
 
     String ALL_POKEMON_LINK = "https://pokemondb.net/pokedex/all";
     String ALL_ABILITIES_LINK = "https://pokemondb.net/ability";

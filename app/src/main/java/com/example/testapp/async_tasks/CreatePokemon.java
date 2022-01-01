@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.example.testapp.Storage;
+import com.example.testapp.async_tasks.TaskHelper;
 import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.Nature;
 import com.example.testapp.data_objects.Pokemon;

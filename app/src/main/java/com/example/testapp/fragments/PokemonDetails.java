@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -24,6 +23,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.example.testapp.PokemonConstants;
 import com.example.testapp.R;
 import com.example.testapp.Storage;
+import com.example.testapp.async_tasks.database.DeleteTask;
 import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.Pokemon;
 import com.example.testapp.databinding.FragmentPokemonDetailsBinding;
@@ -127,8 +127,8 @@ public class PokemonDetails extends Fragment {
         dialog.show();
 
         dialog.findViewById(R.id.d_delete_yes).setOnClickListener(v -> {
-            //delete from database
-            Toast.makeText(this.getActivity(), pokemon.getName() + "was deleted!", Toast.LENGTH_SHORT).show();
+            new DeleteTask().execute(this, pokemon);
+            dialog.dismiss();
         });
         dialog.findViewById(R.id.d_delete_no).setOnClickListener(v -> dialog.dismiss());
     }

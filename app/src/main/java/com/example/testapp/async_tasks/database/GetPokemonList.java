@@ -1,4 +1,4 @@
-package com.example.testapp.async_tasks;
+package com.example.testapp.async_tasks.database;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.testapp.LoggedUser;
 import com.example.testapp.StringConstants;
+import com.example.testapp.async_tasks.TaskHelper;
 import com.example.testapp.data_objects.GridViewCell;
 import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.Nature;

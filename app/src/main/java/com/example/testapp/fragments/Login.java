@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.testapp.async_tasks.LoginTask;
+import com.example.testapp.async_tasks.database.LoginTask;
 import com.example.testapp.R;
 import com.example.testapp.databinding.FragmentLoginBinding;
 
