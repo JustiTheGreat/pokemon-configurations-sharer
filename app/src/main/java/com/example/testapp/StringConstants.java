@@ -4,13 +4,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public interface StringConstants {
-    String LOGIN_SUCCESS = "You successfully logged into your account!";
+    String LOGIN_SUCCESS = "Login successful!";
     String LOGIN_PROBLEMS = "Login problems!";
-    String REGISTER_SUCCESS = "You successfully created a new account!";
+    String REGISTER_SUCCESS = "Register successful!";
     String REGISTER_PROBLEMS = "Register problems!";
-    String INSERT_SUCCESS = "You added a new pokemon!";
+    String INSERT_SUCCESS = "Insert successful!";
     String INSERT_PROBLEMS = "Insert problems!";
-    String UPDATE_SUCCESS = "You updated your pokemon!";
+    String UPDATE_SUCCESS = "Update successful!";
     String UPDATE_PROBLEMS = "Update problems!";
     String SERVER_IS_OFFLINE = "Server is offline!";
 

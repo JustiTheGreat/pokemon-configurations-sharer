@@ -278,21 +278,21 @@ public class AddPokemon extends Fragment implements PokemonConstants {
             binding.fAPMoves.setEnabled(false);
             binding.fAPFinalize.setEnabled(false);
 
-            if (getAllSpeciesTask.getStatus() != AsyncTask.Status.FINISHED)
+            if (getAllSpeciesTask!=null&&getAllSpeciesTask.getStatus() != AsyncTask.Status.FINISHED)
                 getAllSpeciesTask.cancel(true);
-            if (getAbilitiesTask.getStatus() != AsyncTask.Status.FINISHED)
+            if (getAbilitiesTask!=null&&getAbilitiesTask.getStatus() != AsyncTask.Status.FINISHED)
                 getAbilitiesTask.cancel(true);
-            if (getBaseStatsTask.getStatus() != AsyncTask.Status.FINISHED)
+            if (getBaseStatsTask!=null&&getBaseStatsTask.getStatus() != AsyncTask.Status.FINISHED)
                 getBaseStatsTask.cancel(true);
-            if (getPokemonMovesTask.getStatus() != AsyncTask.Status.FINISHED)
+            if (getPokemonMovesTask!=null&&getPokemonMovesTask.getStatus() != AsyncTask.Status.FINISHED)
                 getPokemonMovesTask.cancel(true);
 
             getAbilitiesTask = new GetAbilities();
-            getAbilitiesTask.execute(this, pokemon.getSpecies());
+            getAbilitiesTask.execute(this, speciesRow.getSpecies());
             getBaseStatsTask = new GetBaseStats();
-            getBaseStatsTask.execute(this, pokemon.getSpecies());
+            getBaseStatsTask.execute(this, speciesRow.getSpecies());
             getPokemonMovesTask = new GetPokemonMoves();
-            getPokemonMovesTask.execute(this, pokemon.getSpecies());
+            getPokemonMovesTask.execute(this, speciesRow.getSpecies());
 
             pokemon.setSprite(speciesRow.getSprite());
             pokemon.setSpecies(speciesRow.getSpecies());

@@ -56,7 +56,7 @@ public class PokemonCollection extends Fragment {
         Storage.setSelectedPokemon(getPokemon(id));
         NavHostFragment
                 .findNavController(PokemonCollection.this)
-                .navigate(R.id.action_pokemonCollection_to_pokemonDetails);
+                .navigate(R.id.action_collection_to_details);
     }
 
     private void addOptions(View view) {
@@ -80,7 +80,7 @@ public class PokemonCollection extends Fragment {
     private void addPokemonManually(Dialog dialog) {
         NavHostFragment
                 .findNavController(PokemonCollection.this)
-                .navigate(R.id.action_pokemonCollection_to_addPokemon);
+                .navigate(R.id.action_collection_to_add);
         dialog.dismiss();
     }
 
@@ -101,7 +101,7 @@ public class PokemonCollection extends Fragment {
     public void afterANewPokemonWasCreatedInScan() {
         NavHostFragment
                 .findNavController(this)
-                .navigate(R.id.action_pokemonCollection_to_addPokemon);
+                .navigate(R.id.action_collection_to_add);
     }
 
     private void scanQRCode(Dialog dialog) {
