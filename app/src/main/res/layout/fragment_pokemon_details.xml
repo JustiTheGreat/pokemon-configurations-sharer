@@ -177,13 +177,16 @@
             android:id="@+id/f_p_d_stats"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="75"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
                 android:layout_weight="2"
                 android:orientation="vertical">
 
@@ -235,7 +238,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 

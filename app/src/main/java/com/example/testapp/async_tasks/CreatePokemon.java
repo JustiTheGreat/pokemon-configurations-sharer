@@ -56,7 +56,7 @@ public class CreatePokemon extends AsyncTask {
                 null,
                 TaskHelper.getPokemonSprite(pokemonData[1])
         );
-        Storage.setSelectedPokemon(pokemon);
+        Storage.setSelectedPokemonForAdd(pokemon);
         return null;
     }
 

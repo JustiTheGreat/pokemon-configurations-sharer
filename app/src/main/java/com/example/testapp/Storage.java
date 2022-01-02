@@ -3,28 +3,32 @@ package com.example.testapp;
 import com.example.testapp.data_objects.Pokemon;
 
 public class Storage {
-    private static Pokemon selectedPokemon;
-    private static boolean wasScanned = false;
+    private static Pokemon selectedPokemonForDetails;
+    private static Pokemon selectedPokemonForAdd;
 
-    public static void setSelectedPokemon(Pokemon pc) {
-        selectedPokemon = pc;
+    public static void setSelectedPokemonForDetails(Pokemon pokemon) {
+        selectedPokemonForDetails = pokemon;
     }
 
-    public static Pokemon getSelectedPokemon() {
-        Pokemon pokemon = selectedPokemon;
-        selectedPokemon = null;
+    public static void setSelectedPokemonForAdd(Pokemon pokemon) {
+        selectedPokemonForAdd = pokemon;
+    }
+
+    public static Pokemon getSelectedPokemonForDetails() {
+        return selectedPokemonForDetails;
+    }
+
+    public static Pokemon getSelectedPokemonForAdd() {
+        Pokemon pokemon = selectedPokemonForAdd;
+        selectedPokemonForAdd = null;
         return pokemon;
     }
 
-    public static boolean pokemonIsSelected() {
-        return selectedPokemon != null;
+    public static boolean pokemonIsSelectedForDetails() {
+        return selectedPokemonForDetails != null;
     }
 
-    public static boolean wasScanned() {
-        return wasScanned;
-    }
-
-    public static void setScanned(boolean scanned) {
-        wasScanned = scanned;
+    public static boolean pokemonIsSelectedForAdd() {
+        return selectedPokemonForAdd != null;
     }
 }

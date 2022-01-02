@@ -53,7 +53,7 @@ public class PokemonCollection extends Fragment {
     }
 
     private void seePokemonDetails(AdapterView<?> adapterView, View view, int position, long id) {
-        Storage.setSelectedPokemon(getPokemon(id));
+        Storage.setSelectedPokemonForDetails(getPokemon(id));
         NavHostFragment
                 .findNavController(PokemonCollection.this)
                 .navigate(R.id.action_collection_to_details);
@@ -98,12 +98,6 @@ public class PokemonCollection extends Fragment {
                 }
             });
 
-    public void afterANewPokemonWasCreatedInScan() {
-        NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.action_collection_to_add);
-    }
-
     private void scanQRCode(Dialog dialog) {
         ScanOptions options = new ScanOptions();
         options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
@@ -112,6 +106,12 @@ public class PokemonCollection extends Fragment {
         options.setBeepEnabled(false);
         barcodeLauncher.launch(options);
         dialog.dismiss();
+    }
+
+    public void afterANewPokemonWasCreatedInScan() {
+        NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.action_collection_to_add);
     }
 
     private Pokemon getPokemon(long id) {
@@ -128,6 +128,7 @@ public class PokemonCollection extends Fragment {
 
     public void setCollectionGridViewAdapter(BaseAdapter gridViewAdapter) {
         binding.fCGridview.setAdapter(gridViewAdapter);
+        //binding.fCProgressBar.setVisibility(View.GONE);
     }
 
     @Override
