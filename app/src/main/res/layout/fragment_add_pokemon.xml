@@ -153,7 +153,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="80"
                     android:background="@color/analogous_1"
                     android:gravity="center"
                     android:text="@string/level" />
@@ -162,7 +162,7 @@
                     android:id="@+id/f_a_p_level"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="80"
                     android:background="@color/analogous_1"
                     android:gravity="center"
                     android:text="@string/unknown" />
@@ -170,7 +170,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="80"
                     android:background="@color/analogous_2"
                     android:gravity="center"
                     android:text="@string/nature" />
@@ -179,7 +179,7 @@
                     android:id="@+id/f_a_p_nature"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="60"
                     android:background="@color/analogous_2"
                     android:gravity="center"
                     android:text="@string/unknown" />
@@ -269,7 +269,7 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
                         android:text="@string/speed" />
@@ -374,13 +374,9 @@
             android:id="@+id/f_a_p_moves"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="66" />
+            android:layout_weight="66" >
 
-        <View
-            android:id="@+id/f_a_p_space"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="100" />
+        </ListView>
 
         <Button
             android:id="@+id/f_a_p_add_move"
@@ -389,6 +385,12 @@
             android:layout_weight="89"
             android:text="@string/add_move"
             android:visibility="gone" />
+
+        <View
+            android:id="@+id/f_a_p_space"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="100" />
 
         <Button
             android:id="@+id/f_a_p_finalize"

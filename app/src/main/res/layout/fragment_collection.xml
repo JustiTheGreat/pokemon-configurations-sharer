@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".fragments.PokemonCollection">
 
+    <Button
+        android:id="@+id/f_c_add_options_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/main_color"
+        android:text="@string/add_new_pokemon"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <GridView
         android:id="@+id/f_c_gridview"
         android:layout_width="match_parent"
@@ -21,20 +35,6 @@
         android:paddingBottom="100dp"
         android:stretchMode="columnWidth"
         android:verticalSpacing="20dp"></GridView>
-
-    <Button
-        android:id="@+id/f_c_add_options_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@color/main_color"
-        android:text="@string/add_new_pokemon"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar
         android:id="@+id/f_c_progressbar"
