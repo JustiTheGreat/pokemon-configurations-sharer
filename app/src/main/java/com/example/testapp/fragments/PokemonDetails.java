@@ -48,11 +48,11 @@ public class PokemonDetails extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(!Storage.pokemonIsSelected()){
+        if(!Storage.pokemonIsSelectedForDetails()){
             System.err.println("Call on PokemonDetails with null pokemon in storage");
             System.exit(-1);
         }
-        pokemon = Storage.getSelectedPokemon();
+        pokemon = Storage.getSelectedPokemonForDetails();
         setPageInfo();
         //adapting layouts when open clicking one
         {
@@ -153,7 +153,7 @@ public class PokemonDetails extends Fragment {
     }
 
     private void editPokemon() {
-        Storage.setSelectedPokemon(pokemon);
+        Storage.setSelectedPokemonForAdd(pokemon);
         NavHostFragment
                 .findNavController(this)
                 .navigate(R.id.action_details_to_add);

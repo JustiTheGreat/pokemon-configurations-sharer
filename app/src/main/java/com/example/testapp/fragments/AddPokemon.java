@@ -116,8 +116,8 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (Storage.pokemonIsSelected()) {
-            pokemon = Storage.getSelectedPokemon();
+        if (Storage.pokemonIsSelectedForAdd()) {
+            pokemon = Storage.getSelectedPokemonForAdd();
             adapter = new MoveItemAdapterForAddEdit(getContext(), pokemon.getMoves());
             binding.fAPMoves.setAdapter(adapter);
             initializePageWithData();
@@ -653,11 +653,11 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         binding = null;
         if (getAllSpeciesTask != null && getAllSpeciesTask.getStatus() != AsyncTask.Status.FINISHED)
             getAllSpeciesTask.cancel(true);
-        if (getAbilitiesTask.getStatus() != AsyncTask.Status.FINISHED)
+        if (getAbilitiesTask != null && getAbilitiesTask.getStatus() != AsyncTask.Status.FINISHED)
             getAbilitiesTask.cancel(true);
-        if (getBaseStatsTask.getStatus() != AsyncTask.Status.FINISHED)
+        if (getBaseStatsTask != null && getBaseStatsTask.getStatus() != AsyncTask.Status.FINISHED)
             getBaseStatsTask.cancel(true);
-        if (getPokemonMovesTask.getStatus() != AsyncTask.Status.FINISHED)
+        if (getPokemonMovesTask != null && getPokemonMovesTask.getStatus() != AsyncTask.Status.FINISHED)
             getPokemonMovesTask.cancel(true);
     }
 }
