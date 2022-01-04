@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 public class TaskHelper implements PokemonConstants, StringConstants {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public static ArrayList<SpeciesRow> getAllSpecies(){
+    public static ArrayList<SpeciesRow> getAllSpecies() {
         ArrayList<SpeciesRow> speciesRows = new ArrayList<>();
         Document doc = null;
         try {

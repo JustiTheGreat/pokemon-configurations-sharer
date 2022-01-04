@@ -11,11 +11,11 @@ public class Storage {
     private static Pokemon selectedPokemonForDetails;
     private static Pokemon selectedPokemonForAdd;
 
-    public static void setActivity(AppCompatActivity appCompatActivity){
+    public static void setActivity(AppCompatActivity appCompatActivity) {
         activity = appCompatActivity;
     }
 
-    public static AppCompatActivity getActivity(){
+    public static AppCompatActivity getActivity() {
         return activity;
     }
 

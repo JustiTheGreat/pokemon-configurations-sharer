@@ -1,8 +1,10 @@
 package com.example.testapp.data_objects;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.example.testapp.PokemonConstants;
 
@@ -20,9 +22,9 @@ public class Pokemon implements PokemonConstants {
     private ArrayList<Integer> EVs;
     private ArrayList<Move> moves;
     private ArrayList<Type> types;
+    private ArrayList<Integer> baseStats;
     private Bitmap officialArt;
     private Bitmap sprite;
-    private ArrayList<Integer> baseStats;
 
     public Pokemon(long ID, String name, String species, String gender, int level, Ability ability, Nature nature,
                    ArrayList<Integer> IVs, ArrayList<Integer> EVs, ArrayList<Move> moves,
@@ -177,5 +179,24 @@ public class Pokemon implements PokemonConstants {
         }
         s.append(";");
         return s.toString();
+    }
+
+    public Pokemon copy(){
+        return new Pokemon(
+                ID,
+                name,
+                species,
+                gender,
+                level,
+                ability,
+                nature,
+                new ArrayList<Integer>(){{addAll(IVs);}},
+                new ArrayList<Integer>(){{addAll(EVs);}},
+                new ArrayList<Move>(){{addAll(moves);}},
+                types,
+                baseStats,
+                officialArt,
+                sprite
+        );
     }
 }

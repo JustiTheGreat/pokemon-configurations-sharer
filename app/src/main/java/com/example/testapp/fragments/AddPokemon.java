@@ -117,7 +117,7 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         Storage.setAddPokemonFragment(this);
 
         if (Storage.pokemonIsSelectedForAdd()) {
-            pokemon = Storage.getSelectedPokemonForAdd();
+            pokemon = Storage.getSelectedPokemonForAdd().copy();
             adapter = new MoveItemAdapterForAddEdit(getContext(), pokemon.getMoves());
             binding.fAPMoves.setAdapter(adapter);
             initializePageWithData();
@@ -152,8 +152,8 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         binding.fAPFinalize.setOnClickListener(v -> nameDialog());
     }
 
-    public void setAddMoveButtonVisibility(boolean value){
-        if(value) binding.fAPAddMove.setVisibility(View.VISIBLE);
+    public void setAddMoveButtonVisibility(boolean value) {
+        if (value) binding.fAPAddMove.setVisibility(View.VISIBLE);
         else binding.fAPAddMove.setVisibility(View.GONE);
     }
 
@@ -470,30 +470,35 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     }
 
     private void setStatsInfo(Dialog dialog) {
-        setTotalStatsTVs();
-        pokemon.setLevel(Integer.parseInt(levelET.getText().toString()));
-        pokemon.setNature(Nature.getNature(natureSpinner.getSelectedItem().toString()));
-        for (int i = 0; i < NUMBER_OF_STATS; i++) {
-            pokemon.getIVs().set(i, Integer.parseInt(ivsET.get(i).getText().toString()));
-            pokemon.getEVs().set(i, Integer.parseInt(evsET.get(i).getText().toString()));
-        }
+        int s = evsET.stream().mapToInt(evET -> Integer.parseInt(evET.getText().toString())).sum();
+        if (s > 510) {
+            dialog.findViewById(R.id.d_stats_error_message).setVisibility(View.VISIBLE);
+        } else {
+            setTotalStatsTVs();
+            pokemon.setLevel(Integer.parseInt(levelET.getText().toString()));
+            pokemon.setNature(Nature.getNature(natureSpinner.getSelectedItem().toString()));
+            for (int i = 0; i < NUMBER_OF_STATS; i++) {
+                pokemon.getIVs().set(i, Integer.parseInt(ivsET.get(i).getText().toString()));
+                pokemon.getEVs().set(i, Integer.parseInt(evsET.get(i).getText().toString()));
+            }
 
-        binding.fAPLevel.setText(String.valueOf(pokemon.getLevel()));
-        binding.fAPNature.setText(pokemon.getNature().getName());
-        binding.fAPHp.setText(totalTV.get(0).getText());
-        binding.fAPAttack.setText(totalTV.get(1).getText());
-        binding.fAPDefense.setText(totalTV.get(2).getText());
-        binding.fAPSpecialAttack.setText(totalTV.get(3).getText());
-        binding.fAPSpecialDefense.setText(totalTV.get(4).getText());
-        binding.fAPSpeed.setText(totalTV.get(5).getText());
-        binding.fAPStatsButton.setText(R.string.change_stats_related);
+            binding.fAPLevel.setText(String.valueOf(pokemon.getLevel()));
+            binding.fAPNature.setText(pokemon.getNature().getName());
+            binding.fAPHp.setText(totalTV.get(0).getText());
+            binding.fAPAttack.setText(totalTV.get(1).getText());
+            binding.fAPDefense.setText(totalTV.get(2).getText());
+            binding.fAPSpecialAttack.setText(totalTV.get(3).getText());
+            binding.fAPSpecialDefense.setText(totalTV.get(4).getText());
+            binding.fAPSpeed.setText(totalTV.get(5).getText());
+            binding.fAPStatsButton.setText(R.string.change_stats_related);
 
-        if (binding.fAPChosenStats.getVisibility() == View.GONE) {
-            binding.fAPChosenStats.setVisibility(View.VISIBLE);
-            recalculateWeights();
+            if (binding.fAPChosenStats.getVisibility() == View.GONE) {
+                binding.fAPChosenStats.setVisibility(View.VISIBLE);
+                recalculateWeights();
+            }
+            seeIfFinalizingIsPossible();
+            dialog.dismiss();
         }
-        seeIfFinalizingIsPossible();
-        dialog.dismiss();
     }
 
     private void addOnTextChangedListener(EditText editText) {
@@ -506,6 +511,11 @@ public class AddPokemon extends Fragment implements PokemonConstants {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String correctValue = s.toString();
                 if (!correctValue.equals("")) {
+                    correctValue = correctValue
+                            .replace(",","")
+                            .replace(".","")
+                            .replace("-","")
+                            .replace(" ","");
                     if (correctValue.startsWith("0") && correctValue.length() != 1) {
                         correctValue = correctValue.replace("0", "");
                     }
@@ -585,8 +595,8 @@ public class AddPokemon extends Fragment implements PokemonConstants {
                 }
             }
             if (!moveAlreadyExists) {
-                if(index==-1) pokemon.getMoves().add(move);
-                else pokemon.getMoves().set(index,move);
+                if (index == -1) pokemon.getMoves().add(move);
+                else pokemon.getMoves().set(index, move);
                 adapter.notifyDataSetChanged();
 
                 if (pokemon.getMoves().size() == 1) binding.fAPMoves.setVisibility(View.VISIBLE);
@@ -599,12 +609,10 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         dialog.dismiss();
     }
 
-    private void seeIfFinalizingIsPossible() {
-        if (binding.fAPChosenAbility.getVisibility() == View.VISIBLE
+    public void seeIfFinalizingIsPossible() {
+        binding.fAPFinalize.setEnabled(binding.fAPChosenAbility.getVisibility() == View.VISIBLE
                 && binding.fAPChosenStats.getVisibility() == View.VISIBLE
-                && pokemon.getMoves().size() > 0) {
-            binding.fAPFinalize.setEnabled(true);
-        }
+                && pokemon.getMoves().size() > 0);
     }
 
     private void nameDialog() {

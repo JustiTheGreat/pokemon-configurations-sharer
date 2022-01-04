@@ -80,6 +80,7 @@ public class MoveItemAdapterForAddEdit extends ArrayAdapter<Move> {
             remove(getItem(position));
             Storage.getAddPokemonFragment().recalculateWeights();
             Storage.getAddPokemonFragment().setAddMoveButtonVisibility(true);
+            Storage.getAddPokemonFragment().seeIfFinalizingIsPossible();
         });
 
         return convertView;
