@@ -64,7 +64,7 @@ public class PokemonDetails extends Fragment {
             LinearLayout hideMoves = binding.fPDHideMoves;
             LinearLayout space = binding.fPDSpace;
 
-            int ability_weight = 5, stats_weight = 25, moves_weight = 27;
+            int ability_weight = 5, stats_weight = 20, moves_weight = 32;
             int space_weight = 100 - ability_weight - stats_weight - moves_weight;
             ability.setVisibility(View.GONE);
             stats.setVisibility(View.GONE);

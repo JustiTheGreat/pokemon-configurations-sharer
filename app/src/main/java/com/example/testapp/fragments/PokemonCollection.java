@@ -30,6 +30,7 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PokemonCollection extends Fragment {
     private FragmentCollectionBinding binding;
@@ -47,6 +48,9 @@ public class PokemonCollection extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getPokemonListTask = new GetPokemonList();
         getPokemonListTask.execute(this);
+
+        Objects.requireNonNull(Storage.getActivity().getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        Objects.requireNonNull(Storage.getActivity().getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
         binding.fCGridview.setOnItemClickListener(this::seePokemonDetails);
         binding.fCAddOptionsButton.setOnClickListener(this::addOptions);

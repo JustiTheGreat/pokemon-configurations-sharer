@@ -191,7 +191,8 @@
                 android:layout_weight="75"
                 android:background="@color/analogous_3"
                 android:gravity="center"
-                android:text="@string/stats" />
+                android:text="@string/stats"
+                android:textColor="@color/analogous_1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,7 +213,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/hp" />
+                        android:text="@string/hp"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -224,7 +226,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/attack" />
+                        android:text="@string/attack"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -236,7 +239,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/defense" />
+                        android:text="@string/defense"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -248,7 +252,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/special_attack" />
+                        android:text="@string/special_attack"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -260,7 +265,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/special_defense" />
+                        android:text="@string/special_defense"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -272,7 +278,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/speed" />
+                        android:text="@string/speed"
+                        android:textColor="@color/analogous_1" />
 
                 </LinearLayout>
 
@@ -290,7 +297,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/unknown" />
+                        android:text="@string/unknown"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -303,7 +311,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/unknown" />
+                        android:text="@string/unknown"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -316,7 +325,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/unknown" />
+                        android:text="@string/unknown"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -329,7 +339,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/unknown" />
+                        android:text="@string/unknown"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -342,7 +353,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/unknown" />
+                        android:text="@string/unknown"
+                        android:textColor="@color/analogous_1" />
 
                     <View
                         android:layout_width="1dp"
@@ -355,7 +367,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="16"
                         android:gravity="center"
-                        android:text="@string/unknown" />
+                        android:text="@string/unknown"
+                        android:textColor="@color/analogous_1" />
 
                 </LinearLayout>
             </LinearLayout>

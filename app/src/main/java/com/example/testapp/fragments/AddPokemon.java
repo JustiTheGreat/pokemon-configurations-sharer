@@ -114,6 +114,8 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Storage.setAddPokemonFragment(this);
+
         if (Storage.pokemonIsSelectedForAdd()) {
             pokemon = Storage.getSelectedPokemonForAdd();
             adapter = new MoveItemAdapterForAddEdit(getContext(), pokemon.getMoves());
@@ -146,11 +148,16 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         binding.fAPGender.setOnClickListener(v -> changeGender());
         binding.fAPAbilitiesButton.setOnClickListener(v -> abilitiesDialog());
         binding.fAPStatsButton.setOnClickListener(v -> statsDialog());
-        binding.fAPAddMove.setOnClickListener(v -> movesDialog());
+        binding.fAPAddMove.setOnClickListener(v -> movesDialog(-1));
         binding.fAPFinalize.setOnClickListener(v -> nameDialog());
     }
 
-    private void recalculateWeights() {
+    public void setAddMoveButtonVisibility(boolean value){
+        if(value) binding.fAPAddMove.setVisibility(View.VISIBLE);
+        else binding.fAPAddMove.setVisibility(View.GONE);
+    }
+
+    public void recalculateWeights() {
         int species_weight = 10, ability_weight = 6, stats_weight = 16, move_weight = 11, add_move_weight = 11;
         int space_weight = 100 - species_weight - ability_weight - stats_weight - 4 * move_weight + add_move_weight;
         if (binding.fAPChosenSpecies.getVisibility() == View.VISIBLE)
@@ -489,39 +496,38 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         dialog.dismiss();
     }
 
-    private void addOnTextChangedListener(Object object) {
-        if (object instanceof EditText) {
-            TextWatcher textWatcher = new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+    private void addOnTextChangedListener(EditText editText) {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String correctValue = s.toString();
-                    if (!correctValue.equals("")) {
-                        if (correctValue.startsWith("0") && correctValue.length() != 1) {
-                            correctValue = correctValue.replace("0", "");
-                        }
-                        int limit = (object.equals(levelET) ? 100 : (ivsET.contains(object) ? 31 : (evsET.contains(object) ? 252 : 0)));
-                        if (Integer.parseInt(correctValue) > limit) {
-                            correctValue = "" + limit;
-                        }
-                        ((EditText) object).removeTextChangedListener(this);
-                        ((EditText) object).setText(correctValue);
-                        ((EditText) object).addTextChangedListener(this);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String correctValue = s.toString();
+                if (!correctValue.equals("")) {
+                    if (correctValue.startsWith("0") && correctValue.length() != 1) {
+                        correctValue = correctValue.replace("0", "");
                     }
+                    int limit = (editText.equals(levelET) ? 100 : (ivsET.contains(editText) ? 31 : (evsET.contains(editText) ? 252 : 0)));
+                    if (Integer.parseInt(correctValue) > limit) {
+                        correctValue = "" + limit;
+                    }
+                    editText.removeTextChangedListener(this);
+                    editText.setText(correctValue);
+                    editText.setSelection(editText.getText().length());
+                    editText.addTextChangedListener(this);
                 }
+            }
 
-                @SuppressLint("ResourceAsColor")
-                @Override
-                public void afterTextChanged(Editable s) {
-                    if (!s.toString().equals(""))
-                        setTotalStatsTVs();
-                }
-            };
-            ((EditText) object).addTextChangedListener(textWatcher);
-        }
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(""))
+                    setTotalStatsTVs();
+            }
+        };
+        editText.addTextChangedListener(textWatcher);
     }
 
     private void setTotalStatsTVs() {
@@ -540,7 +546,7 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private void movesDialog() {
+    public void movesDialog(int index) {
         Dialog dialog = new Dialog(this.getActivity());
         dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(R.layout.dialog_search);
@@ -565,10 +571,10 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         AtomicReference<Move> move = new AtomicReference<>();
         movesTV.setOnItemClickListener((parent, view, position, id) -> move.set((Move) movesTV.getAdapter().getItem(position)));
         Button button = dialog.findViewById(R.id.d_search_button);
-        button.setOnClickListener(v -> setMoveInfo(dialog, move.get()));
+        button.setOnClickListener(v -> setMoveInfo(dialog, index, move.get()));
     }
 
-    private void setMoveInfo(Dialog dialog, Move move) {
+    private void setMoveInfo(Dialog dialog, int index, Move move) {
         if (move != null) {
             boolean moveAlreadyExists = false;
             for (Move m : pokemon.getMoves()) {
@@ -579,7 +585,8 @@ public class AddPokemon extends Fragment implements PokemonConstants {
                 }
             }
             if (!moveAlreadyExists) {
-                pokemon.getMoves().add(move);
+                if(index==-1) pokemon.getMoves().add(move);
+                else pokemon.getMoves().set(index,move);
                 adapter.notifyDataSetChanged();
 
                 if (pokemon.getMoves().size() == 1) binding.fAPMoves.setVisibility(View.VISIBLE);

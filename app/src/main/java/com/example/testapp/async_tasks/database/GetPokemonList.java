@@ -18,14 +18,12 @@ import com.example.testapp.fragments.PokemonCollection;
 import com.example.testapp.layout_adapters.PokemonConfigurationAdapter;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GetPokemonList extends AsyncTask implements StringConstants {
     private Fragment fragment;
@@ -48,61 +46,58 @@ public class GetPokemonList extends AsyncTask implements StringConstants {
             wr.flush();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            ThreadLocal<String> line = new ThreadLocal<>();
-            AtomicBoolean continueReading = new AtomicBoolean(true);
+
+            ArrayList<String> lines = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+                pokemonList.add(null);
+            }
             ArrayList<Thread> threads = new ArrayList<>();
 
-            while (continueReading.get() && !isCancelled()) {
+            for (String l : lines) {
+                if (isCancelled()) break;
                 Thread thread = new Thread(() -> {
-                    try {
-                        line.set(reader.readLine());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    if (line.get() == null) {
-                        continueReading.set(false);
-                    } else {
-                        String[] pokemonData = Objects.requireNonNull(line.get()).split(";");
-                        pokemonList.add(new Pokemon(
-                                Integer.parseInt(pokemonData[0]),
-                                pokemonData[1],
-                                pokemonData[2],
-                                pokemonData[3],
-                                Integer.parseInt(pokemonData[4]),
-                                TaskHelper.getPokemonAbility(pokemonData[5]),
-                                Nature.getNature(pokemonData[6]),
-                                new ArrayList<Integer>() {{
-                                    add(Integer.parseInt(pokemonData[11]));
-                                    add(Integer.parseInt(pokemonData[12]));
-                                    add(Integer.parseInt(pokemonData[13]));
-                                    add(Integer.parseInt(pokemonData[14]));
-                                    add(Integer.parseInt(pokemonData[15]));
-                                    add(Integer.parseInt(pokemonData[16]));
-                                }},
-                                new ArrayList<Integer>() {{
-                                    add(Integer.parseInt(pokemonData[17]));
-                                    add(Integer.parseInt(pokemonData[18]));
-                                    add(Integer.parseInt(pokemonData[19]));
-                                    add(Integer.parseInt(pokemonData[20]));
-                                    add(Integer.parseInt(pokemonData[21]));
-                                    add(Integer.parseInt(pokemonData[22]));
-                                }},
-                                new ArrayList<Move>() {{
-                                    if (!pokemonData[7].equals(""))
-                                        add(TaskHelper.getMove(pokemonData[7]));
-                                    if (!pokemonData[8].equals(""))
-                                        add(TaskHelper.getMove(pokemonData[8]));
-                                    if (!pokemonData[9].equals(""))
-                                        add(TaskHelper.getMove(pokemonData[9]));
-                                    if (!pokemonData[10].equals(""))
-                                        add(TaskHelper.getMove(pokemonData[10]));
-                                }},
-                                TaskHelper.getPokemonTypes(pokemonData[2]),
-                                TaskHelper.getPokemonBaseStats(pokemonData[2]),
-                                TaskHelper.getPokemonOfficialArt(pokemonData[2]),
-                                TaskHelper.getPokemonSprite(pokemonData[2])
-                        ));
-                    }
+                    String[] pokemonData = Objects.requireNonNull(l).split(";");
+                    pokemonList.set(lines.indexOf(l), new Pokemon(
+                            Integer.parseInt(pokemonData[0]),
+                            pokemonData[1],
+                            pokemonData[2],
+                            pokemonData[3],
+                            Integer.parseInt(pokemonData[4]),
+                            TaskHelper.getPokemonAbility(pokemonData[5]),
+                            Nature.getNature(pokemonData[6]),
+                            new ArrayList<Integer>() {{
+                                add(Integer.parseInt(pokemonData[11]));
+                                add(Integer.parseInt(pokemonData[12]));
+                                add(Integer.parseInt(pokemonData[13]));
+                                add(Integer.parseInt(pokemonData[14]));
+                                add(Integer.parseInt(pokemonData[15]));
+                                add(Integer.parseInt(pokemonData[16]));
+                            }},
+                            new ArrayList<Integer>() {{
+                                add(Integer.parseInt(pokemonData[17]));
+                                add(Integer.parseInt(pokemonData[18]));
+                                add(Integer.parseInt(pokemonData[19]));
+                                add(Integer.parseInt(pokemonData[20]));
+                                add(Integer.parseInt(pokemonData[21]));
+                                add(Integer.parseInt(pokemonData[22]));
+                            }},
+                            new ArrayList<Move>() {{
+                                if (!pokemonData[7].equals(""))
+                                    add(TaskHelper.getMove(pokemonData[7]));
+                                if (!pokemonData[8].equals(""))
+                                    add(TaskHelper.getMove(pokemonData[8]));
+                                if (!pokemonData[9].equals(""))
+                                    add(TaskHelper.getMove(pokemonData[9]));
+                                if (!pokemonData[10].equals(""))
+                                    add(TaskHelper.getMove(pokemonData[10]));
+                            }},
+                            TaskHelper.getPokemonTypes(pokemonData[2]),
+                            TaskHelper.getPokemonBaseStats(pokemonData[2]),
+                            TaskHelper.getPokemonOfficialArt(pokemonData[2]),
+                            TaskHelper.getPokemonSprite(pokemonData[2])
+                    ));
                 });
                 thread.start();
                 threads.add(thread);

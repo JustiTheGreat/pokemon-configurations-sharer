@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Storage.setActivity(this);
+
         com.example.testapp.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                         ContextCompat.getColor(this, R.color.analogous_2),
                         ContextCompat.getColor(this, R.color.analogous_3),
                         ContextCompat.getColor(this, R.color.analogous_4),
-                        ContextCompat.getColor(this, R.color.analogous_5)
+                        //ContextCompat.getColor(this, R.color.analogous_5)
                 });
         getWindow().getDecorView().setBackground(gradientDrawable);
 
