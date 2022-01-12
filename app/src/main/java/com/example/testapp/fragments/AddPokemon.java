@@ -29,7 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.PokemonConstants;
+import com.example.testapp.MainActivity;
 import com.example.testapp.R;
 import com.example.testapp.Storage;
 import com.example.testapp.async_tasks.GetAbilities;
@@ -38,6 +38,7 @@ import com.example.testapp.async_tasks.GetBaseStats;
 import com.example.testapp.async_tasks.GetPokemonMoves;
 import com.example.testapp.async_tasks.database.InsertTask;
 import com.example.testapp.async_tasks.database.UpdateTask;
+import com.example.testapp.constants.PokemonConstants;
 import com.example.testapp.data_objects.Ability;
 import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.Nature;
@@ -115,6 +116,7 @@ public class AddPokemon extends Fragment implements PokemonConstants {
         super.onViewCreated(view, savedInstanceState);
 
         Storage.setAddPokemonFragment(this);
+        ((MainActivity) requireActivity()).setToolbarMenuVisible();
 
         if (Storage.pokemonIsSelectedForAdd()) {
             pokemon = Storage.getSelectedPokemonForAdd().copy();
@@ -470,7 +472,7 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     }
 
     private void setStatsInfo(Dialog dialog) {
-        int s = evsET.stream().mapToInt(evET -> Integer.parseInt(evET.getText().toString())).sum();
+        int s = evsET.stream().mapToInt(evET -> Integer.parseInt(evET.getText().toString().equals("")?"0":evET.getText().toString())).sum();
         if (s > 510) {
             dialog.findViewById(R.id.d_stats_error_message).setVisibility(View.VISIBLE);
         } else {
@@ -478,8 +480,8 @@ public class AddPokemon extends Fragment implements PokemonConstants {
             pokemon.setLevel(Integer.parseInt(levelET.getText().toString()));
             pokemon.setNature(Nature.getNature(natureSpinner.getSelectedItem().toString()));
             for (int i = 0; i < NUMBER_OF_STATS; i++) {
-                pokemon.getIVs().set(i, Integer.parseInt(ivsET.get(i).getText().toString()));
-                pokemon.getEVs().set(i, Integer.parseInt(evsET.get(i).getText().toString()));
+                pokemon.getIVs().set(i, Integer.parseInt(ivsET.get(i).getText().toString().equals("")?"0":ivsET.get(i).getText().toString()));
+                pokemon.getEVs().set(i, Integer.parseInt(evsET.get(i).getText().toString().equals("")?"0":evsET.get(i).getText().toString()));
             }
 
             binding.fAPLevel.setText(String.valueOf(pokemon.getLevel()));
@@ -543,8 +545,8 @@ public class AddPokemon extends Fragment implements PokemonConstants {
     private void setTotalStatsTVs() {
         int level = Integer.parseInt(levelET.getText().toString());
         Nature nature = Nature.getNature(natureSpinner.getSelectedItem().toString());
-        ArrayList<Integer> ivs = (ArrayList<Integer>) ivsET.stream().map(ivET -> Integer.parseInt(ivET.getText().toString())).collect(Collectors.toList());
-        ArrayList<Integer> evs = (ArrayList<Integer>) evsET.stream().map(evET -> Integer.parseInt(evET.getText().toString())).collect(Collectors.toList());
+        ArrayList<Integer> ivs = (ArrayList<Integer>) ivsET.stream().map(ivET -> Integer.parseInt(ivET.getText().toString().equals("")?"0":ivET.getText().toString())).collect(Collectors.toList());
+        ArrayList<Integer> evs = (ArrayList<Integer>) evsET.stream().map(evET -> Integer.parseInt(evET.getText().toString().equals("")?"0":evET.getText().toString())).collect(Collectors.toList());
         assert nature != null;
         ArrayList<Integer> totalStats = PokemonConstants.calculateStats(pokemon.getBaseStats(), ivs, evs, level, nature);
         totalTV.forEach(totTV -> totTV.setText(String.valueOf(totalStats.get(totalTV.indexOf(totTV)))));

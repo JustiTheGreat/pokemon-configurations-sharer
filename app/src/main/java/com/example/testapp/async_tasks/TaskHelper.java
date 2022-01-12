@@ -6,8 +6,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.PokemonConstants;
-import com.example.testapp.StringConstants;
+import com.example.testapp.constants.PokemonConstants;
+import com.example.testapp.constants.StringConstants;
 import com.example.testapp.data_objects.Ability;
 import com.example.testapp.data_objects.Move;
 import com.example.testapp.data_objects.MoveCategory;

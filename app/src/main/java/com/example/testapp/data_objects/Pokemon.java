@@ -1,12 +1,10 @@
 package com.example.testapp.data_objects;
 
 import android.graphics.Bitmap;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
-import com.example.testapp.PokemonConstants;
+import com.example.testapp.constants.PokemonConstants;
 
 import java.util.ArrayList;
 

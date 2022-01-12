@@ -1,6 +1,6 @@
 package com.example.testapp.fragments;
 
-import static com.example.testapp.PokemonConstants.NUMBER_OF_STATS;
+import static com.example.testapp.constants.PokemonConstants.NUMBER_OF_STATS;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
@@ -20,7 +20,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.testapp.PokemonConstants;
+import com.example.testapp.MainActivity;
+import com.example.testapp.constants.PokemonConstants;
 import com.example.testapp.R;
 import com.example.testapp.Storage;
 import com.example.testapp.async_tasks.database.DeleteTask;
@@ -48,6 +49,10 @@ public class PokemonDetails extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Storage.setPokemonDetailsFragment(this);
+        ((MainActivity) requireActivity()).setToolbarMenuVisible();
+
         if(!Storage.pokemonIsSelectedForDetails()){
             System.err.println("Call on PokemonDetails with null pokemon in storage");
             System.exit(-1);

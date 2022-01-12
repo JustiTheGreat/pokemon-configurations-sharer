@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.PokemonConstants;
+import com.example.testapp.constants.PokemonConstants;
 
 public class Type implements PokemonConstants{
     private final String name;
