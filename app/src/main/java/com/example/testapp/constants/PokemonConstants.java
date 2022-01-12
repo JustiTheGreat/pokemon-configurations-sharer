@@ -1,9 +1,10 @@
-package com.example.testapp;
+package com.example.testapp.constants;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.testapp.R;
 import com.example.testapp.data_objects.Nature;
 import com.example.testapp.data_objects.Type;
 

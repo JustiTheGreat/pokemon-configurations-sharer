@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.PokemonConstants;
+import com.example.testapp.constants.PokemonConstants;
 
 public class Type implements PokemonConstants{
     private final String name;
@@ -25,9 +25,9 @@ public class Type implements PokemonConstants{
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public static Type getType(String typeName) {
-        for (Type T : TYPES) {
-            if (typeName.equalsIgnoreCase(T.getName())) {
-                return T;
+        for (Type TYPE : TYPES) {
+            if (typeName.equalsIgnoreCase(TYPE.getName())) {
+                return TYPE;
             }
         }
         return null;

@@ -6,9 +6,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.example.testapp.PokemonConstants;
-import com.example.testapp.StringConstants;
-import com.example.testapp.async_tasks.TaskHelper;
+import com.example.testapp.constants.PokemonConstants;
+import com.example.testapp.constants.StringConstants;
 import com.example.testapp.data_objects.SpeciesRow;
 import com.example.testapp.fragments.AddPokemon;
 

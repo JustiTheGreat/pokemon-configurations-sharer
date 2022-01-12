@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/l_moveitem_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -77,7 +77,7 @@
                 android:id="@+id/l_moveitem_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="30"
+                android:layout_weight="20"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
                 android:text="@string/unknown"
@@ -87,7 +87,7 @@
                 android:id="@+id/l_moveitem_change"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="85"
+                android:layout_weight="90"
                 android:adjustViewBounds="true"
                 android:background="@color/main_color"
                 android:padding="10dp"
@@ -98,7 +98,7 @@
                 android:id="@+id/l_moveitem_remove"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="85"
+                android:layout_weight="90"
                 android:adjustViewBounds="true"
                 android:background="@color/main_color"
                 android:padding="10dp"

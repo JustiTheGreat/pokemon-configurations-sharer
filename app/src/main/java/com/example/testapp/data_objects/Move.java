@@ -46,8 +46,4 @@ public class Move {
     public String getDescription() {
         return description;
     }
-
-    public void print(){
-        System.err.println(name+" "+type+" "+category+" "+power+" "+accuracy+" "+PP+" "+description);
-    }
 }

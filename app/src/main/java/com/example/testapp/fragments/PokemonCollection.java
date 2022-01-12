@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import com.example.testapp.MainActivity;
 import com.example.testapp.R;
 import com.example.testapp.Storage;
 import com.example.testapp.async_tasks.CreatePokemon;
@@ -30,6 +31,7 @@ import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PokemonCollection extends Fragment {
     private FragmentCollectionBinding binding;
@@ -45,6 +47,11 @@ public class PokemonCollection extends Fragment {
     @SuppressLint("StaticFieldLeak")
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Storage.setPokemonCollectionFragment(this);
+        Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
+        ((MainActivity) requireActivity()).setToolbarMenuVisible();
+
         getPokemonListTask = new GetPokemonList();
         getPokemonListTask.execute(this);
 
@@ -128,7 +135,7 @@ public class PokemonCollection extends Fragment {
 
     public void setCollectionGridViewAdapter(BaseAdapter gridViewAdapter) {
         binding.fCGridview.setAdapter(gridViewAdapter);
-        //binding.fCProgressBar.setVisibility(View.GONE);
+        binding.fCProgressbar.setVisibility(View.GONE);
     }
 
     @Override

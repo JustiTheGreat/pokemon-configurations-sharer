@@ -6,9 +6,9 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.testapp.LoggedUser;
 import com.example.testapp.R;
-import com.example.testapp.StringConstants;
+import com.example.testapp.Storage;
+import com.example.testapp.constants.StringConstants;
 import com.example.testapp.data_objects.Pokemon;
 
 import java.io.BufferedReader;
@@ -39,7 +39,7 @@ public class InsertTask extends AsyncTask implements StringConstants {
             String data = encodeStrings(
                     new String[]{"username", "name", "species", "gender", "level", "ability", "nature", "move1", "move2", "move3", "move4", "ivs", "evs"},
                     new String[]{
-                            LoggedUser.getUsername(),
+                            Storage.getUsername(),
                             pokemon.getName(),
                             pokemon.getSpecies(),
                             pokemon.getGender(),

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.testapp.R;
-import com.example.testapp.StringConstants;
+import com.example.testapp.constants.StringConstants;
 import com.example.testapp.data_objects.Pokemon;
 
 import java.io.BufferedReader;

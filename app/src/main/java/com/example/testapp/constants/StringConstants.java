@@ -1,4 +1,4 @@
-package com.example.testapp;
+package com.example.testapp.constants;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
