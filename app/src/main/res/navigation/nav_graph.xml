@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.example.testapp.fragments.Login"
+        android:name="app.fragments.Login"
         android:label="@string/login"
         tools:layout="@layout/fragment_login">
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/register"
-        android:name="com.example.testapp.fragments.Register"
+        android:name="app.fragments.Register"
         android:label="@string/register"
         tools:layout="@layout/fragment_register">
 
@@ -30,7 +30,7 @@
     </fragment>
     <fragment
         android:id="@+id/collection"
-        android:name="com.example.testapp.fragments.PokemonCollection"
+        android:name="app.fragments.PokemonCollection"
         android:label="@string/my_pokemon_collection"
         tools:layout="@layout/fragment_collection">
         <action
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/details"
-        android:name="com.example.testapp.fragments.PokemonDetails"
+        android:name="app.fragments.PokemonDetails"
         android:label="@string/pokemon_details">
         <action
             android:id="@+id/action_details_to_collection"
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/add"
-        android:name="com.example.testapp.fragments.AddPokemon"
+        android:name="app.fragments.AddPokemon"
         android:label="@string/add_pokemon" >
         <action
             android:id="@+id/action_add_to_collection"
