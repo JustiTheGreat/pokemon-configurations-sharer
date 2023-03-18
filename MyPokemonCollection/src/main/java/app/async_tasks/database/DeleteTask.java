@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.testapp.R;
+import com.mypokemoncollection.R;
 import app.constants.StringConstants;
 import app.data_objects.Pokemon;
 
