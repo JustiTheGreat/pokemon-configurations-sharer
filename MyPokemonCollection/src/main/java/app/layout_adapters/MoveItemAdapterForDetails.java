@@ -9,13 +9,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.testapp.R;
+import com.mypokemoncollection.R;
+
+import java.util.List;
+
 import app.data_objects.Move;
 
-import java.util.ArrayList;
-
 public class MoveItemAdapterForDetails extends ArrayAdapter<Move> {
-    public MoveItemAdapterForDetails(Context context, ArrayList<Move> moves) {
+    public MoveItemAdapterForDetails(Context context, List<Move> moves) {
         super(context, 0, moves);
     }
 

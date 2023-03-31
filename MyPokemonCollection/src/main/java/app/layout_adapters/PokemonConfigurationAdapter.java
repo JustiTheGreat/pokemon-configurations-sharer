@@ -13,16 +13,18 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
-import com.example.testapp.R;
-import app.data_objects.GridViewCell;
+import com.mypokemoncollection.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import app.data_objects.GridViewCell;
 
 public class PokemonConfigurationAdapter extends BaseAdapter {
     private final Context context;
-    private final ArrayList<GridViewCell> gridViewCells;
+    private final List<GridViewCell> gridViewCells;
 
-    public PokemonConfigurationAdapter(Context context, ArrayList<GridViewCell> gridViewCells) {
+    public PokemonConfigurationAdapter(Context context, List<GridViewCell> gridViewCells) {
         this.context = context;
         this.gridViewCells = gridViewCells;
     }
@@ -39,7 +41,8 @@ public class PokemonConfigurationAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return gridViewCells.get(position).getId();
+        return position;
+        //return gridViewCells.get(position).getId();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -67,7 +70,7 @@ public class PokemonConfigurationAdapter extends BaseAdapter {
         TextView name = convertView.findViewById(R.id.name);
         name.setText(gridViewCell.getName());
 
-        ArrayList<TextView> types = new ArrayList<>();
+        List<TextView> types = new ArrayList<>();
         types.add(convertView.findViewById(R.id.type1));
         if (gridViewCell.getTypes().size() == 2) {
             types.add(convertView.findViewById(R.id.type2));

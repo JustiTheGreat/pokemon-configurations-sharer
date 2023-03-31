@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public interface StringConstants {
+    String SERVER_TIMEOUT = "Server timeout!";
     String LOGIN_SUCCESS = "Login successful!";
     String LOGIN_PROBLEMS = "Login problems!";
     String REGISTER_SUCCESS = "Register successful!";
@@ -34,13 +35,15 @@ public interface StringConstants {
     String MOVE_CATEGORY_LINK = "https://img.pokemondb.net/images/icons/move-?.png";
 
 
-    default String encodeStrings(String[] tags, String[] values) throws UnsupportedEncodingException, IllegalArgumentException {
+    static String encodeStrings(String[] tags, String[] values)
+            throws UnsupportedEncodingException, IllegalArgumentException {
         if (tags.length != values.length) {
             throw new IllegalArgumentException();
         }
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < tags.length; i++) {
-            s.append("&").append(URLEncoder.encode(tags[i], "UTF-8")).append("=").append(URLEncoder.encode(values[i], "UTF-8"));
+            s.append("&").append(URLEncoder.encode(tags[i], "UTF-8")).append("=")
+                    .append(URLEncoder.encode(values[i], "UTF-8"));
         }
         return s.substring(1);
     }

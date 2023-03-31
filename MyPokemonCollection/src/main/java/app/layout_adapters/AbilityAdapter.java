@@ -12,16 +12,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.R;
-import app.data_objects.Ability;
+import com.mypokemoncollection.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbilityAdapter extends ArrayAdapter<Ability> {
-    private final ArrayList<Ability> abilitiesRows;
+import app.data_objects.Ability;
 
-    public AbilityAdapter(Context context, ArrayList<Ability> abilitiesRows) {
+public class AbilityAdapter extends ArrayAdapter<Ability> {
+    private final List<Ability> abilitiesRows;
+
+    public AbilityAdapter(Context context, List<Ability> abilitiesRows) {
         super(context, R.layout.layout_ability, abilitiesRows);
         this.abilitiesRows = new ArrayList<>(abilitiesRows);
     }
@@ -41,7 +42,7 @@ public class AbilityAdapter extends ArrayAdapter<Ability> {
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<Ability> suggestions = new ArrayList<>();
+            List<Ability> suggestions = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
                 suggestions.addAll(abilitiesRows);
             } else {

@@ -1,72 +1,52 @@
 package app.async_tasks.database;
 
+import static android.content.ContentValues.TAG;
+import static app.constants.StringConstants.LOGIN_PROBLEMS;
+import static app.constants.StringConstants.LOGIN_SUCCESS;
+import static app.constants.collection_fields.Users.PASSWORD;
+import static app.constants.collection_fields.Users.USERNAME;
+
 import android.os.AsyncTask;
-import android.widget.Toast;
+import android.util.Log;
 
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import com.example.testapp.R;
-import app.Storage;
-import app.constants.StringConstants;
+import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.http.conn.ConnectTimeoutException;
+public class LoginTask extends AsyncTask<String,String,String> {
+    private final ICallbackContext callbackContext;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-
-public class LoginTask extends AsyncTask implements StringConstants {
-    private Fragment fragment;
-    private String username;
-
-    @Override
-    protected Object doInBackground(Object[] objects) {
-        try {
-            fragment = (Fragment) objects[0];
-            username = (String) objects[1];
-            String password = (String) objects[2];
-
-            String data = encodeStrings(
-                    new String[]{"username", "password"},
-                    new String[]{username, password}
-            );
-
-            URL url = new URL(LOGIN_LINK);
-            URLConnection conn;
-            try {
-                conn = url.openConnection();
-            } catch (ConnectTimeoutException e1) {
-                return SERVER_IS_OFFLINE;
-            }
-            conn.setDoOutput(true);
-
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(data);
-            wr.flush();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            if ((line = reader.readLine()) != null) sb.append(line);
-
-            return sb.toString();
-        } catch (IOException e) {
-            return LOGIN_PROBLEMS;
-        }
+    public LoginTask(ICallbackContext callbackContext) {
+        this.callbackContext = callbackContext;
     }
 
     @Override
-    protected void onPostExecute(Object o) {
-        if (o.equals(LOGIN_SUCCESS)) {
-            Storage.setUsername(username);
-            NavHostFragment
-                    .findNavController(fragment)
-                    .navigate(R.id.action_login_to_collection);
-        }
-        Toast.makeText(fragment.getContext(), (String) o, Toast.LENGTH_SHORT).show();
+    protected String doInBackground(String... params) {
+        AtomicReference<String> result = new AtomicReference<>();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .whereEqualTo(USERNAME, params[0])
+                .whereEqualTo(PASSWORD, params[1])
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Log.d(TAG, document.getId() + " => " + document.getData());
+                        }
+                        result.set(LOGIN_SUCCESS);
+                    } else {
+                        Log.w(TAG, "Error getting documents.", task.getException());
+                        result.set(LOGIN_PROBLEMS);
+                    }
+                });
+        return result.get();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        if (result.isEmpty()) callbackContext.timedOut();
+        else callbackContext.callback(this, result);
     }
 }

@@ -2,20 +2,14 @@ package app.data_objects;
 
 import android.graphics.Bitmap;
 
+import lombok.Getter;
+
 public class MoveCategory {
-    private final String name;
-    private final Bitmap icon;
+    @Getter private final String name;
+    @Getter private final Bitmap icon;
 
     public MoveCategory(String name, Bitmap icon) {
         this.name = name;
         this.icon = icon;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Bitmap getIcon() {
-        return icon;
     }
 }

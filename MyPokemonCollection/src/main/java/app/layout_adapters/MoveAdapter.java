@@ -13,11 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.example.testapp.R;
-import app.data_objects.Move;
+import com.mypokemoncollection.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import app.data_objects.Move;
 
 public class MoveAdapter extends ArrayAdapter<Move> {
     private final ArrayList<Move> movesRows;

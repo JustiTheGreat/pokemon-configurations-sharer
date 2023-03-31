@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
-
     <application
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
@@ -15,12 +13,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TestApp">
+        android:theme="@style/Theme.MyPokemonCollection"
+        >
         <activity
-            android:name="app.MainActivity"
+            android:name="app.ui.activities.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.TestApp.NoActionBar"
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

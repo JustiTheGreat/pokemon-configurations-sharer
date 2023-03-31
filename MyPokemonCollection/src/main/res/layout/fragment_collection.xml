@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="app.fragments.PokemonCollection">
+    tools:context="app.ui.fragments.PokemonCollection">
 
     <Button
         android:id="@+id/f_c_add_options_button"

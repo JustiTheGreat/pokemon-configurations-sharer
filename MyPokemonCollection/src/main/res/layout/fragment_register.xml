@@ -4,53 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="app.fragments.Register">
-
-    <TextView
-        android:id="@+id/register_textview_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="@string/username"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/register_textview_password"
-        app:layout_constraintEnd_toStartOf="@+id/register_textbox_username"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/register_textbox_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/register_textview_username"
-        app:layout_constraintTop_toTopOf="@+id/register_textview_username" />
-
-    <TextView
-        android:id="@+id/register_textview_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
-        android:text="@string/password"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/register_textview_email"
-        app:layout_constraintStart_toStartOf="@+id/register_textview_username" />
-
-    <EditText
-        android:id="@+id/register_textbox_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/register_textbox_username"
-        app:layout_constraintTop_toTopOf="@+id/register_textview_password" />
+    tools:context="app.ui.fragments.Register">
 
     <TextView
         android:id="@+id/register_textview_email"
@@ -60,8 +14,10 @@
         android:text="@string/email"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/register_button_registerbutton"
-        app:layout_constraintStart_toStartOf="@+id/register_textview_password" />
+        app:layout_constraintBottom_toTopOf="@+id/register_textview_password"
+        app:layout_constraintEnd_toStartOf="@+id/register_textbox_email"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/register_textbox_email"
@@ -70,8 +26,31 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/register_textbox_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/register_textview_email"
         app:layout_constraintTop_toTopOf="@+id/register_textview_email" />
+
+    <TextView
+        android:id="@+id/register_textview_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="@string/password"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/register_button_registerbutton"
+        app:layout_constraintStart_toStartOf="@+id/register_textview_email" />
+
+    <EditText
+        android:id="@+id/register_textbox_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/register_textbox_email"
+        app:layout_constraintTop_toTopOf="@+id/register_textview_password" />
 
     <Button
         android:id="@+id/register_button_registerbutton"

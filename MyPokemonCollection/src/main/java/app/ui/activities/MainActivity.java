@@ -1,32 +1,28 @@
-package app;
+package app.ui.activities;
 
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuItem;
+import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import app.constants.FragmentConstants;
+import com.google.firebase.auth.FirebaseAuth;
+import com.mypokemoncollection.R;
+import com.mypokemoncollection.databinding.ActivityMainBinding;
 
-import com.example.testapp.R;
-import com.example.testapp.databinding.ActivityMainBinding;
-
-public class MainActivity extends AppCompatActivity implements FragmentConstants {
-
+public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -54,42 +50,42 @@ public class MainActivity extends AppCompatActivity implements FragmentConstants
         return true;
     }
 
-    public void setToolbarMenuVisible(){
-        binding.toolbar.getMenu().setGroupVisible(0,true);
-    }
+//    public void setToolbarMenuVisible(){
+//        binding.toolbar.getMenu().setGroupVisible(0,true);
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.m_log_out) {
-            switch(Storage.getCurrentFragmentType()){
-                case COLLECTION:
-                    binding.toolbar.getMenu().setGroupVisible(0,false);
-                    Storage.setCurrentFragmentType(OTHER);
-                    NavHostFragment
-                            .findNavController(Storage.getPokemonCollectionFragment())
-                            .navigate(R.id.action_collection_to_login);
-                    break;
-                case DETAILS:
-                    binding.toolbar.getMenu().setGroupVisible(0,false);
-                    Storage.setCurrentFragmentType(OTHER);
-                    NavHostFragment
-                            .findNavController(Storage.getPokemonDetailsFragment())
-                            .navigate(R.id.action_details_to_login);
-                    break;
-                case ADD:
-                    binding.toolbar.getMenu().setGroupVisible(0,false);
-                    Storage.setCurrentFragmentType(OTHER);
-                    NavHostFragment
-                            .findNavController(Storage.getAddPokemonFragment())
-                            .navigate(R.id.action_add_to_login);
-                    break;
-                default:
-            }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.m_log_out) {
+//            switch(Storage.getCurrentFragmentType()){
+//                case COLLECTION:
+//                    binding.toolbar.getMenu().setGroupVisible(0,false);
+//                    Storage.setCurrentFragmentType(OTHER);
+//                    NavHostFragment
+//                            .findNavController(Storage.getPokemonCollectionFragment())
+//                            .navigate(R.id.action_collection_to_login);
+//                    break;
+//                case DETAILS:
+//                    binding.toolbar.getMenu().setGroupVisible(0,false);
+//                    Storage.setCurrentFragmentType(OTHER);
+//                    NavHostFragment
+//                            .findNavController(Storage.getPokemonDetailsFragment())
+//                            .navigate(R.id.action_details_to_login);
+//                    break;
+//                case ADD:
+//                    binding.toolbar.getMenu().setGroupVisible(0,false);
+//                    Storage.setCurrentFragmentType(OTHER);
+//                    NavHostFragment
+//                            .findNavController(Storage.getAddPokemonFragment())
+//                            .navigate(R.id.action_add_to_login);
+//                    break;
+//                default:
+//            }
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -1,35 +1,24 @@
 package app.data_objects;
 
-import android.os.Build;
+import static app.constants.PokemonConstants.NATURES;
 
-import androidx.annotation.RequiresApi;
+import java.util.List;
 
-import app.constants.PokemonConstants;
+import lombok.Getter;
 
-import java.util.ArrayList;
+public class Nature {
+    @Getter private final String name;
+    @Getter private final List<Double> statsMultipliers;
 
-public class Nature implements PokemonConstants{
-    private final String name;
-    private final ArrayList<Double> effects;
-
-    public Nature(String name, ArrayList<Double> effects) {
+    public Nature(String name, List<Double> effects) {
         this.name = name;
-        this.effects = effects;
+        this.statsMultipliers = effects;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<Double> getEffects() {
-        return effects;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.R)
     public static Nature getNature(String natureName) {
-        for (Nature N : NATURES) {
-            if (natureName.equals(N.getName())) {
-                return N;
+        for (Nature NATURE : NATURES) {
+            if (natureName.equals(NATURE.getName())) {
+                return NATURE;
             }
         }
         return null;

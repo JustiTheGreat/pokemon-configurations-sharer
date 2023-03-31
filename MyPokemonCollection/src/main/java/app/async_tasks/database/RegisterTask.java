@@ -1,68 +1,53 @@
 package app.async_tasks.database;
 
+import static android.content.ContentValues.TAG;
+import static app.constants.StringConstants.REGISTER_PROBLEMS;
+import static app.constants.StringConstants.REGISTER_SUCCESS;
+
 import android.os.AsyncTask;
-import android.widget.Toast;
+import android.util.Log;
 
-import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import com.example.testapp.R;
-import app.constants.StringConstants;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
+import app.constants.collection_fields.Users;
 
-public class RegisterTask extends AsyncTask implements StringConstants {
-    private Fragment fragment;
+public class RegisterTask extends AsyncTask<String, String, String> {
+    private final ICallbackContext callbackContext;
 
-    @Override
-    protected Object doInBackground(Object[] objects) {
-        try {
-            fragment = (Fragment) objects[0];
-            String username = (String) objects[1];
-            String email = (String) objects[2];
-            String password = (String) objects[3];
-
-            String data = encodeStrings(
-                    new String[]{"username", "email", "password"},
-                    new String[]{username, password, email}
-            );
-
-            URL url = new URL(REGISTER_LINK);
-            URLConnection conn;
-            try {
-                conn = url.openConnection();
-            } catch (IOException e1) {
-                return SERVER_IS_OFFLINE;
-            }
-            conn.setDoOutput(true);
-
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(data);
-            wr.flush();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            if ((line = reader.readLine()) != null) sb.append(line);
-
-            return sb.toString();
-        } catch (IOException e) {
-            return REGISTER_PROBLEMS;
-        }
+    public RegisterTask(ICallbackContext callbackContext) {
+        this.callbackContext = callbackContext;
     }
 
     @Override
-    protected void onPostExecute(Object o) {
-        if (o.equals(REGISTER_SUCCESS)) {
-            NavHostFragment
-                    .findNavController(fragment)
-                    .navigate(R.id.action_register_to_login);
-        }
-        Toast.makeText(fragment.getActivity(), (String) o, Toast.LENGTH_SHORT).show();
+    protected String doInBackground(String... params) {
+        AtomicReference<String> result = new AtomicReference<>();
+
+        Map<String, Object> user = new HashMap<>();
+        user.put(Users.USERNAME, params[0]);
+        user.put(Users.EMAIL, params[1]);
+        user.put(Users.PASSWORD, params[2]);
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .add(user)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    result.set(REGISTER_SUCCESS);
+                })
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Error adding document", e);
+                    result.set(REGISTER_PROBLEMS);
+                });
+        return result.get();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        if (result.isEmpty()) callbackContext.timedOut();
+        else callbackContext.callback(this, result);
     }
 }

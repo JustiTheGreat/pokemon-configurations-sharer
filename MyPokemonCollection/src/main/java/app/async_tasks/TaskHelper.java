@@ -140,6 +140,7 @@ public class TaskHelper implements PokemonConstants, StringConstants {
             for (Element e : elements) {
                 if (e.text().equals(s)) {
                     String pokedexNumber = e.parent().parent().getElementsByClass("infocard-cell-data").get(0).text();
+                    if(pokedexNumber.length()>3) pokedexNumber = pokedexNumber.substring(1);
                     URL url = new URL(POKEMON_OFFICIAL_ART_LINK.replace("?", pokedexNumber));
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setDoInput(true);
@@ -176,6 +177,7 @@ public class TaskHelper implements PokemonConstants, StringConstants {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public static Move getMove(String moveName) {
+        if(moveName.isEmpty())return null;
         Document doc = null;
         try {
             doc = Jsoup.connect(MOVES_LINK).get();
