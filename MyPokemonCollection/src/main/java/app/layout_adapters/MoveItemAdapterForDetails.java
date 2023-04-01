@@ -45,7 +45,7 @@ public class MoveItemAdapterForDetails extends ArrayAdapter<Move> {
         accuracy.setText(String.valueOf(move.getAccuracy()));
 
         TextView PP = convertView.findViewById(R.id.l_moveitem_pp);
-        PP.setText(String.valueOf(move.getPP()));
+        PP.setText(String.valueOf(move.getPp()));
 
         TextView description = convertView.findViewById(R.id.l_moveitem_description);
         description.setText(move.getDescription());

@@ -1,5 +1,8 @@
 package app.async_tasks;
 
+import static app.constants.Gender.FEMALE_GENDER;
+import static app.constants.Gender.MALE_GENDER;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -11,6 +14,7 @@ import app.constants.StringConstants;
 import app.data_objects.Ability;
 import app.data_objects.Move;
 import app.data_objects.MoveCategory;
+import app.data_objects.Pokemon;
 import app.data_objects.SpeciesRow;
 import app.data_objects.Type;
 
@@ -24,6 +28,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class TaskHelper implements PokemonConstants, StringConstants {
@@ -80,27 +85,29 @@ public class TaskHelper implements PokemonConstants, StringConstants {
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static ArrayList<Type> getPokemonTypes(String s) {
-        Document doc = null;
-        try {
-            doc = Jsoup.connect(ALL_POKEMON_LINK).get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assert doc != null;
-        Elements elements = doc.getElementsByClass("ent-name");
-        for (Element e : elements) {
-            if (e.text().equals(s)) {
-                return (ArrayList<Type>) e.parent().parent().getElementsByClass("type-icon")
-                        .stream()
-                        .map(Element::text)
-                        .map(Type::getType)
-                        .collect(Collectors.toList());
-            }
-        }
-        return null;
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public static List<Type> getPokemonTypes(long species) {
+//        Document doc = null;
+//        try {
+//            doc = Jsoup.connect(ALL_POKEMON_LINK).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        assert doc != null;
+////        Elements elements = doc.getElementsByClass("ent-name");
+//        Elements elements = doc.getElementsByClass("infocard-cell-data");
+//        for (Element e : elements) {
+//            long value = Long.parseLong(e.text().replaceFirst("^0+(?!$)", ""));
+//            if (value == species) {
+//                return e.parent().parent().getElementsByClass("type-icon")
+//                        .stream()
+//                        .map(Element::text)
+//                        .map(Type::getType)
+//                        .collect(Collectors.toList());
+//            }
+//        }
+//        return null;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static ArrayList<Type> getPokemonTypes(Element element) {
@@ -111,8 +118,29 @@ public class TaskHelper implements PokemonConstants, StringConstants {
                 .collect(Collectors.toList());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static ArrayList<Integer> getPokemonBaseStats(String s) {
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public static List<Integer> getPokemonBaseStats(long species) {
+//        Document doc = null;
+//        try {
+//            doc = Jsoup.connect(ALL_POKEMON_LINK).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        assert doc != null;
+//        Elements elements = doc.getElementsByClass("ent-name");
+//        for (Element e : elements) {
+//            if (e.text().equals(s)) {
+//                ArrayList<Integer> baseStats = (ArrayList<Integer>) e.parent().parent().getElementsByClass("cell-num")
+//                        .stream().map(bs -> Integer.parseInt(bs.text())).collect(Collectors.toList());
+//                baseStats.remove(0);
+//                return baseStats;
+//            }
+//        }
+//        return null;
+//    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static void getPokemonData(Pokemon pokemon) {
         Document doc = null;
         try {
             doc = Jsoup.connect(ALL_POKEMON_LINK).get();
@@ -120,46 +148,104 @@ public class TaskHelper implements PokemonConstants, StringConstants {
             e.printStackTrace();
         }
         assert doc != null;
-        Elements elements = doc.getElementsByClass("ent-name");
+
+        Elements elements = doc.getElementsByClass("infocard-cell-data");
         for (Element e : elements) {
-            if (e.text().equals(s)) {
-                ArrayList<Integer> baseStats = (ArrayList<Integer>) e.parent().parent().getElementsByClass("cell-num")
-                        .stream().map(bs -> Integer.parseInt(bs.text())).collect(Collectors.toList());
+            long value = Long.parseLong(e.text().replaceFirst("^0+(?!$)", ""));
+            if (value == pokemon.getPokedexNumber()) {
+                Element parent = e.parent().parent();
+                //species
+                String species = parent.getElementsByClass("ent-name").text();
+                pokemon.setSpecies(species);
+                //types
+                List<Type> types = parent.getElementsByClass("type-icon").stream()
+                        .map(Element::text)
+                        .map(Type::getType)
+                        .collect(Collectors.toList());
+                pokemon.setTypes(types);
+                //base stats
+                List<Long> baseStats = parent.getElementsByClass("cell-num").stream()
+                        .map(bs -> Long.parseLong(bs.text()))
+                        .collect(Collectors.toList());
                 baseStats.remove(0);
-                return baseStats;
+                baseStats.remove(0);
+                pokemon.setBaseStats(baseStats);
+                //sprite
+//                String s = species.toLowerCase()
+//                        .replace(FEMALE, "-f")
+//                        .replace(MALE, "-m")
+//                        .replace("'", "")
+//                        .replace(". ", "-");
+//                try {
+//                    URL url = new URL(POKEMON_SPRITE_LINK.replace("?", s));
+//                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                    connection.setDoInput(true);
+//                    connection.connect();
+//                    InputStream input = connection.getInputStream();
+//                    Bitmap sprite = BitmapFactory.decodeStream(input);
+//                } catch (IOException | NullPointerException e) {
+//                    e.printStackTrace();
+//                }
+                break;
             }
         }
-        return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public static Bitmap getPokemonOfficialArt(String s) {
-        try {
-            Document doc = Jsoup.connect(ALL_POKEMON_LINK).get();
-            Elements elements = doc.getElementsByClass("ent-name");
-            for (Element e : elements) {
-                if (e.text().equals(s)) {
-                    String pokedexNumber = e.parent().parent().getElementsByClass("infocard-cell-data").get(0).text();
-                    if(pokedexNumber.length()>3) pokedexNumber = pokedexNumber.substring(1);
-                    URL url = new URL(POKEMON_OFFICIAL_ART_LINK.replace("?", pokedexNumber));
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    InputStream input = connection.getInputStream();
-                    return BitmapFactory.decodeStream(input);
-                }
-            }
-        } catch (IOException | NullPointerException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    static final String LINK = "https://pokemondb.net/pokedex/?";
+
+//    @RequiresApi(api = Build.VERSION_CODES.R)
+//    public static void getPokemonDataFromPage(Pokemon pokemon) {
+//        Document doc = null;
+//        try {
+//            doc = Jsoup.connect(LINK.replace("?", "" + pokemon.getPokedexNumber())).get();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        assert doc != null;
+//
+//        String species = doc.select("h1").get(0).text();
+//        pokemon.setSpecies(species);
+//
+//        List<Type> types;
+//        Elements h2s = doc.select("h2");
+//        for(Element h2 : h2s){
+//            if(h2.text().equals("Pokédex data")){
+//                types = h2.parent().getElementsByClass("type-icon").stream()
+//                        .map(Element::text)
+//                        .map(Type::getType)
+//                        .collect(Collectors.toList());
+//            }
+//        }
+//    }
+
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public static Bitmap getPokemonOfficialArt(String s) {
+//        try {
+//            Document doc = Jsoup.connect(ALL_POKEMON_LINK).get();
+//            Elements elements = doc.getElementsByClass("ent-name");
+//            for (Element e : elements) {
+//                if (e.text().equals(s)) {
+//                    String pokedexNumber = e.parent().parent().getElementsByClass("infocard-cell-data").get(0).text();
+//                    if(pokedexNumber.length()>3) pokedexNumber = pokedexNumber.substring(1);
+//                    URL url = new URL(POKEMON_OFFICIAL_ART_LINK.replace("?", pokedexNumber));
+//                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                    connection.setDoInput(true);
+//                    connection.connect();
+//                    InputStream input = connection.getInputStream();
+//                    return BitmapFactory.decodeStream(input);
+//                }
+//            }
+//        } catch (IOException | NullPointerException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public static Bitmap getPokemonSprite(String pokemonSpecies) {
         String s = pokemonSpecies.toLowerCase()
-                .replace(FEMALE, "-f")
-                .replace(MALE, "-m")
+                .replace(FEMALE_GENDER, "-f")
+                .replace(MALE_GENDER, "-m")
                 .replace("'", "")
                 .replace(". ", "-");
         try {
@@ -228,8 +314,8 @@ public class TaskHelper implements PokemonConstants, StringConstants {
     public static ArrayList<Ability> getPokemonAbilities(String pokemonName) {
         ArrayList<Ability> abilitiesRows = new ArrayList<>();
         String formatedPokemonName = pokemonName.toLowerCase()
-                .replace(FEMALE, "-f")
-                .replace(MALE, "-m")
+                .replace(FEMALE_GENDER, "-f")
+                .replace(MALE_GENDER, "-m")
                 .replace("'", "")
                 .replace(". ", "-");
         Document doc = null;
@@ -249,8 +335,8 @@ public class TaskHelper implements PokemonConstants, StringConstants {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public static ArrayList<Move> getPokemonMoves(String pokemonName) {
         String formattedPokemonName = pokemonName.toLowerCase()
-                .replace(FEMALE, "-f")
-                .replace(MALE, "-m")
+                .replace(FEMALE_GENDER, "-f")
+                .replace(MALE_GENDER, "-m")
                 .replace("'", "")
                 .replace(". ", "-");
         Document doc = null;

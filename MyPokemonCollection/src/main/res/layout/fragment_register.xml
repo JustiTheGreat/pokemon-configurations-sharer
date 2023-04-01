@@ -7,53 +7,55 @@
     tools:context="app.ui.fragments.Register">
 
     <TextView
-        android:id="@+id/register_textview_email"
+        android:id="@+id/register_emailTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:text="@string/email"
+        android:text="@string/email_descriptor"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/register_textview_password"
-        app:layout_constraintEnd_toStartOf="@+id/register_textbox_email"
+        app:layout_constraintBottom_toTopOf="@+id/register_passwordTV"
+        app:layout_constraintEnd_toStartOf="@+id/register_emailTB"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/register_textbox_email"
+        android:id="@+id/register_emailTB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/email_hint"
         android:inputType="textEmailAddress"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/register_textview_email"
-        app:layout_constraintTop_toTopOf="@+id/register_textview_email" />
+        app:layout_constraintStart_toEndOf="@+id/register_emailTV"
+        app:layout_constraintTop_toTopOf="@+id/register_emailTV" />
 
     <TextView
-        android:id="@+id/register_textview_password"
+        android:id="@+id/register_passwordTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:text="@string/password"
+        android:text="@string/password_descriptor"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/register_button_registerbutton"
-        app:layout_constraintStart_toStartOf="@+id/register_textview_email" />
+        app:layout_constraintBottom_toTopOf="@+id/register_registerB"
+        app:layout_constraintStart_toStartOf="@+id/register_emailTV" />
 
     <EditText
-        android:id="@+id/register_textbox_password"
+        android:id="@+id/register_passwordTB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/register_textbox_email"
-        app:layout_constraintTop_toTopOf="@+id/register_textview_password" />
+        app:layout_constraintStart_toStartOf="@+id/register_emailTB"
+        app:layout_constraintTop_toTopOf="@+id/register_passwordTV" />
 
     <Button
-        android:id="@+id/register_button_registerbutton"
+        android:id="@+id/register_registerB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/main_color"

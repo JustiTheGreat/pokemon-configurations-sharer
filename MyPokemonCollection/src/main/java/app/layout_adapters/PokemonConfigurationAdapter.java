@@ -18,13 +18,13 @@ import com.mypokemoncollection.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.data_objects.GridViewCell;
+import app.data_objects.Pokemon;
 
 public class PokemonConfigurationAdapter extends BaseAdapter {
     private final Context context;
-    private final List<GridViewCell> gridViewCells;
+    private final List<Pokemon> gridViewCells;
 
-    public PokemonConfigurationAdapter(Context context, List<GridViewCell> gridViewCells) {
+    public PokemonConfigurationAdapter(Context context, List<Pokemon> gridViewCells) {
         this.context = context;
         this.gridViewCells = gridViewCells;
     }
@@ -42,13 +42,12 @@ public class PokemonConfigurationAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return position;
-        //return gridViewCells.get(position).getId();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        GridViewCell gridViewCell = (GridViewCell) getItem(position);
+        Pokemon gridViewCell = (Pokemon) getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.layout_collection, parent, false);

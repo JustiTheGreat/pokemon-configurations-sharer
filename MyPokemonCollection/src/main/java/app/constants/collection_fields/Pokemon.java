@@ -2,8 +2,9 @@ package app.constants.collection_fields;
 
 public interface Pokemon {
     String NAME = "name";
-    String SPECIES = "species";
+    String POKEDEX_NUMBER = "pokedex_number";
     String GENDER = "gender";
+    String SHINY = "shiny";
     String LEVEL = "level";
     String ABILITY = "ability";
     String NATURE = "nature";
@@ -19,6 +20,5 @@ public interface Pokemon {
     String SPECIAL_ATTACK = "special_attack";
     String SPECIAL_DEFENSE = "special_defense";
     String SPEED = "speed";
-
     String UID = "user_id";
 }

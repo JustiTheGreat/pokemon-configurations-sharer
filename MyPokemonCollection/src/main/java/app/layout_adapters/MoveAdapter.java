@@ -98,7 +98,7 @@ public class MoveAdapter extends ArrayAdapter<Move> {
         accuracy.setText(String.valueOf(move.getAccuracy()));
 
         TextView PP = convertView.findViewById(R.id.l_move_pp);
-        PP.setText(String.valueOf(move.getPP()));
+        PP.setText(String.valueOf(move.getPp()));
 
         return convertView;
     }

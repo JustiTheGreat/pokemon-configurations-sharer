@@ -7,53 +7,55 @@
     tools:context="app.ui.fragments.Login">
 
     <TextView
-        android:id="@+id/login_textview_username"
+        android:id="@+id/login_usernameTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:text="@string/email"
+        android:text="@string/email_descriptor"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/login_textview_password"
-        app:layout_constraintEnd_toStartOf="@+id/login_textbox_email"
+        app:layout_constraintBottom_toTopOf="@+id/login_passwordTV"
+        app:layout_constraintEnd_toStartOf="@+id/login_emailTB"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/login_textbox_email"
+        android:id="@+id/login_emailTB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:hint="@string/email_hint"
+        android:inputType="textEmailAddress"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/login_textview_username"
-        app:layout_constraintTop_toTopOf="@+id/login_textview_username" />
+        app:layout_constraintStart_toEndOf="@+id/login_usernameTV"
+        app:layout_constraintTop_toTopOf="@+id/login_usernameTV" />
 
     <TextView
-        android:id="@+id/login_textview_password"
+        android:id="@+id/login_passwordTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
-        android:text="@string/password"
+        android:text="@string/password_descriptor"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/login_button_loginbutton"
-        app:layout_constraintStart_toStartOf="@+id/login_textview_username" />
+        app:layout_constraintBottom_toTopOf="@+id/login_loginB"
+        app:layout_constraintStart_toStartOf="@+id/login_usernameTV" />
 
     <EditText
-        android:id="@+id/login_textbox_password"
+        android:id="@+id/login_passwordTB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/login_textbox_email"
-        app:layout_constraintTop_toTopOf="@+id/login_textview_password" />
+        app:layout_constraintStart_toStartOf="@+id/login_emailTB"
+        app:layout_constraintTop_toTopOf="@+id/login_passwordTV" />
 
     <Button
-        android:id="@+id/login_button_loginbutton"
+        android:id="@+id/login_loginB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/main_color"
@@ -68,7 +70,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/login_textview_registertext"
+        android:id="@+id/login_registerTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -77,10 +79,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button_loginbutton" />
+        app:layout_constraintTop_toBottomOf="@+id/login_loginB" />
 
     <TextView
-        android:id="@+id/login_textview_registerlink"
+        android:id="@+id/login_registerTVL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/click_here_to_register"
@@ -90,6 +92,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_textview_registertext" />
+        app:layout_constraintTop_toBottomOf="@+id/login_registerTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

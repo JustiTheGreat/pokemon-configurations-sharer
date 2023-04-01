@@ -1,20 +1,27 @@
 package app.ui.activities;
 
+import static app.constants.FragmentConstants.ADD;
+import static app.constants.FragmentConstants.COLLECTION;
+import static app.constants.FragmentConstants.DETAILS;
+import static app.constants.FragmentConstants.OTHER;
+
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.Window;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.ActivityMainBinding;
+
+import app.Storage;
 
 public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
@@ -50,42 +57,42 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    public void setToolbarMenuVisible(){
-//        binding.toolbar.getMenu().setGroupVisible(0,true);
-//    }
+    public void setToolbarMenuVisible(){
+        binding.toolbar.getMenu().setGroupVisible(0,true);
+    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.m_log_out) {
-//            switch(Storage.getCurrentFragmentType()){
-//                case COLLECTION:
-//                    binding.toolbar.getMenu().setGroupVisible(0,false);
-//                    Storage.setCurrentFragmentType(OTHER);
-//                    NavHostFragment
-//                            .findNavController(Storage.getPokemonCollectionFragment())
-//                            .navigate(R.id.action_collection_to_login);
-//                    break;
-//                case DETAILS:
-//                    binding.toolbar.getMenu().setGroupVisible(0,false);
-//                    Storage.setCurrentFragmentType(OTHER);
-//                    NavHostFragment
-//                            .findNavController(Storage.getPokemonDetailsFragment())
-//                            .navigate(R.id.action_details_to_login);
-//                    break;
-//                case ADD:
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.m_log_out) {
+            binding.toolbar.getMenu().setGroupVisible(0,false);
+            switch(Storage.getCurrentFragmentType()){
+                case COLLECTION:
+                    Storage.setCurrentFragmentType(OTHER);
+                    NavHostFragment
+                            .findNavController(Storage.getPokemonCollectionFragment())
+                            .navigate(R.id.action_collection_to_login);
+                    break;
+                case DETAILS:
+                    binding.toolbar.getMenu().setGroupVisible(0,false);
+                    Storage.setCurrentFragmentType(OTHER);
+                    NavHostFragment
+                            .findNavController(Storage.getPokemonDetailsFragment())
+                            .navigate(R.id.action_details_to_login);
+                    break;
+                case ADD:
 //                    binding.toolbar.getMenu().setGroupVisible(0,false);
 //                    Storage.setCurrentFragmentType(OTHER);
 //                    NavHostFragment
 //                            .findNavController(Storage.getAddPokemonFragment())
 //                            .navigate(R.id.action_add_to_login);
-//                    break;
-//                default:
-//            }
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+                    break;
+                default:
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -10,9 +10,10 @@ import app.data_objects.Type;
 
 public interface PokemonConstants {
     int POKEDEX_NUMBER_LIMIT = 151;
-    String MALE = "♂";
-    String FEMALE = "♀";
     int NUMBER_OF_STATS = 6;
+
+    String NORMAL_VALUE = "n";
+    String SHINY_VALUE = "r";
 
     Type TYPE_NORMAL = new Type("normal", R.color.normal);
     Type TYPE_FIGHTING = new Type("fighting", R.color.fighting);
