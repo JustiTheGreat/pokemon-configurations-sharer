@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import app.Storage;
+import app.storages.Storage;
 import app.data_objects.Move;
 import app.data_objects.Pokemon;
 import app.layout_adapters.MoveItemAdapterForDetails;
@@ -51,12 +51,12 @@ public class PokemonDetails extends UtilityFragment {
 //        Storage.setPokemonDetailsFragment(this);
 //        ((MainActivity) requireActivity()).setToolbarMenuVisible();
 
-        if (Storage.getSelectedPokemonForDetails() == null) {
+        if (Storage.getSelectedPokemon() == null) {
             toast(ERROR_SELECTING_POKEMON);
             navigateTo(R.id.action_details_to_collection);
             return;
         }
-        pokemon = Storage.getSelectedPokemonForDetails();
+        pokemon = Storage.getSelectedPokemon();
         setPageInfo();
 
         int ability_weight = 5, stats_weight = 20, moves_weight = 32;
@@ -74,7 +74,6 @@ public class PokemonDetails extends UtilityFragment {
         setHideClickListener(binding.fPDStats, binding.fPDHideStats, stats_weight);
         setHideClickListener(binding.fPDMoves, binding.fPDHideMoves, moves_weight);
 
-        //end of adapting layouts
         binding.fPDDelete.setOnClickListener(v -> deletePokemon());
         binding.fPDQrCode.setOnClickListener(v -> showQRCode());
         binding.fPDEdit.setOnClickListener(v -> editPokemon());
@@ -104,7 +103,6 @@ public class PokemonDetails extends UtilityFragment {
     }
 
     private void editPokemon() {
-        Storage.setSelectedPokemonForAdd(pokemon);
         navigateTo(R.id.action_details_to_add);
     }
 

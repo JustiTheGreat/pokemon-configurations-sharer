@@ -56,6 +56,16 @@ public class Pokemon implements Serializable {
         this.sprite = sprite;
     }
 
+    public Pokemon(long pokedexNumber, String species, List<Type> types, List<Long> baseStats, Bitmap sprite) {
+        this.pokedexNumber = pokedexNumber;
+        this.species = species;
+        this.shiny = false;
+        this.level = -1;
+        this.types = types;
+        this.baseStats = baseStats;
+        this.sprite = sprite;
+    }
+
     public String toStringOfTransmissibleData() {
         StringBuilder s = new StringBuilder(""
                 + name + ";"

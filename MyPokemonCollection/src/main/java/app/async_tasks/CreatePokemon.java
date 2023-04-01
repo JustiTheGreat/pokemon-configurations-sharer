@@ -6,7 +6,7 @@
 //import androidx.annotation.RequiresApi;
 //import androidx.fragment.app.Fragment;
 //
-//import app.Storage;
+//import app.storages.Storage;
 //import app.data_objects.Move;
 //import app.data_objects.Nature;
 //import app.data_objects.Pokemon;

@@ -1,32 +1,33 @@
-//package app.async_tasks;
-//
-//import android.os.AsyncTask;
-//import android.os.Build;
-//
-//import androidx.annotation.RequiresApi;
-//import androidx.fragment.app.Fragment;
-//
-//import app.ui.fragments.AddPokemon;
-//import app.data_objects.Move;
-//
-//import java.util.ArrayList;
-//
-//public class GetPokemonMoves extends AsyncTask {
-//    private Fragment fragment;
-//    private ArrayList<Move> moves;
-//
-//    @RequiresApi(api = Build.VERSION_CODES.R)
-//    @Override
-//    protected Object doInBackground(Object[] objects) {
-//        fragment = (Fragment) objects[0];
-//        moves = TaskHelper.getPokemonMoves((String) objects[1]);
-//        return null;
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.R)
-//    @Override
-//    protected void onPostExecute(Object o) {
-//        if (isCancelled()) return;
-//        ((AddPokemon) fragment).setMoves(moves);
-//    }
-//}
+package app.async_tasks;
+
+import android.os.AsyncTask;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.util.List;
+
+import app.async_tasks.database.ICallbackContext;
+import app.data_objects.Move;
+
+public class GetPokemonMoves extends AsyncTask<Long, String, List<Move>> {
+    private final ICallbackContext callbackContext;
+
+    public GetPokemonMoves(ICallbackContext callbackContext) {
+        this.callbackContext = callbackContext;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @Override
+    protected List<Move> doInBackground(Long... longs) {
+        return TaskHelper.getPokemonMoves(longs[0]);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @Override
+    protected void onPostExecute(List<Move> result) {
+        if (isCancelled()) return;
+        if (result == null) callbackContext.timedOut();
+        else callbackContext.callback(this, result);
+    }
+}

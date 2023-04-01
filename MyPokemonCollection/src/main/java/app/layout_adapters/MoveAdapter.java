@@ -21,16 +21,16 @@ import java.util.List;
 import app.data_objects.Move;
 
 public class MoveAdapter extends ArrayAdapter<Move> {
-    private final ArrayList<Move> movesRows;
+    private final List<Move> moves;
 
-    public MoveAdapter(Context context, ArrayList<Move> movesRows) {
-        super(context, R.layout.layout_move, movesRows);
-        this.movesRows = new ArrayList<>(movesRows);
+    public MoveAdapter(Context context, List<Move> moves) {
+        super(context, R.layout.layout_move, moves);
+        this.moves = new ArrayList<>(moves);
     }
 
     @Override
     public Move getItem(int index) {
-        return movesRows.get(index);
+        return moves.get(index);
     }
 
     @NonNull
@@ -43,12 +43,12 @@ public class MoveAdapter extends ArrayAdapter<Move> {
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            ArrayList<Move> suggestions = new ArrayList<>();
+            List<Move> suggestions = new ArrayList<>();
             if (constraint == null || constraint.length() == 0) {
-                suggestions.addAll(movesRows);
+                suggestions.addAll(moves);
             } else {
                 String pattern = constraint.toString().toLowerCase().trim();
-                movesRows.forEach(abilityRow -> {
+                moves.forEach(abilityRow -> {
                     if (abilityRow.getName().toLowerCase().contains(pattern)) {
                         suggestions.add(abilityRow);
                     }

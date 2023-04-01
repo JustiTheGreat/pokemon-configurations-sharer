@@ -8,5 +8,7 @@ public interface Messages {
     String WRONG_CREDENTIALS = "Wrong credentials!";
     String SERVER_TIMEOUT = "Server timeout!";
     String ERROR_SELECTING_POKEMON = "Error selecting pokemon!";
+    String MOVE_ALREADY_ADDED = "Move already added!";
+    String PLEASE_INPUT_A_NAME = "Please input a name!";
     String EMPTY = "";
 }

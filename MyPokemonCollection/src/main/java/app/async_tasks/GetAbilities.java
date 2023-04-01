@@ -1,31 +1,33 @@
-//package app.async_tasks;
-//
-//import android.os.AsyncTask;
-//import android.os.Build;
-//
-//import androidx.annotation.RequiresApi;
-//import androidx.fragment.app.Fragment;
-//
-//import app.data_objects.Ability;
-//
-//
-//import java.util.ArrayList;
-//
-//public class GetAbilities extends AsyncTask {
-//    private Fragment fragment;
-//    private ArrayList<Ability> abilities;
-//
-//    @RequiresApi(api = Build.VERSION_CODES.R)
-//    protected Object doInBackground(Object[] objects) {
-//        fragment = (Fragment) objects[0];
-//        abilities = TaskHelper.getPokemonAbilities((String) objects[1]);
-//        return null;
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.R)
-//    @Override
-//    protected void onPostExecute(Object object) {
-//        if (isCancelled()) return;
-//        ((AddPokemon) fragment).setAbilities(abilities);
-//    }
-//}
+package app.async_tasks;
+
+import android.os.AsyncTask;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import java.util.List;
+
+import app.async_tasks.database.ICallbackContext;
+import app.data_objects.Ability;
+
+public class GetAbilities extends AsyncTask<Long, String, List<Ability>> {
+    private final ICallbackContext callbackContext;
+
+    public GetAbilities(ICallbackContext callbackContext) {
+        this.callbackContext = callbackContext;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @Override
+    protected List<Ability> doInBackground(Long... longs) {
+        return TaskHelper.getPokemonAbilities(longs[0]);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    @Override
+    protected void onPostExecute(List<Ability> result) {
+        if (isCancelled()) return;
+        if (result == null) callbackContext.timedOut();
+        else callbackContext.callback(this, result);
+    }
+}

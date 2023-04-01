@@ -7,7 +7,7 @@
 //import androidx.navigation.fragment.NavHostFragment;
 //
 //import com.example.testapp.R;
-//import app.Storage;
+//import app.storages.Storage;
 //import app.constants.StringConstants;
 //import app.data_objects.Pokemon;
 //

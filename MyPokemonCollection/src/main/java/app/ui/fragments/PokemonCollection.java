@@ -60,7 +60,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import app.Storage;
+import app.storages.Storage;
 import app.async_tasks.database.GetPokemonList;
 import app.async_tasks.database.ICallbackContext;
 import app.data_objects.Ability;
@@ -90,13 +90,13 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
 
         //Storage.setPokemonCollectionFragment(this);
         Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-        ((MainActivity) requireActivity()).setToolbarMenuVisible();
+//        ((MainActivity) requireActivity()).setToolbarMenuVisible();
         getPokemonListTask = new GetPokemonList(this);
         getPokemonList();
     }
 
     private void seePokemonDetails(AdapterView<?> adapterView, View view, int position, long id) {
-        Storage.setSelectedPokemonForDetails(pokemonList.get((int)id));
+        Storage.setSelectedPokemon(pokemonList.get((int)id));
         navigateTo(R.id.action_collection_to_details);
     }
 
@@ -165,17 +165,6 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
     public void callback(Object caller, Object result) {
         if (caller instanceof GetPokemonList) {
             pokemonList = (List<Pokemon>) result;
-//            List<GridViewCell> gridViewCells = new ArrayList<>();
-//            for (Pokemon pokemon : pokemonList) {
-//                gridViewCells.add(new GridViewCell(
-//                        pokemon.getID(),
-//                        pokemon.getImage(),
-//                        pokemon.getName(),
-//                        pokemon.getSpecies(),
-//                        pokemon.getTypes()
-//                ));
-//            }
-//            BaseAdapter baseAdapter = new PokemonConfigurationAdapter(this.getActivity(), gridViewCells);
             BaseAdapter baseAdapter = new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList));
             binding.fCGridview.setAdapter(baseAdapter);
             binding.fCProgressbar.setVisibility(View.GONE);

@@ -16,7 +16,7 @@ import app.ui.fragments.PokemonCollection;
 public class GetPokemonList extends AsyncTask<List<Pokemon>, String, List<Pokemon>> {
     private final ICallbackContext callbackContext;
 
-    public GetPokemonList(PokemonCollection callbackContext) {
+    public GetPokemonList(ICallbackContext callbackContext) {
         this.callbackContext = callbackContext;
     }
 
