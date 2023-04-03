@@ -21,14 +21,12 @@ import com.mypokemoncollection.databinding.FragmentRegisterBinding;
 public class Register extends UtilityFragment {
     private FragmentRegisterBinding binding;
     private EditText email, password;
-    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
         email = binding.registerEmailTB;
         password = binding.registerPasswordTB;
-        mAuth = FirebaseAuth.getInstance();
         binding.registerRegisterB.setOnClickListener(this::registerButtonListener);
         return binding.getRoot();
     }
@@ -44,7 +42,7 @@ public class Register extends UtilityFragment {
         password.setText(EMPTY);
     }
 
-    private void registerButtonListener(View view){
+    private void registerButtonListener(View view) {
         if (email.getText().toString().isEmpty()) {
             toast(PLEASE_INPUT_YOUR_EMAIL);
             return;
@@ -53,6 +51,7 @@ public class Register extends UtilityFragment {
             toast(PLEASE_INPUT_YOUR_PASSWORD);
             return;
         }
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this.requireActivity(), task -> {
                     hideKeyboard(binding);
@@ -64,5 +63,13 @@ public class Register extends UtilityFragment {
                         toast(REGISTER_FAILED);
                     }
                 });
+    }
+
+    @Override
+    public void callback(Object caller, Object result) {
+    }
+
+    @Override
+    public void timedOut() {
     }
 }

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.data_objects.Pokemon;
-import app.data_objects.SpeciesRow;
 
 public class SpeciesAdapter extends ArrayAdapter<Pokemon> {
     private final List<Pokemon> pokemonList;

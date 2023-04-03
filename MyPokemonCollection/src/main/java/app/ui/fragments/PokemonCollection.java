@@ -5,27 +5,28 @@ import static app.constants.Gender.FEMALE_GENDER_VALUES;
 import static app.constants.Gender.MALE_GENDER;
 import static app.constants.Gender.MALE_GENDER_VALUES;
 import static app.constants.Gender.UNKNOWN_GENDER;
+import static app.constants.Messages.SCAN_A_POKEMON_QR_CODE;
+import static app.constants.Messages.SCAN_CANCELED;
+import static app.constants.Messages.SCAN_SUCCESSFUL;
 import static app.constants.Messages.SERVER_TIMEOUT;
-import static app.constants.PokemonConstants.NORMAL_VALUE;
-import static app.constants.PokemonConstants.SHINY_VALUE;
+import static app.constants.PokemonConstants.NORMAL_FORM_VALUE;
+import static app.constants.PokemonConstants.SHINY_FORM_VALUE;
+import static app.constants.PokemonDatabaseFields.ABILITY;
+import static app.constants.PokemonDatabaseFields.EVS;
+import static app.constants.PokemonDatabaseFields.GENDER;
+import static app.constants.PokemonDatabaseFields.IVS;
+import static app.constants.PokemonDatabaseFields.LEVEL;
+import static app.constants.PokemonDatabaseFields.MOVES;
+import static app.constants.PokemonDatabaseFields.NAME;
+import static app.constants.PokemonDatabaseFields.NATURE;
+import static app.constants.PokemonDatabaseFields.POKEDEX_NUMBER;
+import static app.constants.PokemonDatabaseFields.POKEMON_COLLECTION;
+import static app.constants.PokemonDatabaseFields.SHINY;
+import static app.constants.PokemonDatabaseFields.USER_ID;
 import static app.constants.StringConstants.FIRESTORE_REFERENCE_TEMPLATE;
 import static app.constants.StringConstants.GENDER_PLACEHOLDER;
 import static app.constants.StringConstants.POKEDEX_NUMBER_PLACEHOLDER;
 import static app.constants.StringConstants.SHINY_PLACEHOLDER;
-import static app.constants.collection_fields.Pokemon.ABILITY;
-import static app.constants.collection_fields.Pokemon.EVS;
-import static app.constants.collection_fields.Pokemon.GENDER;
-import static app.constants.collection_fields.Pokemon.IVS;
-import static app.constants.collection_fields.Pokemon.LEVEL;
-import static app.constants.collection_fields.Pokemon.MOVE1;
-import static app.constants.collection_fields.Pokemon.MOVE2;
-import static app.constants.collection_fields.Pokemon.MOVE3;
-import static app.constants.collection_fields.Pokemon.MOVE4;
-import static app.constants.collection_fields.Pokemon.NAME;
-import static app.constants.collection_fields.Pokemon.NATURE;
-import static app.constants.collection_fields.Pokemon.POKEDEX_NUMBER;
-import static app.constants.collection_fields.Pokemon.SHINY;
-import static app.constants.collection_fields.Pokemon.UID;
 
 import android.app.Dialog;
 import android.graphics.BitmapFactory;
@@ -42,6 +43,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
@@ -51,26 +53,27 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentCollectionBinding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-import app.storages.Storage;
-import app.async_tasks.database.GetPokemonList;
-import app.async_tasks.database.ICallbackContext;
+import app.async_tasks.web_scraping.GetPokemonList;
 import app.data_objects.Ability;
 import app.data_objects.Move;
 import app.data_objects.Nature;
 import app.data_objects.Pokemon;
 import app.layout_adapters.PokemonConfigurationAdapter;
+import app.storages.Storage;
 import app.ui.activities.MainActivity;
 
-public class PokemonCollection extends UtilityFragment implements ICallbackContext {
+@RequiresApi(api = Build.VERSION_CODES.R)
+public class PokemonCollection extends UtilityFragment {
     private FragmentCollectionBinding binding;
     private List<Pokemon> pokemonList;
     private GetPokemonList getPokemonListTask;
@@ -91,19 +94,23 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
         //Storage.setPokemonCollectionFragment(this);
         Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 //        ((MainActivity) requireActivity()).setToolbarMenuVisible();
-        getPokemonListTask = new GetPokemonList(this);
-        getPokemonList();
+        if (Storage.getPokemonList() != null && !Storage.isChangesMade()) {
+            pokemonList = Storage.getPokemonList();
+            loadGridView();
+        } else {
+            Storage.setChangesMade(false);
+            getPokemonListTask = new GetPokemonList(this);
+            getPokemonList();
+        }
     }
 
     private void seePokemonDetails(AdapterView<?> adapterView, View view, int position, long id) {
-        Storage.setSelectedPokemon(pokemonList.get((int)id));
+        Storage.setSelectedPokemon(pokemonList.get((int) id));
         navigateTo(R.id.action_collection_to_details);
     }
 
     private void addOptions(View view) {
-        Dialog dialog = new Dialog(this.getActivity());
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setContentView(R.layout.dialog_add_options);
+        Dialog dialog = createDialog(R.layout.dialog_add_options);
         Window window = dialog.getWindow();
         window.setDimAmount(0);
         window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -111,11 +118,9 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
         layoutParams.gravity = Gravity.BOTTOM;
         layoutParams.x = binding.fCAddOptionsButton.getWidth() / 2 + 100;
         layoutParams.y = 30;
-
         window.setAttributes(layoutParams);
-        dialog.show();
-        //dialog.findViewById(R.id.dao_write).setOnClickListener(view1 -> addPokemonManually(dialog));
-        //dialog.findViewById(R.id.dao_scan).setOnClickListener(view1 -> scanQRCode(dialog));
+        dialog.findViewById(R.id.dao_write).setOnClickListener(view1 -> addPokemonManually(dialog));
+        dialog.findViewById(R.id.dao_scan).setOnClickListener(view1 -> scanQRCode(dialog));
     }
 
     private void addPokemonManually(Dialog dialog) {
@@ -123,29 +128,35 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
         dialog.dismiss();
     }
 
-//    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
-//            result -> {
-//                if (result != null) {
-//                    if (result.getContents() == null) {
-//                        Toast.makeText(this.getActivity(), "Scan cancelled!", Toast.LENGTH_LONG).show();
-//                    } else {
-//                        binding.fCGridview.setEnabled(false);
-//                        binding.fCAddOptionsButton.setEnabled(false);
-//                        Toast.makeText(this.getActivity(), "Scan successful!", Toast.LENGTH_LONG).show();
-//                        new CreatePokemon().execute(this, result.getContents());
-//                    }
-//                }
-//            });
-//
-//    private void scanQRCode(Dialog dialog) {
-//        ScanOptions options = new ScanOptions();
-//        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
-//        options.setOrientationLocked(false);
-//        options.setPrompt("Scan a QR code");
-//        options.setBeepEnabled(false);
-//        barcodeLauncher.launch(options);
-//        dialog.dismiss();
-//    }
+    //todo
+    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
+            result -> {
+                if (result != null) {
+                    if (result.getContents() == null) {
+                        toast(SCAN_CANCELED);
+                    } else {
+                        binding.fCGridview.setEnabled(false);
+                        binding.fCAddOptionsButton.setEnabled(false);
+                        toast(SCAN_SUCCESSFUL);
+                        Pokemon pokemon = Pokemon.fromStringOfTransmissibleData(result.getContents());
+                        String userId = getAuthenticatedUserId();
+                        pokemon.setUserId(userId);
+                        insertPokemonInDatabase(pokemon,-1);
+                        //todo add to database
+                    }
+                }
+            });
+
+    //todo
+    private void scanQRCode(Dialog dialog) {
+        ScanOptions options = new ScanOptions();
+        options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+        options.setOrientationLocked(false);
+        options.setPrompt(SCAN_A_POKEMON_QR_CODE);
+        options.setBeepEnabled(false);
+        barcodeLauncher.launch(options);
+        dialog.dismiss();
+    }
 
     public void afterANewPokemonWasCreatedInScan() {
         navigateTo(R.id.action_collection_to_add);
@@ -165,10 +176,15 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
     public void callback(Object caller, Object result) {
         if (caller instanceof GetPokemonList) {
             pokemonList = (List<Pokemon>) result;
-            BaseAdapter baseAdapter = new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList));
-            binding.fCGridview.setAdapter(baseAdapter);
-            binding.fCProgressbar.setVisibility(View.GONE);
+            Storage.setPokemonList(pokemonList);
+            loadGridView();
         }
+    }
+
+    private void loadGridView() {
+        BaseAdapter baseAdapter = new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList));
+        binding.fCGridview.setAdapter(baseAdapter);
+        binding.fCProgressbar.setVisibility(View.GONE);
     }
 
     @Override
@@ -185,11 +201,11 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
             timedOut();
             return;
         }
-        String user_id = currentUser.getUid();
+        String userId = currentUser.getUid();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("pokemon")
-                .whereEqualTo(UID, user_id)
+        db.collection(POKEMON_COLLECTION)
+                .whereEqualTo(USER_ID, userId)
                 .get()
                 .addOnCompleteListener(task -> {
                             if (!task.isSuccessful()) timedOut();
@@ -207,18 +223,16 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
                                             document.getLong(LEVEL),
                                             new Ability(document.getString(ABILITY)),
                                             Nature.getNature(document.getString(NATURE)),
-                                            new ArrayList<>(((Map<String, Long>) document.get(IVS)).values()),
-                                            new ArrayList<>(((Map<String, Long>) document.get(EVS)).values()),
-                                            Arrays.asList(
-                                                    new Move(document.getString(MOVE1)),
-                                                    new Move(document.getString(MOVE2)),
-                                                    new Move(document.getString(MOVE3)),
-                                                    new Move(document.getString(MOVE4))
-                                            ),
+                                            (List<Long>) document.get(IVS),
+                                            (List<Long>) document.get(EVS),
+                                            ((List<String>) document.get(MOVES)).stream()
+                                                    .map(name -> new Move(name))
+                                                    .collect(Collectors.toList()),
                                             null,
                                             null,
                                             null,
-                                            null
+                                            null,
+                                            userId
                                     );
 
                                     StorageReference storageReference = getImageStorageReference(pokemon.getPokedexNumber(), pokemon.getGender(), pokemon.isShiny());
@@ -238,7 +252,7 @@ public class PokemonCollection extends UtilityFragment implements ICallbackConte
 
         String s = FIRESTORE_REFERENCE_TEMPLATE
                 .replace(POKEDEX_NUMBER_PLACEHOLDER, String.format("%04d", pokedexNumber))
-                .replace(SHINY_PLACEHOLDER, isShiny ? SHINY_VALUE : NORMAL_VALUE);
+                .replace(SHINY_PLACEHOLDER, isShiny ? SHINY_FORM_VALUE : NORMAL_FORM_VALUE);
         StorageReference pathReference = null;
         switch (gender) {
             case MALE_GENDER:

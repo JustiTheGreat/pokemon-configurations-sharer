@@ -27,12 +27,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import app.storages.Storage;
 import app.data_objects.Move;
 import app.data_objects.Pokemon;
 import app.layout_adapters.MoveItemAdapterForDetails;
 import app.stats_calculators.IStatsCalculator;
 import app.stats_calculators.StatsCalculator;
+import app.storages.Storage;
 
 public class PokemonDetails extends UtilityFragment {
     private Pokemon pokemon;
@@ -79,12 +79,13 @@ public class PokemonDetails extends UtilityFragment {
         binding.fPDEdit.setOnClickListener(v -> editPokemon());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     private void deletePokemon() {
         Dialog dialog = createDialog(R.layout.dialog_delete);
-//        dialog.findViewById(R.id.d_delete_yes).setOnClickListener(v -> {
-//            new DeleteTask().execute(this, pokemon);
-//            dialog.dismiss();
-//        });
+        dialog.findViewById(R.id.d_delete_yes).setOnClickListener(v -> {
+            deletePokemonFromDatabase(pokemon, R.id.action_details_to_collection);
+            dialog.dismiss();
+        });
         dialog.findViewById(R.id.d_delete_no).setOnClickListener(v -> dialog.dismiss());
     }
 
@@ -117,9 +118,7 @@ public class PokemonDetails extends UtilityFragment {
         binding.fPDName.setText(pokemon.getName());
         binding.fPDImage.setImageBitmap(pokemon.getImage());
 
-        String text = pokemon.getSpecies()
-                + " " + pokemon.getGender()
-                + " Lv. " + pokemon.getLevel();
+        String text = pokemon.getSpecies() + " " + pokemon.getGender() + " Lv. " + pokemon.getLevel();
         binding.fPDSpecies.setText(text);
         binding.fPDNature.setText(pokemon.getNature().getName());
 
@@ -182,5 +181,15 @@ public class PokemonDetails extends UtilityFragment {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fPDSpace.getLayoutParams();
         params.weight = params.weight + value;
         binding.fPDSpace.setLayoutParams(params);
+    }
+
+    @Override
+    public void callback(Object caller, Object result) {
+
+    }
+
+    @Override
+    public void timedOut() {
+
     }
 }

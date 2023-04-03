@@ -14,7 +14,6 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentLoginBinding;
 
@@ -22,14 +21,12 @@ public class Login extends UtilityFragment {
     private FragmentLoginBinding binding;
     private EditText email;
     private EditText password;
-    private FirebaseAuth mAuth;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         email = binding.loginEmailTB;
         password = binding.loginPasswordTB;
-        mAuth = FirebaseAuth.getInstance();
         binding.loginLoginB.setOnClickListener(this::loginButtonListener);
         binding.loginRegisterTVL.setOnClickListener(v -> {
             resetEditTexts();
@@ -41,8 +38,7 @@ public class Login extends UtilityFragment {
     @Override
     public void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) navigateTo(R.id.action_login_to_collection);
+        if (haveAuthenticatedUser()) navigateTo(R.id.action_login_to_collection);
     }
 
     @Override
@@ -65,6 +61,7 @@ public class Login extends UtilityFragment {
             toast(PLEASE_INPUT_YOUR_PASSWORD);
             return;
         }
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                 .addOnCompleteListener(this.requireActivity(), task -> {
                     hideKeyboard(binding);
@@ -75,5 +72,13 @@ public class Login extends UtilityFragment {
                         toast(WRONG_CREDENTIALS);
                     }
                 });
+    }
+
+    @Override
+    public void callback(Object caller, Object result) {
+    }
+
+    @Override
+    public void timedOut() {
     }
 }

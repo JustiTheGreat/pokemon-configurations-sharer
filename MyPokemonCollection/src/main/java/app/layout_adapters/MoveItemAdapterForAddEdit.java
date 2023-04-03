@@ -18,6 +18,7 @@ import com.mypokemoncollection.R;
 import java.util.List;
 
 import app.data_objects.Move;
+import app.dialogs.AddMoveDialog;
 import app.ui.fragments.AddPokemon;
 
 public class MoveItemAdapterForAddEdit extends ArrayAdapter<Move> {
@@ -76,7 +77,10 @@ public class MoveItemAdapterForAddEdit extends ArrayAdapter<Move> {
         description.setText(move.getDescription());
 
         ImageButton change = convertView.findViewById(R.id.l_moveitem_change);
-        change.setOnClickListener(view -> fragment.movesDialog(position));
+        change.setOnClickListener(view -> {
+            app.dialogs.Dialog dialog = new AddMoveDialog(fragment, R.layout.dialog_search, fragment.getAllMovesData(), position);
+            dialog.loadDialog();
+        });
 
         ImageButton remove = convertView.findViewById(R.id.l_moveitem_remove);
         remove.setOnClickListener(view -> {

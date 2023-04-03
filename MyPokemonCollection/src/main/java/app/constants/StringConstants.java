@@ -16,4 +16,5 @@ public interface StringConstants {
     String MOVES_LINK = "https://pokemondb.net/move/all";
     String MOVE_LINK = "https://pokemondb.net/move/?";
     String MOVE_CATEGORY_LINK = "https://img.pokemondb.net/images/icons/move-?.png";
+
 }

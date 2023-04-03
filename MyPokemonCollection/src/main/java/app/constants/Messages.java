@@ -10,5 +10,9 @@ public interface Messages {
     String ERROR_SELECTING_POKEMON = "Error selecting pokemon!";
     String MOVE_ALREADY_ADDED = "Move already added!";
     String PLEASE_INPUT_A_NAME = "Please input a name!";
+    String DELETING_FAILED = "Deleting failed!";
+    String SCAN_SUCCESSFUL = "Scan successful!";
+    String SCAN_CANCELED = "Scan canceled!";
+    String SCAN_A_POKEMON_QR_CODE = "Scan a pokemon QR code";
     String EMPTY = "";
 }

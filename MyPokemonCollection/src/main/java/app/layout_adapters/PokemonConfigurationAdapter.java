@@ -22,21 +22,21 @@ import app.data_objects.Pokemon;
 
 public class PokemonConfigurationAdapter extends BaseAdapter {
     private final Context context;
-    private final List<Pokemon> gridViewCells;
+    private final List<Pokemon> pokemonList;
 
-    public PokemonConfigurationAdapter(Context context, List<Pokemon> gridViewCells) {
+    public PokemonConfigurationAdapter(Context context, List<Pokemon> pokemonList) {
         this.context = context;
-        this.gridViewCells = gridViewCells;
+        this.pokemonList = pokemonList;
     }
 
     @Override
     public int getCount() {
-        return gridViewCells.size();
+        return pokemonList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return gridViewCells.get(position);
+        return pokemonList.get(position);
     }
 
     @Override
@@ -47,15 +47,15 @@ public class PokemonConfigurationAdapter extends BaseAdapter {
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Pokemon gridViewCell = (Pokemon) getItem(position);
+        Pokemon pokemon = (Pokemon) getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.layout_collection, parent, false);
         }
 
         ImageView image = convertView.findViewById(R.id.image);
-        image.setImageBitmap(gridViewCell.getImage());
-        image.setContentDescription(gridViewCell.getSpecies());
+        image.setImageBitmap(pokemon.getImage());
+        image.setContentDescription(pokemon.getSpecies());
         GradientDrawable gradientDrawable = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[]{ContextCompat.getColor(image.getContext(), R.color.white),
@@ -64,22 +64,22 @@ public class PokemonConfigurationAdapter extends BaseAdapter {
         image.setBackground(gradientDrawable);
 
         TextView species = convertView.findViewById(R.id.species);
-        species.setText(gridViewCell.getSpecies());
+        species.setText(pokemon.getSpecies());
 
         TextView name = convertView.findViewById(R.id.name);
-        name.setText(gridViewCell.getName());
+        name.setText(pokemon.getName());
 
         List<TextView> types = new ArrayList<>();
         types.add(convertView.findViewById(R.id.type1));
-        if (gridViewCell.getTypes().size() == 2) {
+        if (pokemon.getTypes().size() == 2) {
             types.add(convertView.findViewById(R.id.type2));
         } else {
             convertView.findViewById(R.id.type2).setVisibility(View.GONE);
         }
 
         types.forEach(t -> {
-            t.setText(gridViewCell.getTypes().get(types.indexOf(t)).getName().toUpperCase());
-            t.setBackgroundResource(gridViewCell.getTypes().get(types.indexOf(t)).getColor());
+            t.setText(pokemon.getTypes().get(types.indexOf(t)).getName().toUpperCase());
+            t.setBackgroundResource(pokemon.getTypes().get(types.indexOf(t)).getColor());
         });
         return convertView;
     }
