@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import app.ui.fragments.ICallbackContext;
 import app.data_objects.Move;
-import app.layout_adapters.MoveAdapter;
+import app.layout_adapters.searchable.MoveAdapter;
 import app.ui.fragments.AddPokemon;
 import lombok.Getter;
 
@@ -62,7 +62,7 @@ public class AddMoveDialog extends Dialog {
         Button button = dialog.findViewById(R.id.d_search_button);
         button.setOnClickListener(v -> {
             if (move.get() != null) context.callback(this, move.get());
-            else context.timedOut();
+            else context.timedOut(this);
             dialog.dismiss();
         });
         dialog.show();

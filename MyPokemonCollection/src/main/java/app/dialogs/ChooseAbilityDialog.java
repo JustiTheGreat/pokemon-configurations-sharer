@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import app.ui.fragments.ICallbackContext;
 import app.data_objects.Ability;
-import app.layout_adapters.AbilityAdapter;
+import app.layout_adapters.searchable.AbilityAdapter;
 import app.ui.fragments.AddPokemon;
 
 public class ChooseAbilityDialog extends Dialog {
@@ -62,7 +62,7 @@ public class ChooseAbilityDialog extends Dialog {
         Button button = dialog.findViewById(R.id.d_search_button);
         button.setOnClickListener(v -> {
             if (ability.get() != null) context.callback(this, ability.get());
-            else context.timedOut();
+            else context.timedOut(this);
             dialog.dismiss();
         });
         dialog.show();

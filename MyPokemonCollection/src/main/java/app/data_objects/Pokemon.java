@@ -81,37 +81,32 @@ public class Pokemon {
     @Setter
     private String userId;
 
-    public Pokemon(String ID, String name, long pokedexNumber, String species, String gender, boolean shiny, long level, Ability ability,
-                   Nature nature, List<Long> IVs, List<Long> EVs, List<Move> moves, List<Type> types,
-                   List<Long> baseStats, Bitmap image, Bitmap sprite, String userId) {
-        this.ID = ID;
-        this.name = name;
-        this.pokedexNumber = pokedexNumber;
-        this.species = species;
-        this.gender = gender;
-        this.shiny = shiny;
-        this.level = level;
-        this.ability = ability;
-        this.nature = nature;
-        this.IVs = IVs;
-        this.EVs = EVs;
-        this.moves = moves;
-        this.types = types;
-        this.baseStats = baseStats;
-        this.image = image;
-        this.sprite = sprite;
-        this.userId = userId;
+    private Pokemon() {
     }
 
-    public Pokemon(long pokedexNumber, String species, String gender, List<Type> types, List<Long> baseStats, Bitmap sprite) {
-        this.pokedexNumber = pokedexNumber;
-        this.species = species;
-        this.gender = gender;
-        this.shiny = false;
-        this.level = -1;
-        this.types = types;
-        this.baseStats = baseStats;
-        this.sprite = sprite;
+    public static Pokemon newPokemon() {
+        return new Pokemon();
+    }
+
+    public static Pokemon clone(Pokemon pokemon) {
+        return newPokemon()
+                .id(pokemon.ID)
+                .name(pokemon.name)
+                .pokedexNumber(pokemon.pokedexNumber)
+                .species(pokemon.species)
+                .gender(pokemon.gender)
+                .shiny(pokemon.shiny)
+                .level(pokemon.level)
+                .ability(pokemon.ability)
+                .nature(pokemon.nature)
+                .ivs(pokemon.IVs == null ? null : new ArrayList<>(pokemon.IVs))
+                .evs(pokemon.EVs == null ? null : new ArrayList<>(pokemon.EVs))
+                .moves(pokemon.moves == null ? null : new ArrayList<>(pokemon.moves))
+                .types(pokemon.types)
+                .baseStats(pokemon.baseStats)
+                .image(pokemon.image)
+                .sprite(pokemon.sprite)
+                .userId(pokemon.userId);
     }
 
     public void setData(Pokemon pokemon) {
@@ -174,25 +169,100 @@ public class Pokemon {
 
     public static Pokemon fromStringOfTransmissibleData(String pokemonString) {
         String[] s = pokemonString.split(";");
-        Pokemon pokemon = new Pokemon(
-                null,
-                s[0],
-                Long.parseLong(s[1]),
-                null,
-                s[2],
-                Boolean.parseBoolean(s[3]),
-                Long.parseLong(s[4]),
-                new Ability(s[5]),
-                Nature.getNature(s[6]),
-                Arrays.stream(s[7].split(":")).map(Long::parseLong).collect(Collectors.toList()),
-                Arrays.stream(s[8].split(":")).map(Long::parseLong).collect(Collectors.toList()),
-                Arrays.stream(s[9].split(":")).map(Move::new).collect(Collectors.toList()),
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        return pokemon;
+        return newPokemon().name(s[0])
+                .pokedexNumber(Long.parseLong(s[1]))
+                .gender(s[2])
+                .shiny(Boolean.parseBoolean(s[3]))
+                .level(Long.parseLong(s[4]))
+                .ability(new Ability(s[5]))
+                .nature(Nature.getNature(s[6]))
+                .ivs(Arrays.stream(s[7].split(":")).map(Long::parseLong).collect(Collectors.toList()))
+                .evs(Arrays.stream(s[8].split(":")).map(Long::parseLong).collect(Collectors.toList()))
+                .moves(Arrays.stream(s[9].split(":")).map(Move::new).collect(Collectors.toList()));
+    }
+
+    public Pokemon id(String ID) {
+        this.ID = ID;
+        return this;
+    }
+
+    public Pokemon name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public Pokemon pokedexNumber(long pokedexNumber) {
+        this.pokedexNumber = pokedexNumber;
+        return this;
+    }
+
+    public Pokemon species(String species) {
+        this.species = species;
+        return this;
+    }
+
+    public Pokemon gender(String gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public Pokemon shiny(boolean shiny) {
+        this.shiny = shiny;
+        return this;
+    }
+
+    public Pokemon level(long level) {
+        this.level = level;
+        return this;
+    }
+
+    public Pokemon ability(Ability ability) {
+        this.ability = ability;
+        return this;
+    }
+
+    public Pokemon nature(Nature nature) {
+        this.nature = nature;
+        return this;
+    }
+
+    public Pokemon ivs(List<Long> IVs) {
+        this.IVs = IVs;
+        return this;
+    }
+
+    public Pokemon evs(List<Long> EVs) {
+        this.EVs = EVs;
+        return this;
+    }
+
+    public Pokemon moves(List<Move> moves) {
+        this.moves = moves;
+        return this;
+    }
+
+    public Pokemon types(List<Type> types) {
+        this.types = types;
+        return this;
+    }
+
+    public Pokemon baseStats(List<Long> baseStats) {
+        this.baseStats = baseStats;
+        return this;
+    }
+
+    public Pokemon image(Bitmap image) {
+        this.image = image;
+        return this;
+    }
+
+    public Pokemon sprite(Bitmap sprite) {
+        this.sprite = sprite;
+        return this;
+    }
+
+    public Pokemon userId(String userId) {
+        this.userId = userId;
+        return this;
     }
 }

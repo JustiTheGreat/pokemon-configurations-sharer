@@ -1,4 +1,4 @@
-package app.layout_adapters;
+package app.layout_adapters.searchable;
 
 import android.content.Context;
 import android.os.Build;
@@ -21,16 +21,23 @@ import java.util.List;
 import app.data_objects.Pokemon;
 
 public class SpeciesAdapter extends ArrayAdapter<Pokemon> {
-    private final List<Pokemon> pokemonList;
+    private final List<Pokemon> defaultData;
+    private final List<Pokemon> currentData;
 
     public SpeciesAdapter(Context context, List<Pokemon> pokemonList) {
         super(context, R.layout.layout_species, pokemonList);
-        this.pokemonList = new ArrayList<>(pokemonList);
+        this.defaultData = new ArrayList<>(pokemonList);
+        this.currentData = new ArrayList<>(pokemonList);
+    }
+
+    @Override
+    public int getCount() {
+        return currentData.size();
     }
 
     @Override
     public Pokemon getItem(int index) {
-        return pokemonList.get(index);
+        return currentData.get(index);
     }
 
     @NonNull
@@ -44,16 +51,12 @@ public class SpeciesAdapter extends ArrayAdapter<Pokemon> {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Pokemon> suggestions = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                suggestions.addAll(pokemonList);
-            } else {
-                String pattern = constraint.toString().toLowerCase().trim();
-                pokemonList.forEach(pokemon -> {
-                    if (pokemon.getSpecies().toLowerCase().contains(pattern)) {
-                        suggestions.add(pokemon);
-                    }
-                });
-            }
+            if (constraint == null || constraint.toString().trim().length() == 0)
+                suggestions.addAll(defaultData);
+            else defaultData.forEach(pokemon -> {
+                if (pokemon.getSpecies().toLowerCase().contains(constraint.toString().toLowerCase().trim()))
+                    suggestions.add(pokemon);
+            });
             return new FilterResults() {{
                 this.values = suggestions;
                 this.count = suggestions.size();
@@ -62,8 +65,8 @@ public class SpeciesAdapter extends ArrayAdapter<Pokemon> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            clear();
-            addAll((List) results.values);
+            currentData.clear();
+            currentData.addAll((List<Pokemon>) results.values);
             notifyDataSetChanged();
         }
 

@@ -1,73 +1,37 @@
 package app.storages;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.List;
 
 import app.constants.FragmentConstants;
 import app.data_objects.Pokemon;
+import app.ui.fragments.UtilityFragment;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Storage implements FragmentConstants {
-//    private static PokemonCollection pokemonCollectionFragment;
-//    private static PokemonDetails pokemonDetailsFragment;
-    //private static AddPokemon addPokemonFragment;
-//    @Getter @Setter private static Pokemon selectedPokemonForDetails;
+    private static Pokemon selectedPokemon = null;
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static Pokemon getCopyOfSelectedPokemon(){
+        if (selectedPokemon == null) return null;
+        else return Pokemon.clone(selectedPokemon);
+    }
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    public static void setCopyOfSelectedPokemon(Pokemon pokemon){
+        if (pokemon == null) selectedPokemon = null;
+        else selectedPokemon = Pokemon.clone(pokemon);
+    }
 
-    @Getter @Setter private static Pokemon selectedPokemon = null;
-    @Getter @Setter private static boolean changesMade = false;
-    @Getter @Setter private static List<Pokemon> pokemonList = null;
-//    private static Pokemon selectedPokemonForAdd;
-//    private static int currentFragmentType = OTHER;
+    @Getter
+    @Setter
+    private static List<Pokemon> pokemonList = null;
+    @Getter
+    @Setter
+    private static UtilityFragment currentFragment = null;
 
-
-    private Storage(){}
-
-//    public static int getCurrentFragmentType() {
-//        return currentFragmentType;
-//    }
-//
-//    public static void setCurrentFragmentType(int currentFragmentType) {
-//        Storage.currentFragmentType = currentFragmentType;
-//    }
-
-//    public static PokemonCollection getPokemonCollectionFragment() {
-//        return pokemonCollectionFragment;
-//    }
-//
-//    public static void setPokemonCollectionFragment(PokemonCollection pokemonCollectionFragment) {
-//        currentFragmentType = COLLECTION;
-//        Storage.pokemonCollectionFragment = pokemonCollectionFragment;
-//    }
-//
-//    public static PokemonDetails getPokemonDetailsFragment() {
-//        return pokemonDetailsFragment;
-//    }
-//
-//    public static void setPokemonDetailsFragment(PokemonDetails pokemonDetailsFragment) {
-//        currentFragmentType = DETAILS;
-//        Storage.pokemonDetailsFragment = pokemonDetailsFragment;
-//    }
-
-//    public static AddPokemon getAddPokemonFragment() {
-//        return addPokemonFragment;
-//    }
-//
-//    public static void setAddPokemonFragment(AddPokemon fragment) {
-//        currentFragmentType = ADD;
-//        addPokemonFragment = fragment;
-//    }
-
-//    public static Pokemon getSelectedPokemonForAdd() {
-//        Pokemon pokemon = selectedPokemonForAdd;
-//        selectedPokemonForAdd = null;
-//        return pokemon;
-//    }
-//
-//    public static void setSelectedPokemonForAdd(Pokemon pokemon) {
-//        selectedPokemonForAdd = pokemon;
-//    }
-//
-//    public static boolean pokemonIsSelectedForAdd() {
-//        return selectedPokemonForAdd != null;
-//    }
+    private Storage() {
+    }
 }

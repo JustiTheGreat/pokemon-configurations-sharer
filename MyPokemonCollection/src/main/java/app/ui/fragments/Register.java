@@ -14,9 +14,11 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentRegisterBinding;
+
+import app.firebase.RegisterAuth;
+import app.storages.Storage;
 
 public class Register extends UtilityFragment {
     private FragmentRegisterBinding binding;
@@ -25,6 +27,7 @@ public class Register extends UtilityFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
+        Storage.setCurrentFragment(this);
         email = binding.registerEmailTB;
         password = binding.registerPasswordTB;
         binding.registerRegisterB.setOnClickListener(this::registerButtonListener);
@@ -51,25 +54,24 @@ public class Register extends UtilityFragment {
             toast(PLEASE_INPUT_YOUR_PASSWORD);
             return;
         }
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(this.requireActivity(), task -> {
-                    hideKeyboard(binding);
-                    if (task.isSuccessful()) {
-                        navigateTo(R.id.action_register_to_login);
-                        toast(ACCOUNT_CREATED);
-                    } else {
-                        resetEditTexts();
-                        toast(REGISTER_FAILED);
-                    }
-                });
+        new RegisterAuth(this, email.getText().toString().trim(), password.getText().toString().trim()).execute();
     }
 
     @Override
     public void callback(Object caller, Object result) {
+        if(caller instanceof RegisterAuth) {
+            hideKeyboard(binding);
+            navigateTo(R.id.action_register_to_login);
+            toast(ACCOUNT_CREATED);
+        }
     }
 
     @Override
-    public void timedOut() {
+    public void timedOut(Object caller) {
+        if(caller instanceof RegisterAuth) {
+            hideKeyboard(binding);
+            resetEditTexts();
+            toast(REGISTER_FAILED);
+        }
     }
 }

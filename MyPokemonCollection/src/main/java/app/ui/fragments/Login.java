@@ -13,9 +13,11 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentLoginBinding;
+
+import app.firebase.LoginAuth;
+import app.storages.Storage;
 
 public class Login extends UtilityFragment {
     private FragmentLoginBinding binding;
@@ -25,6 +27,7 @@ public class Login extends UtilityFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
+        Storage.setCurrentFragment(this);
         email = binding.loginEmailTB;
         password = binding.loginPasswordTB;
         binding.loginLoginB.setOnClickListener(this::loginButtonListener);
@@ -53,32 +56,32 @@ public class Login extends UtilityFragment {
     }
 
     private void loginButtonListener(View view) {
-        if (email.getText().toString().isEmpty()) {
+        if (email.getText().toString().trim().isEmpty()) {
             toast(PLEASE_INPUT_YOUR_EMAIL);
             return;
         }
-        if (password.getText().toString().isEmpty()) {
+        if (password.getText().toString().trim().isEmpty()) {
             toast(PLEASE_INPUT_YOUR_PASSWORD);
             return;
         }
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                .addOnCompleteListener(this.requireActivity(), task -> {
-                    hideKeyboard(binding);
-                    if (task.isSuccessful()) {
-                        navigateTo(R.id.action_login_to_collection);
-                    } else {
-                        resetEditTexts();
-                        toast(WRONG_CREDENTIALS);
-                    }
-                });
+        new LoginAuth(this, email.getText().toString().trim(), password.getText().toString().trim()).execute();
     }
 
     @Override
     public void callback(Object caller, Object result) {
+        if(caller instanceof LoginAuth) {
+            hideKeyboard(binding);
+            setMenuVisibility(true);
+            navigateTo(R.id.action_login_to_collection);
+        }
     }
 
     @Override
-    public void timedOut() {
+    public void timedOut(Object caller) {
+        if(caller instanceof LoginAuth) {
+            hideKeyboard(binding);
+            resetEditTexts();
+            toast(WRONG_CREDENTIALS);
+        }
     }
 }

@@ -1,10 +1,14 @@
 package app.ui.fragments;
 
+import static org.apache.http.params.CoreConnectionPNames.CONNECTION_TIMEOUT;
+import static app.constants.Messages.DELETING_POKEMON_FAILED;
 import static app.constants.Messages.ERROR_SELECTING_POKEMON;
 import static app.constants.PokemonConstants.NUMBER_OF_STATS;
+import static app.constants.PokemonDatabaseFields.POKEMON_COLLECTION;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,8 +31,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import app.firebase.DeletePokemonDB;
+import app.firebase.GetOtherPokemonDataDB;
+import app.async_tasks.GetOtherPokemonDataAT;
 import app.data_objects.Move;
 import app.data_objects.Pokemon;
+import app.firebase.GetPokemonSpriteDB;
 import app.layout_adapters.MoveItemAdapterForDetails;
 import app.stats_calculators.IStatsCalculator;
 import app.stats_calculators.StatsCalculator;
@@ -37,6 +45,7 @@ import app.storages.Storage;
 public class PokemonDetails extends UtilityFragment {
     private Pokemon pokemon;
     private FragmentPokemonDetailsBinding binding;
+    private GetOtherPokemonDataAT getOtherPokemonDataTask;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,17 +56,18 @@ public class PokemonDetails extends UtilityFragment {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Storage.setCurrentFragment(this);
+        //todo ((MainActivity) requireActivity()).setToolbarMenuVisible();
 
-//        Storage.setPokemonDetailsFragment(this);
-//        ((MainActivity) requireActivity()).setToolbarMenuVisible();
-
-        if (Storage.getSelectedPokemon() == null) {
+        pokemon = Storage.getCopyOfSelectedPokemon();
+        if (pokemon == null) {
             toast(ERROR_SELECTING_POKEMON);
             navigateTo(R.id.action_details_to_collection);
             return;
         }
-        pokemon = Storage.getSelectedPokemon();
-        setPageInfo();
+
+        disableActivityTouchInput();
+        new GetOtherPokemonDataDB(this, pokemon.getID(), POKEMON_COLLECTION).execute();
 
         int ability_weight = 5, stats_weight = 20, moves_weight = 32;
         int space_weight = 100 - ability_weight - stats_weight - moves_weight;
@@ -83,7 +93,7 @@ public class PokemonDetails extends UtilityFragment {
     private void deletePokemon() {
         Dialog dialog = createDialog(R.layout.dialog_delete);
         dialog.findViewById(R.id.d_delete_yes).setOnClickListener(v -> {
-            deletePokemonFromDatabase(pokemon, R.id.action_details_to_collection);
+            new DeletePokemonDB(this, pokemon.getID()).execute();
             dialog.dismiss();
         });
         dialog.findViewById(R.id.d_delete_no).setOnClickListener(v -> dialog.dismiss());
@@ -103,7 +113,9 @@ public class PokemonDetails extends UtilityFragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     private void editPokemon() {
+        Storage.setCopyOfSelectedPokemon(pokemon);
         navigateTo(R.id.action_details_to_add);
     }
 
@@ -111,6 +123,9 @@ public class PokemonDetails extends UtilityFragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        if (getOtherPokemonDataTask != null && getOtherPokemonDataTask.getStatus() != AsyncTask.Status.FINISHED) {
+            getOtherPokemonDataTask.cancel(true);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -165,9 +180,9 @@ public class PokemonDetails extends UtilityFragment {
         binding.fPDMoves.setAdapter(moveItemsAdapter);
     }
 
-    private void setHideClickListener(View view, View hideView, int weight){
-        hideView.setOnClickListener(v->{
-            if(view.getVisibility()==View.GONE){
+    private void setHideClickListener(View view, View hideView, int weight) {
+        hideView.setOnClickListener(v -> {
+            if (view.getVisibility() == View.GONE) {
                 view.setVisibility(View.VISIBLE);
                 addToLayoutWeightOfSpace(weight);
             } else {
@@ -177,19 +192,50 @@ public class PokemonDetails extends UtilityFragment {
         });
     }
 
-    private void addToLayoutWeightOfSpace(int value){
+    private void addToLayoutWeightOfSpace(int value) {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.fPDSpace.getLayoutParams();
         params.weight = params.weight + value;
         binding.fPDSpace.setLayoutParams(params);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void callback(Object caller, Object result) {
-
+        if (caller instanceof GetOtherPokemonDataDB) {
+            pokemon.setLevel(((Pokemon) result).getLevel());
+            pokemon.setAbility(((Pokemon) result).getAbility());
+            pokemon.setNature(((Pokemon) result).getNature());
+            pokemon.setIVs(((Pokemon) result).getIVs());
+            pokemon.setEVs(((Pokemon) result).getEVs());
+            pokemon.setMoves(((Pokemon) result).getMoves());
+            getOtherPokemonDataTask = new GetOtherPokemonDataAT(this);
+            getOtherPokemonDataTask.execute(pokemon);
+        } else if (caller instanceof GetOtherPokemonDataAT) {
+            new GetPokemonSpriteDB(this, (Pokemon) result).execute();
+        } else if (caller instanceof GetPokemonSpriteDB) {
+            pokemon = (Pokemon) result;
+            setPageInfo();
+            enableActivityTouchInput();
+        } else if (caller instanceof DeletePokemonDB) {
+            List<Pokemon> pokemonList = Storage.getPokemonList();
+            for (int i = 0; i < pokemonList.size(); i++) {
+                if (pokemonList.get(i).getID().equals((String) result)) {
+                    pokemonList.remove(i);
+                    break;
+                }
+            }
+            navigateTo(R.id.action_details_to_collection);
+        }
     }
 
     @Override
-    public void timedOut() {
-
+    public void timedOut(Object caller) {
+        if (caller instanceof GetOtherPokemonDataDB || caller instanceof GetOtherPokemonDataAT) {
+            toast(CONNECTION_TIMEOUT);
+            enableActivityTouchInput();
+            navigateTo(R.id.action_details_to_collection);
+        } else if (caller instanceof DeletePokemonDB) {
+            toast(CONNECTION_TIMEOUT);
+        }
     }
 }

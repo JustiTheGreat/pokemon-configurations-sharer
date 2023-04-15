@@ -10,7 +10,9 @@ public interface Messages {
     String ERROR_SELECTING_POKEMON = "Error selecting pokemon!";
     String MOVE_ALREADY_ADDED = "Move already added!";
     String PLEASE_INPUT_A_NAME = "Please input a name!";
-    String DELETING_FAILED = "Deleting failed!";
+    String INSERTING_POKEMON_FAILED = "Inserting pokemon failed!";
+    String UPDATING_POKEMON_FAILED = "Updating pokemon failed!";
+    String DELETING_POKEMON_FAILED = "Deleting pokemon failed!";
     String SCAN_SUCCESSFUL = "Scan successful!";
     String SCAN_CANCELED = "Scan canceled!";
     String SCAN_A_POKEMON_QR_CODE = "Scan a pokemon QR code";

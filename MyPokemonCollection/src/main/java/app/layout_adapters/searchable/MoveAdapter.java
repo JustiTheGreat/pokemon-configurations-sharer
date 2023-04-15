@@ -1,4 +1,4 @@
-package app.layout_adapters;
+package app.layout_adapters.searchable;
 
 import android.content.Context;
 import android.os.Build;
@@ -21,16 +21,18 @@ import java.util.List;
 import app.data_objects.Move;
 
 public class MoveAdapter extends ArrayAdapter<Move> {
-    private final List<Move> moves;
+    private final List<Move> defaultData;
+    private final List<Move> currentData;
 
     public MoveAdapter(Context context, List<Move> moves) {
         super(context, R.layout.layout_move, moves);
-        this.moves = new ArrayList<>(moves);
+        this.defaultData = new ArrayList<>(moves);
+        this.currentData = new ArrayList<>(moves);
     }
 
     @Override
     public Move getItem(int index) {
-        return moves.get(index);
+        return currentData.get(index);
     }
 
     @NonNull
@@ -44,16 +46,12 @@ public class MoveAdapter extends ArrayAdapter<Move> {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Move> suggestions = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                suggestions.addAll(moves);
-            } else {
-                String pattern = constraint.toString().toLowerCase().trim();
-                moves.forEach(abilityRow -> {
-                    if (abilityRow.getName().toLowerCase().contains(pattern)) {
-                        suggestions.add(abilityRow);
-                    }
-                });
-            }
+            if (constraint == null || constraint.toString().trim().length() == 0)
+                suggestions.addAll(defaultData);
+            else defaultData.forEach(move -> {
+                if (move.getName().toLowerCase().contains(constraint.toString().toLowerCase().trim()))
+                    suggestions.add(move);
+            });
             return new FilterResults() {{
                 this.values = suggestions;
                 this.count = suggestions.size();
@@ -62,8 +60,8 @@ public class MoveAdapter extends ArrayAdapter<Move> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            clear();
-            addAll((List) results.values);
+            currentData.clear();
+            currentData.addAll((List<Move>) results.values);
             notifyDataSetChanged();
         }
 

@@ -107,7 +107,7 @@ public class EditStatsDialog extends app.dialogs.Dialog {
             if (levelET != null && natureSpinner != null && !ivsETs.isEmpty() && !evsETs.isEmpty()
                     && !totalTVs.isEmpty())
                 context.callback(this, null);
-            else context.timedOut();
+            else context.timedOut(this);
             dialog.dismiss();
         });
         dialog.show();

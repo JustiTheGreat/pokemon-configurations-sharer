@@ -1,12 +1,12 @@
 package app.ui.fragments;
 
+import static org.apache.http.params.CoreConnectionPNames.CONNECTION_TIMEOUT;
 import static app.constants.Gender.FEMALE_GENDER;
 import static app.constants.Gender.MALE_GENDER;
 import static app.constants.Gender.UNKNOWN_GENDER;
 import static app.constants.Messages.EMPTY;
 import static app.constants.Messages.MOVE_ALREADY_ADDED;
 import static app.constants.Messages.PLEASE_INPUT_A_NAME;
-import static app.constants.Messages.SERVER_TIMEOUT;
 
 import android.app.Dialog;
 import android.os.AsyncTask;
@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import app.async_tasks.web_scraping.GetAbilities;
-import app.async_tasks.web_scraping.GetAllSpecies;
-import app.async_tasks.web_scraping.GetPokemonMoves;
+import app.async_tasks.GetAllPokemonSpeciesDataAT;
+import app.async_tasks.GetPokemonAbilitiesAT;
+import app.async_tasks.GetPokemonMovesAT;
 import app.data_objects.Ability;
 import app.data_objects.Move;
 import app.data_objects.Nature;
@@ -41,6 +41,9 @@ import app.dialogs.AddMoveDialog;
 import app.dialogs.ChooseAbilityDialog;
 import app.dialogs.ChooseSpeciesDialog;
 import app.dialogs.EditStatsDialog;
+import app.firebase.GetPokemonHomeArtDB;
+import app.firebase.InsertPokemonDB;
+import app.firebase.UpdatePokemonDB;
 import app.layout_adapters.MoveItemAdapterForAddEdit;
 import app.stats_calculators.IStatsCalculator;
 import app.stats_calculators.StatsCalculator;
@@ -49,9 +52,9 @@ import lombok.Getter;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class AddPokemon extends UtilityFragment {
-    private GetAllSpecies getAllSpeciesTask;
-    private GetAbilities getAbilitiesTask;
-    private GetPokemonMoves getPokemonMovesTask;
+    private GetAllPokemonSpeciesDataAT getAllSpeciesTask;
+    private GetPokemonAbilitiesAT getAbilitiesTask;
+    private GetPokemonMovesAT getPokemonMovesTask;
     private FragmentAddPokemonBinding binding;
     private MoveItemAdapterForAddEdit movesAdapter;
     private List<Pokemon> allSpeciesData;
@@ -62,25 +65,14 @@ public class AddPokemon extends UtilityFragment {
     private final Nature DEFAULT_POKEMON_NATURE = Nature.getDefaultNature();
     private final List<Long> DEFAULT_POKEMON_IVS = Arrays.asList(0L, 0L, 0L, 0L, 0L, 0L);
     private final List<Long> DEFAULT_POKEMON_EVS = Arrays.asList(0L, 0L, 0L, 0L, 0L, 0L);
-    private final Pokemon pokemon = new Pokemon(
-            null,
-            null,
-            -1,
-            null,
-            UNKNOWN_GENDER,
-            false,
-            DEFAULT_POKEMON_LEVEL,
-            null,
-            DEFAULT_POKEMON_NATURE,
-            DEFAULT_POKEMON_IVS,
-            DEFAULT_POKEMON_EVS,
-            new ArrayList<>(),
-            null,
-            null,
-            null,
-            null,
-            null
-    );
+    private final Pokemon pokemon = Pokemon.newPokemon()
+            .pokedexNumber(-1)
+            .gender(UNKNOWN_GENDER)
+            .level(DEFAULT_POKEMON_LEVEL)
+            .nature(DEFAULT_POKEMON_NATURE)
+            .ivs(DEFAULT_POKEMON_IVS)
+            .evs(DEFAULT_POKEMON_EVS)
+            .moves(new ArrayList<>());
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -92,7 +84,8 @@ public class AddPokemon extends UtilityFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        Storage.setAddPokemonFragment(this);
+        Storage.setCurrentFragment(this);
+        //todo
 //        ((MainActivity) requireActivity()).setToolbarMenuVisible();
 
         //TODO function disable buttons
@@ -104,8 +97,8 @@ public class AddPokemon extends UtilityFragment {
         movesAdapter = new MoveItemAdapterForAddEdit(getContext(), pokemon.getMoves(), this);
         binding.fAPMoves.setAdapter(movesAdapter);
 
-        if (Storage.getSelectedPokemon() != null) {
-            pokemon.setData(Storage.getSelectedPokemon());
+        if (Storage.getCopyOfSelectedPokemon() != null) {
+            pokemon.setData(Storage.getCopyOfSelectedPokemon());
 
             setSpeciesInfo(pokemon, true);
             binding.fAPSpeciesButton.setText(R.string.empty);
@@ -114,7 +107,7 @@ public class AddPokemon extends UtilityFragment {
             movesAdapter.notifyDataSetChanged();
             if (pokemon.getMoves().size() != 4) binding.fAPAddMove.setVisibility(View.VISIBLE);
         } else {
-            getAllSpeciesTask = new GetAllSpecies(this);
+            getAllSpeciesTask = new GetAllPokemonSpeciesDataAT(this);
             getAllSpeciesTask.execute();
 
             binding.fAPChosenSpecies.setVisibility(View.GONE);
@@ -211,17 +204,15 @@ public class AddPokemon extends UtilityFragment {
             if (pokemon.getID() == null) {
                 String user_id = getAuthenticatedUserId();
                 pokemon.setUserId(user_id);
-                insertPokemonInDatabase(pokemon, R.id.action_add_to_collection);
-            } else updatePokemonInDatabase(pokemon, R.id.action_add_to_collection);
+
+                disableActivityTouchInput();
+                new InsertPokemonDB(this, pokemon).execute();
+            } else {
+                disableActivityTouchInput();
+                new UpdatePokemonDB(this, pokemon).execute();
+            }
             dialog.dismiss();
         });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-        cancelTasks();
     }
 
     private void cancelTasks() {
@@ -234,14 +225,21 @@ public class AddPokemon extends UtilityFragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+        cancelTasks();
+    }
+
+    @Override
     public void callback(Object caller, Object result) {
-        if (caller instanceof GetAllSpecies) {
+        if (caller instanceof GetAllPokemonSpeciesDataAT) {
             allSpeciesData = (List<Pokemon>) result;
             binding.fAPSpeciesButton.setEnabled(true);
-        } else if (caller instanceof GetAbilities) {
+        } else if (caller instanceof GetPokemonAbilitiesAT) {
             allAbilitiesData = (List<Ability>) result;
             binding.fAPAbilitiesButton.setEnabled(true);
-        } else if (caller instanceof GetPokemonMoves) {
+        } else if (caller instanceof GetPokemonMovesAT) {
             allMovesData = (List<Move>) result;
             binding.fAPAddMove.setEnabled(true);
         } else if (caller instanceof ChooseSpeciesDialog) {
@@ -252,6 +250,25 @@ public class AddPokemon extends UtilityFragment {
             setStatsInfo((EditStatsDialog) caller, false);
         } else if (caller instanceof AddMoveDialog) {
             setMoveInfo(((AddMoveDialog) caller).getMoveIndex(), (Move) result);
+        } else if (caller instanceof InsertPokemonDB) {
+            Pokemon pokemon = (Pokemon) result;
+            Storage.setCopyOfSelectedPokemon(pokemon);
+            new GetPokemonHomeArtDB(this, pokemon).execute();
+        } else if (caller instanceof GetPokemonHomeArtDB) {
+            Storage.getPokemonList().add((Pokemon) result);
+            enableActivityTouchInput();
+            navigateTo(R.id.action_add_to_collection);
+        } else if (caller instanceof UpdatePokemonDB) {
+            Pokemon p = (Pokemon) result;
+            List<Pokemon> pokemonList = Storage.getPokemonList();
+            for (Pokemon pokemon : pokemonList) {
+                if (pokemon.getID().equals(p.getID())) {
+                    pokemonList.set(pokemonList.indexOf(pokemon), p);
+                    break;
+                }
+            }
+            enableActivityTouchInput();
+            navigateTo(R.id.action_add_to_collection);
         }
     }
 
@@ -266,10 +283,10 @@ public class AddPokemon extends UtilityFragment {
             cancelTasks();
         }
 
-        getAbilitiesTask = new GetAbilities(this);
+        getAbilitiesTask = new GetPokemonAbilitiesAT(this);
         getAbilitiesTask.execute(species.getPokedexNumber());
         binding.fAPStatsButton.setEnabled(true);
-        getPokemonMovesTask = new GetPokemonMoves(this);
+        getPokemonMovesTask = new GetPokemonMovesAT(this);
         getPokemonMovesTask.execute(species.getPokedexNumber());
 
         if (!loadFromLocalData) {
@@ -398,9 +415,11 @@ public class AddPokemon extends UtilityFragment {
     }
 
     @Override
-    public void timedOut() {
-        toast(SERVER_TIMEOUT);
-        if (Storage.getSelectedPokemon() != null) Storage.setSelectedPokemon(null);
-        navigateTo(R.id.action_add_to_collection);
+    public void timedOut(Object caller) {
+        if(caller instanceof InsertPokemonDB || caller instanceof GetPokemonHomeArtDB || caller instanceof UpdatePokemonDB) {
+            enableActivityTouchInput();
+            toast(CONNECTION_TIMEOUT);
+            navigateTo(R.id.action_add_to_collection);
+        }
     }
 }

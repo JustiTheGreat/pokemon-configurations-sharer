@@ -1,4 +1,4 @@
-package app.layout_adapters;
+package app.layout_adapters.searchable;
 
 import android.content.Context;
 import android.os.Build;
@@ -20,16 +20,18 @@ import java.util.List;
 import app.data_objects.Ability;
 
 public class AbilityAdapter extends ArrayAdapter<Ability> {
-    private final List<Ability> abilitiesRows;
+    private final List<Ability> defaultData;
+    private final List<Ability> currentData;
 
-    public AbilityAdapter(Context context, List<Ability> abilitiesRows) {
-        super(context, R.layout.layout_ability, abilitiesRows);
-        this.abilitiesRows = new ArrayList<>(abilitiesRows);
+    public AbilityAdapter(Context context, List<Ability> abilities) {
+        super(context, R.layout.layout_ability, abilities);
+        this.defaultData = new ArrayList<>(abilities);
+        this.currentData = new ArrayList<>(abilities);
     }
 
     @Override
     public Ability getItem(int index) {
-        return abilitiesRows.get(index);
+        return currentData.get(index);
     }
 
     @NonNull
@@ -43,16 +45,12 @@ public class AbilityAdapter extends ArrayAdapter<Ability> {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Ability> suggestions = new ArrayList<>();
-            if (constraint == null || constraint.length() == 0) {
-                suggestions.addAll(abilitiesRows);
-            } else {
-                String pattern = constraint.toString().toLowerCase().trim();
-                abilitiesRows.forEach(abilityRow -> {
-                    if (abilityRow.getName().toLowerCase().contains(pattern)) {
-                        suggestions.add(abilityRow);
-                    }
-                });
-            }
+            if (constraint == null || constraint.toString().trim().length() == 0)
+                suggestions.addAll(defaultData);
+            else defaultData.forEach(ability -> {
+                if (ability.getName().toLowerCase().contains(constraint.toString().toLowerCase().trim()))
+                    suggestions.add(ability);
+            });
             return new FilterResults() {{
                 this.values = suggestions;
                 this.count = suggestions.size();
@@ -61,8 +59,8 @@ public class AbilityAdapter extends ArrayAdapter<Ability> {
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            clear();
-            addAll((List) results.values);
+            currentData.clear();
+            currentData.addAll((List<Ability>) results.values);
             notifyDataSetChanged();
         }
 
@@ -74,17 +72,17 @@ public class AbilityAdapter extends ArrayAdapter<Ability> {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public View getView(int position, View convertView, ViewGroup parent) {
-        Ability speciesRow = getItem(position);
+        Ability ability = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_ability, parent, false);
         }
 
         TextView name = convertView.findViewById(R.id.l_abilities_name);
-        name.setText(speciesRow.getName());
+        name.setText(ability.getName());
 
         TextView description = convertView.findViewById(R.id.l_abilities_description);
-        description.setText(speciesRow.getDescription());
+        description.setText(ability.getDescription());
 
         return convertView;
     }

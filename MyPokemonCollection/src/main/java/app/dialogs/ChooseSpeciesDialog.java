@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import app.ui.fragments.ICallbackContext;
 import app.data_objects.Pokemon;
-import app.layout_adapters.SpeciesAdapter;
+import app.layout_adapters.searchable.SpeciesAdapter;
 import app.ui.fragments.AddPokemon;
 
 public class ChooseSpeciesDialog extends app.dialogs.Dialog {
@@ -63,7 +63,7 @@ public class ChooseSpeciesDialog extends app.dialogs.Dialog {
         speciesTV.setOnItemClickListener((parent, view, position, id) -> species.set((Pokemon) speciesTV.getAdapter().getItem(position)));
         dialog.findViewById(R.id.d_search_button).setOnClickListener(v -> {
             if (species.get() != null) context.callback(this, species.get());
-            else context.timedOut();
+            else context.timedOut(this);
             dialog.dismiss();
         });
         dialog.show();
