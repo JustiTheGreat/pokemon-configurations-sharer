@@ -46,4 +46,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/f_c_public_collection"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:padding="5dp"
+        android:src="@drawable/public_collection"
+        app:layout_constraintBottom_toBottomOf="@+id/f_c_add_options_button"
+        app:layout_constraintEnd_toStartOf="@+id/f_c_add_options_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/f_c_add_options_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

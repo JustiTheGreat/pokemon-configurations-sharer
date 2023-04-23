@@ -84,11 +84,6 @@ public class AddPokemon extends UtilityFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Storage.setCurrentFragment(this);
-        //todo
-//        ((MainActivity) requireActivity()).setToolbarMenuVisible();
-
-        //TODO function disable buttons
         binding.fAPSpeciesButton.setEnabled(false);
         binding.fAPAbilitiesButton.setEnabled(false);
         binding.fAPStatsButton.setEnabled(false);
@@ -273,8 +268,6 @@ public class AddPokemon extends UtilityFragment {
     }
 
     private void setSpeciesInfo(Pokemon species, boolean loadFromLocalData) {
-
-        //TODO function disable buttons
         if (!loadFromLocalData) {
             binding.fAPAbilitiesButton.setEnabled(false);
             binding.fAPStatsButton.setEnabled(false);
@@ -296,15 +289,6 @@ public class AddPokemon extends UtilityFragment {
             pokemon.setGender(species.getGender());
             pokemon.setTypes(species.getTypes());
             pokemon.setBaseStats(species.getBaseStats());
-//            pokemon.setLevel(species.getLevel());
-//            pokemon.setNature(species.getNature());
-//            pokemon.setIVs(species.getIVs());
-//            pokemon.setEVs(species.getEVs());
-            //todo delete this
-//            pokemon.setLevel(DEFAULT_POKEMON_LEVEL);
-//            pokemon.setNature(DEFAULT_POKEMON_NATURE);
-//            pokemon.setIVs(DEFAULT_POKEMON_IVS);
-//            pokemon.setEVs(DEFAULT_POKEMON_EVS);
         }
 
         binding.fAPSprite.setImageBitmap(species.getSprite());

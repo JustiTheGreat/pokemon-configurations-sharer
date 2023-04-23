@@ -14,13 +14,14 @@ import androidx.viewbinding.ViewBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import app.ui.activities.MainActivity;
 import app.ui.fragments.ICallbackContext;
 
 public abstract class UtilityFragment extends Fragment implements ICallbackContext {
 
-//    void saveCurrentFragmentReference() {
-//        requireActivity().getSupportFragmentManager().putFragment(requireActivity().getIntent().getExtras(), "current fragment", this);
-//    }
+    protected void setLogoutVisibility(boolean visibility) {
+        ((MainActivity) requireActivity()).setLogoutVisibility(visibility);
+    }
 
     public void navigateTo(int rId) {
         NavHostFragment.findNavController(this).navigate(rId);
@@ -49,7 +50,7 @@ public abstract class UtilityFragment extends Fragment implements ICallbackConte
         return displayMetrics.widthPixels;
     }
 
-    protected boolean haveAuthenticatedUser(){
+    protected boolean haveAuthenticatedUser() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         return currentUser != null;

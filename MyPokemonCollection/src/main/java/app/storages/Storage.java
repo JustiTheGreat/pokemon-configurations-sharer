@@ -28,9 +28,6 @@ public class Storage implements FragmentConstants {
     @Getter
     @Setter
     private static List<Pokemon> pokemonList = null;
-    @Getter
-    @Setter
-    private static UtilityFragment currentFragment = null;
 
     private Storage() {
     }

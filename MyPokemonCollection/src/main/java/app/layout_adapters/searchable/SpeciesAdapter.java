@@ -96,6 +96,7 @@ public class SpeciesAdapter extends ArrayAdapter<Pokemon> {
         types.add(convertView.findViewById(R.id.l_species_type1));
         if (pokemon.getTypes().size() == 2) {
             types.add(convertView.findViewById(R.id.l_species_type2));
+            types.get(0).setVisibility(View.VISIBLE);
         } else {
             convertView.findViewById(R.id.l_species_type2).setVisibility(View.GONE);
         }

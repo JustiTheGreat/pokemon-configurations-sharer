@@ -18,7 +18,6 @@ import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentRegisterBinding;
 
 import app.firebase.RegisterAuth;
-import app.storages.Storage;
 
 public class Register extends UtilityFragment {
     private FragmentRegisterBinding binding;
@@ -27,7 +26,6 @@ public class Register extends UtilityFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentRegisterBinding.inflate(inflater, container, false);
-        Storage.setCurrentFragment(this);
         email = binding.registerEmailTB;
         password = binding.registerPasswordTB;
         binding.registerRegisterB.setOnClickListener(this::registerButtonListener);

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_weight="1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -537,14 +536,14 @@
             android:layout_weight="93"
             android:background="@color/main_color"
             android:orientation="horizontal"
-            android:weightSum="3">
+            android:weightSum="4">
 
             <Button
-                android:id="@+id/f_p_d_delete"
+                android:id="@+id/f_p_d_edit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/delete"
+                android:text="@string/edit_pokemon"
                 android:textStyle="bold" />
 
             <Button
@@ -556,12 +555,41 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/f_p_d_edit"
+                android:id="@+id/f_p_d_upload"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/edit_pokemon"
+                android:text="upload"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/f_p_d_delete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/delete"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/f_p_d_buttons_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="93"
+            android:background="@color/main_color"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/f_p_d_download"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="download"
+                android:textStyle="bold" />
+
         </LinearLayout>
 
     </LinearLayout>

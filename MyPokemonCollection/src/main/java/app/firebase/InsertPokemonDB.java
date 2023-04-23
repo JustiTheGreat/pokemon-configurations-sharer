@@ -27,7 +27,6 @@ public class InsertPokemonDB {
                 .add(pokemon.getDatabaseMapObject())
                 .addOnSuccessListener(task -> {
                     pokemon.setID(task.getId());
-                    //todo get image
                     callbackContext.callback(this, pokemon);})
                 .addOnFailureListener(task -> callbackContext.timedOut(this));
     }

@@ -33,10 +33,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import app.firebase.GetPokemonDisplayDataListDB;
-import app.firebase.InsertPokemonDB;
 import app.async_tasks.GetPokemonDisplayDataListAT;
 import app.data_objects.Pokemon;
+import app.firebase.GetPokemonDisplayDataListDB;
+import app.firebase.InsertPokemonDB;
 import app.layout_adapters.PokemonConfigurationAdapter;
 import app.storages.Storage;
 import app.ui.activities.MainActivity;
@@ -52,15 +52,7 @@ public class PokemonCollection extends UtilityFragment {
         binding = FragmentCollectionBinding.inflate(inflater, container, false);
 
         Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
-        //todo
-        setMenuVisibility(true);
 
-//        setHasOptionsMenu(true);
-//        ((MainActivity) requireActivity()).getSupportActionBar().
-
-//                getMenu().setGroupVisible(0, true);;
-
-//        binding.fCProgressbar.setVisibility(View.INVISIBLE);
         binding.fCGridview.setOnItemClickListener(this::seePokemonDetails);
         binding.fCAddOptionsButton.setOnClickListener(this::addOptions);
         return binding.getRoot();
@@ -70,7 +62,6 @@ public class PokemonCollection extends UtilityFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Storage.setCurrentFragment(this);
         Storage.setCopyOfSelectedPokemon(null);
         if (Storage.getPokemonList() != null) {
             pokemonList = Storage.getPokemonList();

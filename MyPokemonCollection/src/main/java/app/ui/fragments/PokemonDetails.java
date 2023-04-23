@@ -1,7 +1,6 @@
 package app.ui.fragments;
 
 import static org.apache.http.params.CoreConnectionPNames.CONNECTION_TIMEOUT;
-import static app.constants.Messages.DELETING_POKEMON_FAILED;
 import static app.constants.Messages.ERROR_SELECTING_POKEMON;
 import static app.constants.PokemonConstants.NUMBER_OF_STATS;
 import static app.constants.PokemonDatabaseFields.POKEMON_COLLECTION;
@@ -31,11 +30,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import app.firebase.DeletePokemonDB;
-import app.firebase.GetOtherPokemonDataDB;
 import app.async_tasks.GetOtherPokemonDataAT;
 import app.data_objects.Move;
 import app.data_objects.Pokemon;
+import app.firebase.DeletePokemonDB;
+import app.firebase.GetOtherPokemonDataDB;
 import app.firebase.GetPokemonSpriteDB;
 import app.layout_adapters.MoveItemAdapterForDetails;
 import app.stats_calculators.IStatsCalculator;
@@ -56,8 +55,6 @@ public class PokemonDetails extends UtilityFragment {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Storage.setCurrentFragment(this);
-        //todo ((MainActivity) requireActivity()).setToolbarMenuVisible();
 
         pokemon = Storage.getCopyOfSelectedPokemon();
         if (pokemon == null) {
@@ -219,7 +216,7 @@ public class PokemonDetails extends UtilityFragment {
         } else if (caller instanceof DeletePokemonDB) {
             List<Pokemon> pokemonList = Storage.getPokemonList();
             for (int i = 0; i < pokemonList.size(); i++) {
-                if (pokemonList.get(i).getID().equals((String) result)) {
+                if (pokemonList.get(i).getID().equals(result)) {
                     pokemonList.remove(i);
                     break;
                 }

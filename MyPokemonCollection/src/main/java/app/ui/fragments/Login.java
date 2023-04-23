@@ -12,12 +12,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentLoginBinding;
 
 import app.firebase.LoginAuth;
-import app.storages.Storage;
 
 public class Login extends UtilityFragment {
     private FragmentLoginBinding binding;
@@ -27,7 +27,6 @@ public class Login extends UtilityFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-        Storage.setCurrentFragment(this);
         email = binding.loginEmailTB;
         password = binding.loginPasswordTB;
         binding.loginLoginB.setOnClickListener(this::loginButtonListener);
@@ -39,9 +38,17 @@ public class Login extends UtilityFragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        if (haveAuthenticatedUser()) navigateTo(R.id.action_login_to_collection);
+        if (haveAuthenticatedUser()) {
+            setLogoutVisibility(true);
+            navigateTo(R.id.action_login_to_collection);
+        }
     }
 
     @Override
@@ -71,7 +78,7 @@ public class Login extends UtilityFragment {
     public void callback(Object caller, Object result) {
         if(caller instanceof LoginAuth) {
             hideKeyboard(binding);
-            setMenuVisibility(true);
+            setLogoutVisibility(true);
             navigateTo(R.id.action_login_to_collection);
         }
     }
