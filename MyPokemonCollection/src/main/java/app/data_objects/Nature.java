@@ -3,9 +3,8 @@ package app.data_objects;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.Getter;
-
 public class Nature {
+
     private static final double INCREASED = 1.1;
     private static final double NORMAL = 1.0;
     private static final double DECREASED = 0.9;
@@ -40,8 +39,12 @@ public class Nature {
             NATURE_NAIVE, NATURE_NAUGHTY, NATURE_QUIET, NATURE_QUIRKY, NATURE_RASH, NATURE_RELAXED,
             NATURE_SASSY, NATURE_SERIOUS, NATURE_TIMID);
 
-    @Getter private final String name;
-    @Getter private final List<Double> statsMultipliers;
+    public static Nature getDefaultNature() {
+        return NATURE_SERIOUS;
+    }
+
+    private final String name;
+    private final List<Double> statsMultipliers;
 
     private Nature(String name, List<Double> effects) {
         this.name = name;
@@ -57,7 +60,11 @@ public class Nature {
         return null;
     }
 
-    public static Nature getDefaultNature() {
-        return NATURE_SERIOUS;
+    public String getName() {
+        return name;
+    }
+
+    public List<Double> getStatsMultipliers() {
+        return statsMultipliers;
     }
 }

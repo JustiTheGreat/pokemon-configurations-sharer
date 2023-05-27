@@ -10,7 +10,7 @@ import app.data_objects.Nature;
 public class StatsCalculator implements IStatsCalculator {
     @Override
     public List<Long> calculateStats(List<Long> base, List<Long> ivs,
-                                        List<Long> evs, long level, Nature nature) {
+                                     List<Long> evs, long level, Nature nature) {
         List<Long> total = new ArrayList<>(base);
         List<Double> statsMultipliers = nature.getStatsMultipliers();
         for (int i = 0; i < NUMBER_OF_STATS; i++) {

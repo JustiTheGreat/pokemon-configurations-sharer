@@ -1,21 +1,13 @@
 package app.data_objects;
 
-import lombok.Getter;
-
 public class Move {
-    @Getter
+
     private final String name;
-    @Getter
     private final Type type;
-    @Getter
     private final MoveCategory category;
-    @Getter
     private final int power;
-    @Getter
     private final int accuracy;
-    @Getter
     private final int pp;
-    @Getter
     private final String description;
 
     public Move(String name, Type type, MoveCategory category, int power, int accuracy, int pp, String description) {
@@ -36,5 +28,33 @@ public class Move {
         accuracy = -1;
         pp = -1;
         description = null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public MoveCategory getCategory() {
+        return category;
+    }
+
+    public int getPower() {
+        return power;
+    }
+
+    public int getAccuracy() {
+        return accuracy;
+    }
+
+    public int getPp() {
+        return pp;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

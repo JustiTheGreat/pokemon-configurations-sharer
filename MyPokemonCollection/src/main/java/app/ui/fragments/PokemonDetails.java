@@ -1,13 +1,10 @@
 package app.ui.fragments;
 
-import static org.apache.http.params.CoreConnectionPNames.CONNECTION_TIMEOUT;
-import static app.constants.Messages.ERROR_SELECTING_POKEMON;
 import static app.constants.PokemonConstants.NUMBER_OF_STATS;
 import static app.constants.PokemonDatabaseFields.POKEMON_COLLECTION;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,21 +27,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import app.async_tasks.GetOtherPokemonDataAT;
+import app.connections.async_tasks.GetOtherPokemonDataAT;
+import app.connections.firebase.DeletePokemonDB;
+import app.connections.firebase.GetOtherPokemonDataDB;
+import app.connections.firebase.GetPokemonSpriteDB;
 import app.data_objects.Move;
 import app.data_objects.Pokemon;
-import app.firebase.DeletePokemonDB;
-import app.firebase.GetOtherPokemonDataDB;
-import app.firebase.GetPokemonSpriteDB;
-import app.layout_adapters.MoveItemAdapterForDetails;
 import app.stats_calculators.IStatsCalculator;
 import app.stats_calculators.StatsCalculator;
 import app.storages.Storage;
+import app.ui.layout_adapters.MoveItemAdapterForDetails;
 
-public class PokemonDetails extends UtilityFragment {
+public class PokemonDetails extends GeneralisedFragment<FragmentPokemonDetailsBinding> {
+
     private Pokemon pokemon;
-    private FragmentPokemonDetailsBinding binding;
-    private GetOtherPokemonDataAT getOtherPokemonDataTask;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +54,7 @@ public class PokemonDetails extends UtilityFragment {
 
         pokemon = Storage.getCopyOfSelectedPokemon();
         if (pokemon == null) {
-            toast(ERROR_SELECTING_POKEMON);
+            toast(getString(R.string.error_selecting_pokemon));
             navigateTo(R.id.action_details_to_collection);
             return;
         }
@@ -114,15 +110,6 @@ public class PokemonDetails extends UtilityFragment {
     private void editPokemon() {
         Storage.setCopyOfSelectedPokemon(pokemon);
         navigateTo(R.id.action_details_to_add);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-        if (getOtherPokemonDataTask != null && getOtherPokemonDataTask.getStatus() != AsyncTask.Status.FINISHED) {
-            getOtherPokemonDataTask.cancel(true);
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -205,8 +192,7 @@ public class PokemonDetails extends UtilityFragment {
             pokemon.setIVs(((Pokemon) result).getIVs());
             pokemon.setEVs(((Pokemon) result).getEVs());
             pokemon.setMoves(((Pokemon) result).getMoves());
-            getOtherPokemonDataTask = new GetOtherPokemonDataAT(this);
-            getOtherPokemonDataTask.execute(pokemon);
+            new GetOtherPokemonDataAT(this, pokemon).execute();
         } else if (caller instanceof GetOtherPokemonDataAT) {
             new GetPokemonSpriteDB(this, (Pokemon) result).execute();
         } else if (caller instanceof GetPokemonSpriteDB) {
@@ -228,11 +214,11 @@ public class PokemonDetails extends UtilityFragment {
     @Override
     public void timedOut(Object caller) {
         if (caller instanceof GetOtherPokemonDataDB || caller instanceof GetOtherPokemonDataAT) {
-            toast(CONNECTION_TIMEOUT);
+            toast(getString(R.string.server_timeout));
             enableActivityTouchInput();
             navigateTo(R.id.action_details_to_collection);
         } else if (caller instanceof DeletePokemonDB) {
-            toast(CONNECTION_TIMEOUT);
+            toast(getString(R.string.server_timeout));
         }
     }
 }

@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -18,14 +17,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.ActivityMainBinding;
 
+import java.util.Objects;
+
 import app.ui.fragments.AddPokemon;
 import app.ui.fragments.PokemonCollection;
 import app.ui.fragments.PokemonDetails;
-import app.ui.fragments.UtilityFragment;
+import app.ui.fragments.GeneralisedFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private AppBarConfiguration appBarConfiguration;
     private Menu menu;
 
     @Override
@@ -34,10 +35,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //hide top bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        //todo
         //set activity action bar with nav controller
         setSupportActionBar(binding.toolbar);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -57,20 +56,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        //todo
-//        menu.setGroupVisible(0, false);
         this.menu = menu;
         return true;
     }
 
     public void setLogoutVisibility(boolean visible) {
-        if(menu!=null) menu.setGroupVisible(0, visible);
+        if (menu != null) menu.setGroupVisible(0, visible);
     }
 
     @Override
@@ -80,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.m_log_out) {
                 menu.setGroupVisible(0, false);
 
-                NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main);
-                assert navHostFragment != null;
-                UtilityFragment currentFragment = (UtilityFragment) navHostFragment.getChildFragmentManager().getFragments().get(0);
+                GeneralisedFragment<?> currentFragment = (GeneralisedFragment<?>)
+                        Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main))
+                        .getChildFragmentManager().getFragments().get(0);
                 FirebaseAuth.getInstance().signOut();
                 if (currentFragment instanceof PokemonCollection) {
                     currentFragment.navigateTo(R.id.action_collection_to_login);

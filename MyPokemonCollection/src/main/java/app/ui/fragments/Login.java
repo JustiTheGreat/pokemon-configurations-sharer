@@ -1,45 +1,31 @@
 package app.ui.fragments;
 
-import static app.constants.Messages.EMPTY;
-import static app.constants.Messages.PLEASE_INPUT_YOUR_EMAIL;
-import static app.constants.Messages.PLEASE_INPUT_YOUR_PASSWORD;
-import static app.constants.Messages.WRONG_CREDENTIALS;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentLoginBinding;
 
-import app.firebase.LoginAuth;
+import app.connections.firebase.LoginAuth;
 
-public class Login extends UtilityFragment {
-    private FragmentLoginBinding binding;
-    private EditText email;
-    private EditText password;
+public class Login extends GeneralisedFragment<FragmentLoginBinding> {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
-        email = binding.loginEmailTB;
-        password = binding.loginPasswordTB;
+
         binding.loginLoginB.setOnClickListener(this::loginButtonListener);
+
         binding.loginRegisterTVL.setOnClickListener(v -> {
             resetEditTexts();
             navigateTo(R.id.action_login_to_register);
         });
-        return binding.getRoot();
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        return binding.getRoot();
     }
 
     @Override
@@ -51,27 +37,21 @@ public class Login extends UtilityFragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
     private void resetEditTexts() {
-        email.setText(EMPTY);
-        password.setText(EMPTY);
+        binding.loginEmailTB.setText(getString(R.string.empty));
+        binding.loginPasswordTB.setText(getString(R.string.empty));
     }
 
     private void loginButtonListener(View view) {
-        if (email.getText().toString().trim().isEmpty()) {
-            toast(PLEASE_INPUT_YOUR_EMAIL);
+        if (binding.loginEmailTB.getText().toString().trim().isEmpty()) {
+            toast(getString(R.string.please_input_your_email));
             return;
         }
-        if (password.getText().toString().trim().isEmpty()) {
-            toast(PLEASE_INPUT_YOUR_PASSWORD);
+        if (binding.loginPasswordTB.getText().toString().trim().isEmpty()) {
+            toast(getString(R.string.please_input_your_password));
             return;
         }
-        new LoginAuth(this, email.getText().toString().trim(), password.getText().toString().trim()).execute();
+        new LoginAuth(this, binding.loginEmailTB.getText().toString().trim(), binding.loginPasswordTB.getText().toString().trim()).execute();
     }
 
     @Override
@@ -88,7 +68,7 @@ public class Login extends UtilityFragment {
         if(caller instanceof LoginAuth) {
             hideKeyboard(binding);
             resetEditTexts();
-            toast(WRONG_CREDENTIALS);
+            toast(getString(R.string.wrong_credentials));
         }
     }
 }

@@ -6,29 +6,33 @@ import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
-import app.constants.FragmentConstants;
 import app.data_objects.Pokemon;
-import app.ui.fragments.UtilityFragment;
-import lombok.Getter;
-import lombok.Setter;
 
-public class Storage implements FragmentConstants {
+public class Storage {
+
+    private static List<Pokemon> pokemonList = null;
     private static Pokemon selectedPokemon = null;
+
+    private Storage() {
+    }
+
+    public static List<Pokemon> getPokemonList() {
+        return pokemonList;
+    }
+
+    public static void setPokemonList(List<Pokemon> pokemonList) {
+        Storage.pokemonList = pokemonList;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public static Pokemon getCopyOfSelectedPokemon(){
+    public static Pokemon getCopyOfSelectedPokemon() {
         if (selectedPokemon == null) return null;
         else return Pokemon.clone(selectedPokemon);
     }
+
     @RequiresApi(api = Build.VERSION_CODES.R)
-    public static void setCopyOfSelectedPokemon(Pokemon pokemon){
+    public static void setCopyOfSelectedPokemon(Pokemon pokemon) {
         if (pokemon == null) selectedPokemon = null;
         else selectedPokemon = Pokemon.clone(pokemon);
-    }
-
-    @Getter
-    @Setter
-    private static List<Pokemon> pokemonList = null;
-
-    private Storage() {
     }
 }

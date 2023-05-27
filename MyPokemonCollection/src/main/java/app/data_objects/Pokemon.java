@@ -24,61 +24,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class Pokemon {
-    @Getter
-    @Setter
+
     private String ID;
-    @Getter
-    @Setter
     private String name;
-    @Getter
-    @Setter
     private long pokedexNumber;
-    @Getter
-    @Setter
     private String species;
-    @Getter
-    @Setter
     private String gender;
-    @Getter
-    @Setter
     private boolean shiny;
-    @Getter
-    @Setter
     private long level;
-    @Getter
-    @Setter
     private Ability ability;
-    @Getter
-    @Setter
     private Nature nature;
-    @Getter
-    @Setter
     private List<Long> IVs;
-    @Getter
-    @Setter
     private List<Long> EVs;
-    @Getter
-    @Setter
     private List<Move> moves;
-    @Getter
-    @Setter
     private List<Type> types;
-    @Getter
-    @Setter
     private List<Long> baseStats;
-    @Getter
-    @Setter
     private Bitmap image;
-    @Getter
-    @Setter
     private Bitmap sprite;
-    @Getter
-    @Setter
     private String userId;
 
     private Pokemon() {
@@ -264,5 +228,141 @@ public class Pokemon {
     public Pokemon userId(String userId) {
         this.userId = userId;
         return this;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public long getPokedexNumber() {
+        return pokedexNumber;
+    }
+
+    public void setPokedexNumber(long pokedexNumber) {
+        this.pokedexNumber = pokedexNumber;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public boolean isShiny() {
+        return shiny;
+    }
+
+    public void setShiny(boolean shiny) {
+        this.shiny = shiny;
+    }
+
+    public long getLevel() {
+        return level;
+    }
+
+    public void setLevel(long level) {
+        this.level = level;
+    }
+
+    public Ability getAbility() {
+        return ability;
+    }
+
+    public void setAbility(Ability ability) {
+        this.ability = ability;
+    }
+
+    public Nature getNature() {
+        return nature;
+    }
+
+    public void setNature(Nature nature) {
+        this.nature = nature;
+    }
+
+    public List<Long> getIVs() {
+        return IVs;
+    }
+
+    public void setIVs(List<Long> IVs) {
+        this.IVs = IVs;
+    }
+
+    public List<Long> getEVs() {
+        return EVs;
+    }
+
+    public void setEVs(List<Long> EVs) {
+        this.EVs = EVs;
+    }
+
+    public List<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
+    }
+
+    public List<Type> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<Type> types) {
+        this.types = types;
+    }
+
+    public List<Long> getBaseStats() {
+        return baseStats;
+    }
+
+    public void setBaseStats(List<Long> baseStats) {
+        this.baseStats = baseStats;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public Bitmap getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Bitmap sprite) {
+        this.sprite = sprite;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

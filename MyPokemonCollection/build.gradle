@@ -36,13 +36,9 @@ android {
 
 dependencies {
     //firebase
-    implementation 'com.google.firebase:firebase-auth:21.3.0'
-    implementation 'com.google.firebase:firebase-firestore:24.5.0'
-    implementation 'com.google.firebase:firebase-storage:20.1.0'
-
-    //for @Getter and @Setter
-    compileOnly 'org.projectlombok:lombok:1.18.26'
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    implementation 'com.google.firebase:firebase-auth:22.0.0'
+    implementation 'com.google.firebase:firebase-firestore:24.6.1'
+    implementation 'com.google.firebase:firebase-storage:20.2.0'
 
     //jsoup web-scrapper
     implementation files('libs/jsoup-1.8.1.jar')
@@ -56,7 +52,7 @@ dependencies {
 
     //implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'

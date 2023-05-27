@@ -1,11 +1,8 @@
 package app.data_objects;
 
-import lombok.Getter;
-
 public class Ability {
-    @Getter
+
     private final String name;
-    @Getter
     private final String description;
 
     public Ability(String name, String description) {
@@ -15,6 +12,14 @@ public class Ability {
 
     public Ability(String name) {
         this.name = name;
-        description = null;
+        this.description = null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }
