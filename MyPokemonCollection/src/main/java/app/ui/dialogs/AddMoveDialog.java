@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import app.data_objects.Move;
 import app.ui.fragments.AddPokemon;
 import app.ui.fragments.ICallbackContext;
-import app.ui.layout_adapters.searchable.MoveAdapter;
+import app.ui.adapters.searchable.MoveAdapter;
 
 public class AddMoveDialog extends GeneralisedDialog {
     private final List<Move> allMovesData;

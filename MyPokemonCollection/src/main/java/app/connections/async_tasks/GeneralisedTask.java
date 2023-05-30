@@ -6,7 +6,7 @@ import app.ui.fragments.ICallbackContext;
 import app.ui.fragments.GeneralisedFragment;
 
 public abstract class GeneralisedTask<T> extends AsyncTask<Void, Void, T> {
-    private final ICallbackContext callbackContext;
+    protected final ICallbackContext callbackContext;
 
     public GeneralisedTask(ICallbackContext callbackContext) {
         this.callbackContext = callbackContext;

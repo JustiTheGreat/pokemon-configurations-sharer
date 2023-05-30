@@ -1,5 +1,6 @@
 package app.connections.firebase;
 
+import static android.content.ContentValues.TAG;
 import static app.constants.PokemonDatabaseFields.ABILITY;
 import static app.constants.PokemonDatabaseFields.EVS;
 import static app.constants.PokemonDatabaseFields.IVS;
@@ -8,6 +9,7 @@ import static app.constants.PokemonDatabaseFields.MOVES;
 import static app.constants.PokemonDatabaseFields.NATURE;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -37,18 +39,28 @@ public class GetOtherPokemonDataDB  implements ICallbackContext {
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void execute() {
         FirebaseFirestore.getInstance().collection(collection).document(pokemonId).get()
-                .addOnFailureListener(task -> callbackContext.timedOut(this))
+                .addOnFailureListener(task -> {
+                    Log.e(TAG, task.getMessage());
+                    task.printStackTrace();
+                    callbackContext.timedOut(this);
+                })
                 .addOnSuccessListener(task -> {
-                    Pokemon pokemon = Pokemon.newPokemon()
-                            .level(task.getLong(LEVEL))
-                            .ability(new Ability(task.getString(ABILITY)))
-                            .nature(Nature.getNature(task.getString(NATURE)))
-                            .ivs((List<Long>) task.get(IVS))
-                            .evs((List<Long>) task.get(EVS))
-                            .moves(((List<String>) task.get(MOVES)).stream()
-                                    .map(name -> new Move(name))
-                                    .collect(Collectors.toList()));
-                    callbackContext.callback(this, pokemon);
+                    try {
+                        Pokemon pokemon = Pokemon.newPokemon()
+                                .level(task.getLong(LEVEL))
+                                .ability(new Ability(task.getString(ABILITY)))
+                                .nature(Nature.getNature(task.getString(NATURE)))
+                                .ivs((List<Long>) task.get(IVS))
+                                .evs((List<Long>) task.get(EVS))
+                                .moves(((List<String>) task.get(MOVES)).stream()
+                                        .map(name -> new Move(name))
+                                        .collect(Collectors.toList()));
+                        callbackContext.callback(this, pokemon);
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                        e.printStackTrace();
+                        callbackContext.timedOut(this);
+                    }
                 });
     }
 

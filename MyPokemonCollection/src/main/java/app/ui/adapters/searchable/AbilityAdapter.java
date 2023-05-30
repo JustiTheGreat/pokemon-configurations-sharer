@@ -1,4 +1,4 @@
-package app.ui.layout_adapters.searchable;
+package app.ui.adapters.searchable;
 
 import android.content.Context;
 import android.os.Build;

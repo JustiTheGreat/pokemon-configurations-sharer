@@ -15,12 +15,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/d_delete_textview"
+            android:id="@+id/dynQuestionTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="10dp"
-            android:text="@string/do_you_really_want_to_delete_this_pokemon"
+            android:text="@string/unknown"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -29,7 +29,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/d_delete_yes"
+                android:id="@+id/dynYesB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -37,7 +37,7 @@
                 android:text="@string/yes" />
 
             <Button
-                android:id="@+id/d_delete_no"
+                android:id="@+id/dynNoB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

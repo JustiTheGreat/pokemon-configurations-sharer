@@ -20,9 +20,9 @@ import com.mypokemoncollection.databinding.ActivityMainBinding;
 import java.util.Objects;
 
 import app.ui.fragments.AddPokemon;
+import app.ui.fragments.GeneralisedFragment;
 import app.ui.fragments.PokemonCollection;
 import app.ui.fragments.PokemonDetails;
-import app.ui.fragments.GeneralisedFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                         //ContextCompat.getColor(this, R.color.analogous_5)
                 });
         getWindow().getDecorView().setBackground(gradientDrawable);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override

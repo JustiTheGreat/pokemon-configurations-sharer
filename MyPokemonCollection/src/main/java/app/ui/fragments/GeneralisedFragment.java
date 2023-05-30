@@ -1,10 +1,8 @@
 package app.ui.fragments;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -54,20 +52,6 @@ public abstract class GeneralisedFragment<T> extends Fragment implements ICallba
     protected void hideKeyboard(ViewBinding binding) {
         InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(binding.getRoot().getWindowToken(), 0);
-    }
-
-    protected Dialog createDialog(int rId) {
-        Dialog dialog = new Dialog(this.getActivity());
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setContentView(rId);
-        dialog.show();
-        return dialog;
-    }
-
-    protected int getDisplayWidthInPixels() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        requireActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics.widthPixels;
     }
 
     protected boolean haveAuthenticatedUser() {

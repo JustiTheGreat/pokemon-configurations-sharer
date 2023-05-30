@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_collection_to_login"
             app:destination="@id/login" />
+        <action
+            android:id="@+id/action_collection_to_publicCollection"
+            app:destination="@id/publicCollection" />
     </fragment>
     <fragment
         android:id="@+id/details"
@@ -67,5 +70,19 @@
         <action
             android:id="@+id/action_add_to_login"
             app:destination="@id/login" />
+    </fragment>
+    <fragment
+        android:id="@+id/publicCollection"
+        android:name="app.ui.fragments.PublicPokemonCollection"
+        android:label="@string/public_collection">
+        <action
+            android:id="@+id/action_publicCollection_to_collection"
+            app:destination="@id/collection" />
+        <action
+            android:id="@+id/action_publicCollection_to_login"
+            app:destination="@id/login" />
+        <action
+            android:id="@+id/action_publicCollection_to_details"
+            app:destination="@id/details" />
     </fragment>
 </navigation>

@@ -2,7 +2,7 @@ package app.constants;
 
 public interface PokemonDatabaseFields {
     String POKEMON_COLLECTION = "pokemon";
-    String ONLINE_POKEMON_COLLECTION = "online_pokemon";
+    String PUBLIC_POKEMON_COLLECTION = "public_pokemon";
     String NAME = "name";
     String POKEDEX_NUMBER = "pokedex_number";
     String GENDER = "gender";

@@ -2,24 +2,19 @@ package app.ui.fragments;
 
 import static app.constants.PokemonConstants.NUMBER_OF_STATS;
 import static app.constants.PokemonDatabaseFields.POKEMON_COLLECTION;
+import static app.constants.PokemonDatabaseFields.PUBLIC_POKEMON_COLLECTION;
 
-import android.app.Dialog;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentPokemonDetailsBinding;
 
@@ -36,7 +31,11 @@ import app.data_objects.Pokemon;
 import app.stats_calculators.IStatsCalculator;
 import app.stats_calculators.StatsCalculator;
 import app.storages.Storage;
-import app.ui.layout_adapters.MoveItemAdapterForDetails;
+import app.ui.adapters.MoveItemAdapterForDetails;
+import app.ui.dialogs.DeleteDialog;
+import app.ui.dialogs.DownloadDialog;
+import app.ui.dialogs.QRCodeDialog;
+import app.ui.dialogs.UploadDialog;
 
 public class PokemonDetails extends GeneralisedFragment<FragmentPokemonDetailsBinding> {
 
@@ -59,8 +58,16 @@ public class PokemonDetails extends GeneralisedFragment<FragmentPokemonDetailsBi
             return;
         }
 
+        if (Storage.isPublicPokemon()) {
+            binding.fpdEditB.setVisibility(View.GONE);
+            binding.fpdUploadB.setVisibility(View.GONE);
+            binding.fpdDeleteB.setVisibility(View.GONE);
+        } else {
+            binding.fpdDownloadB.setVisibility(View.GONE);
+        }
+
         disableActivityTouchInput();
-        new GetOtherPokemonDataDB(this, pokemon.getID(), POKEMON_COLLECTION).execute();
+        new GetOtherPokemonDataDB(this, pokemon.getID(), Storage.isPublicPokemon() ? PUBLIC_POKEMON_COLLECTION : POKEMON_COLLECTION).execute();
 
         int ability_weight = 5, stats_weight = 20, moves_weight = 32;
         int space_weight = 100 - ability_weight - stats_weight - moves_weight;
@@ -77,39 +84,11 @@ public class PokemonDetails extends GeneralisedFragment<FragmentPokemonDetailsBi
         setHideClickListener(binding.fPDStats, binding.fPDHideStats, stats_weight);
         setHideClickListener(binding.fPDMoves, binding.fPDHideMoves, moves_weight);
 
-        binding.fPDDelete.setOnClickListener(v -> deletePokemon());
-        binding.fPDQrCode.setOnClickListener(v -> showQRCode());
-        binding.fPDEdit.setOnClickListener(v -> editPokemon());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private void deletePokemon() {
-        Dialog dialog = createDialog(R.layout.dialog_delete);
-        dialog.findViewById(R.id.d_delete_yes).setOnClickListener(v -> {
-            new DeletePokemonDB(this, pokemon.getID()).execute();
-            dialog.dismiss();
-        });
-        dialog.findViewById(R.id.d_delete_no).setOnClickListener(v -> dialog.dismiss());
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private void showQRCode() {
-        Dialog dialog = createDialog(R.layout.dialog_qr);
-        int width = getDisplayWidthInPixels() / 2;
-        try {
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.encodeBitmap(pokemon.toStringOfTransmissibleData(), BarcodeFormat.QR_CODE, width, width);
-            ImageView imageViewQrCode = dialog.findViewById(R.id.d_qr_image);
-            imageViewQrCode.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.R)
-    private void editPokemon() {
-        Storage.setCopyOfSelectedPokemon(pokemon);
-        navigateTo(R.id.action_details_to_add);
+        binding.fpdEditB.setOnClickListener(v -> navigateTo(R.id.action_details_to_add));
+        binding.fpdQrCodeB.setOnClickListener(v -> new QRCodeDialog(this, pokemon).load());
+        binding.fpdDeleteB.setOnClickListener(v -> new DeleteDialog(this, pokemon.getID()).load());
+        binding.fpdUploadB.setOnClickListener(v -> new UploadDialog(this, pokemon).load());
+        binding.fpdDownloadB.setOnClickListener(v -> new DownloadDialog(this, pokemon, getAuthenticatedUserId()).load());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -186,13 +165,14 @@ public class PokemonDetails extends GeneralisedFragment<FragmentPokemonDetailsBi
     @Override
     public void callback(Object caller, Object result) {
         if (caller instanceof GetOtherPokemonDataDB) {
-            pokemon.setLevel(((Pokemon) result).getLevel());
-            pokemon.setAbility(((Pokemon) result).getAbility());
-            pokemon.setNature(((Pokemon) result).getNature());
-            pokemon.setIVs(((Pokemon) result).getIVs());
-            pokemon.setEVs(((Pokemon) result).getEVs());
-            pokemon.setMoves(((Pokemon) result).getMoves());
-            new GetOtherPokemonDataAT(this, pokemon).execute();
+            Pokemon pokemon = (Pokemon) result;
+            this.pokemon.setLevel(pokemon.getLevel());
+            this.pokemon.setAbility(pokemon.getAbility());
+            this.pokemon.setNature(pokemon.getNature());
+            this.pokemon.setIVs(pokemon.getIVs());
+            this.pokemon.setEVs(pokemon.getEVs());
+            this.pokemon.setMoves(pokemon.getMoves());
+            new GetOtherPokemonDataAT(this, this.pokemon).execute();
         } else if (caller instanceof GetOtherPokemonDataAT) {
             new GetPokemonSpriteDB(this, (Pokemon) result).execute();
         } else if (caller instanceof GetPokemonSpriteDB) {
@@ -200,25 +180,22 @@ public class PokemonDetails extends GeneralisedFragment<FragmentPokemonDetailsBi
             setPageInfo();
             enableActivityTouchInput();
         } else if (caller instanceof DeletePokemonDB) {
-            List<Pokemon> pokemonList = Storage.getPokemonList();
-            for (int i = 0; i < pokemonList.size(); i++) {
-                if (pokemonList.get(i).getID().equals(result)) {
-                    pokemonList.remove(i);
-                    break;
-                }
-            }
+            Storage.removeByIdFromPokemonList((String) result);
             navigateTo(R.id.action_details_to_collection);
+        } else if (caller instanceof UploadDialog) {
+            toast(getString(R.string.pokemon_uploaded));
+        } else if (caller instanceof DownloadDialog){
+            Storage.addToPokemonList(pokemon);
+            toast(getString(R.string.pokemon_downloaded));
         }
     }
 
     @Override
     public void timedOut(Object caller) {
+        toast(getString(R.string.server_timeout));
         if (caller instanceof GetOtherPokemonDataDB || caller instanceof GetOtherPokemonDataAT) {
-            toast(getString(R.string.server_timeout));
             enableActivityTouchInput();
             navigateTo(R.id.action_details_to_collection);
-        } else if (caller instanceof DeletePokemonDB) {
-            toast(getString(R.string.server_timeout));
         }
     }
 }

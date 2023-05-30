@@ -1,10 +1,12 @@
 package app.connections.firebase;
 
+import static android.content.ContentValues.TAG;
 import static app.constants.Gender.FEMALE_GENDER;
 import static app.constants.Gender.FEMALE_GENDER_VALUES;
 import static app.constants.Gender.MALE_GENDER;
 import static app.constants.Gender.MALE_GENDER_VALUES;
 import static app.constants.Gender.UNKNOWN_GENDER;
+import static app.constants.Gender.UNKNOWN_GENDER_VALUE;
 import static app.constants.PokemonConstants.NORMAL_FORM_VALUE;
 import static app.constants.PokemonConstants.SHINY_FORM_VALUE;
 import static app.constants.StringConstants.FIRESTORE_REFERENCE_TEMPLATE;
@@ -14,10 +16,12 @@ import static app.constants.StringConstants.SHINY_PLACEHOLDER;
 
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 
 import app.data_objects.Pokemon;
@@ -35,51 +39,59 @@ public class GetPokemonHomeArtDB {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void execute() {
-        final long ONE_MEGABYTE = 1024 * 1024;
-        getImageStorageReference(pokemon.getPokedexNumber(), pokemon.getGender(), pokemon.isShiny())
-                .getBytes(ONE_MEGABYTE)
-                .addOnFailureListener(task -> callbackContext.timedOut(this))
-                .addOnSuccessListener(bytes -> {
-                    pokemon.setImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-                    callbackContext.callback(this, pokemon);
-                });
-    }
-
-    private StorageReference getImageStorageReference(long pokedexNumber, String gender, boolean isShiny) {
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-
         String s = FIRESTORE_REFERENCE_TEMPLATE
-                .replace(POKEDEX_NUMBER_PLACEHOLDER, String.format("%04d", pokedexNumber))
-                .replace(SHINY_PLACEHOLDER, isShiny ? SHINY_FORM_VALUE : NORMAL_FORM_VALUE);
-        StorageReference pathReference = null;
-        switch (gender) {
+                .replace(POKEDEX_NUMBER_PLACEHOLDER, String.format("%04d", pokemon.getPokedexNumber()))
+                .replace(SHINY_PLACEHOLDER, pokemon.isShiny() ? SHINY_FORM_VALUE : NORMAL_FORM_VALUE);
+        switch (pokemon.getGender()) {
             case MALE_GENDER:
-                for (String genderValue : MALE_GENDER_VALUES) {
-                    String temp = s.replace(GENDER_PLACEHOLDER, genderValue);
-                    pathReference = storageReference.child(temp);
-                    try {
-                        pathReference.getDownloadUrl();
-                        break;
-                    } catch (Exception ignored) {
-                    }
-                }
+                getDownloadUrl(storageReference, s, MALE_GENDER_VALUES, 0);
                 break;
             case FEMALE_GENDER:
-                for (String genderValue : FEMALE_GENDER_VALUES) {
-                    String temp = s.replace(GENDER_PLACEHOLDER, genderValue);
-                    pathReference = storageReference.child(temp);
-                    try {
-                        pathReference.getDownloadUrl();
-                        break;
-                    } catch (Exception ignored) {
-                    }
-                }
+                getDownloadUrl(storageReference, s, FEMALE_GENDER_VALUES, 0);
                 break;
             case UNKNOWN_GENDER:
-                String temp = s.replace(GENDER_PLACEHOLDER, gender);
-                pathReference = storageReference.child(temp);
+                String temp = s.replace(GENDER_PLACEHOLDER, UNKNOWN_GENDER_VALUE);
+                downloadImage(storageReference.child(temp));
                 break;
         }
-        return pathReference;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void getDownloadUrl(StorageReference storageReference, String s, String[] values, int valueIndex) {
+        String genderValue = values[valueIndex];
+        String temp = s.replace(GENDER_PLACEHOLDER, genderValue);
+        StorageReference pathReference = storageReference.child(temp);
+        final int finalValueIndex = valueIndex + 1;
+        if (finalValueIndex < values.length) {
+            try {
+                pathReference.getDownloadUrl()
+                        .addOnFailureListener(runnable -> getDownloadUrl(storageReference, s, values, finalValueIndex))
+                        .addOnSuccessListener(runnable -> downloadImage(pathReference));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void downloadImage(StorageReference storageReference) {
+        final long ONE_MEGABYTE = 1024 * 1024;
+        try {
+            storageReference.getBytes(ONE_MEGABYTE)
+                    .addOnFailureListener(task -> {
+                        Log.e(TAG, task.getMessage());
+                        task.printStackTrace();
+                        callbackContext.timedOut(this);
+                    })
+                    .addOnSuccessListener(bytes -> {
+                        pokemon.setImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
+                        callbackContext.callback(this, pokemon);
+                    });
+        }catch (Exception e){
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+            callbackContext.timedOut(this);
+        }
     }
 }

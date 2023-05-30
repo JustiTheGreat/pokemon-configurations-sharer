@@ -3,12 +3,13 @@
     <string name="action_settings">Settings</string>
     <string name="logout">Logout</string>
     <string name="empty"></string>
+    <string name="unknown">\?\?\?</string>
 
 <!--    strings for login and register fragments-->
     <string name="email_descriptor">E-mail:</string>
-    <string name="email_hint">e-mail</string>
+    <string name="email_hint">E-mail…</string>
     <string name="password_descriptor">Password:</string>
-    <string name="password_hint">password</string>
+    <string name="password_hint">Password…</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
@@ -17,8 +18,22 @@
 <!--    strings for collection fragment-->
     <string name="my_pokemon_collection">My pokemon collection</string>
     <string name="add_new_pokemon">Add new pokemon</string>
+    <string name="public_collection">Public collection</string>
+    <string name="create_a_new_pokemon">Create a new pokemon</string>
+    <string name="complete_data">Complete data</string>
+    <string name="scan_a_qr_code">Scan a QR code</string>
 
-    <string name="unknown">\?\?\?</string>
+    <!--    filter-->
+    <string name="filter_collection">Filter collection</string>
+    <string name="name_pattern">Name pattern:</string>
+    <string name="name_pattern_hint">Name pattern…</string>
+    <string name="species">Species:</string>
+    <string name="species_hint">Species…</string>
+    <string name="type_1">Type 1:</string>
+    <string name="type_1_hint">Type 1…</string>
+    <string name="type_2">Type 2:</string>
+    <string name="type_2_hint">Type 2…</string>
+    <string name="apply">Apply filters</string>
 
 <!--    strings for details fragment-->
     <string name="pokemon_details">Pokemon details</string>
@@ -39,11 +54,16 @@
     <string name="moves">Moves</string>
     <string name="edit_pokemon">Edit</string>
     <string name="qr_code">QR code</string>
+    <string name="upload">Upload</string>
+    <string name="pokemon_uploaded">Pokemon uploaded!</string>
     <string name="delete">Delete</string>
+    <string name="download">Download</string>
+    <string name="pokemon_downloaded">Pokemon downloaded!</string>
     <string name="do_you_really_want_to_delete_this_pokemon">Do you really want to delete this pokemon?</string>
+    <string name="do_you_really_want_to_upload_this_pokemon">Do you really want to upload this pokemon?</string>
+    <string name="do_you_really_want_to_download_this_pokemon">Do you really want to download this pokemon?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-
 
     <string name="add_pokemon">Add pokemon</string>
     <string name="choose_species">Choose species</string>
@@ -61,7 +81,7 @@
     <string name="search">Search…</string>
 
     <string name="move">MOVE</string>
-    <string name="type">TYPE</string>
+    <string name="pokemonType">TYPE</string>
     <string name="category">CATEGORY</string>
     <string name="power">POWER</string>
     <string name="accuracy">ACCURACY</string>

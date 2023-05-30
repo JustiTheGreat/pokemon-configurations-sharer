@@ -1,4 +1,4 @@
-package app.ui.layout_adapters;
+package app.ui.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;

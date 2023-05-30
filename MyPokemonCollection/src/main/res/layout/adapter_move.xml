@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="76"
                 android:gravity="center"
-                android:text="@string/type"
+                android:text="@string/pokemonType"
                 android:textColor="@color/white" />
 
             <TextView

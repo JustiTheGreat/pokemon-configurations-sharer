@@ -530,16 +530,15 @@
             android:orientation="vertical"></LinearLayout>
 
         <LinearLayout
-            android:id="@+id/f_p_d_buttons"
+            android:id="@+id/fpdButtonsLL"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="93"
             android:background="@color/main_color"
-            android:orientation="horizontal"
-            android:weightSum="4">
+            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/f_p_d_edit"
+                android:id="@+id/fpdEditB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -547,7 +546,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/f_p_d_qr_code"
+                android:id="@+id/fpdQrCodeB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -555,39 +554,27 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/f_p_d_upload"
+                android:id="@+id/fpdUploadB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="upload"
+                android:text="@string/upload"
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/f_p_d_delete"
+                android:id="@+id/fpdDeleteB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/delete"
                 android:textStyle="bold" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/f_p_d_buttons_2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="93"
-            android:background="@color/main_color"
-            android:orientation="horizontal"
-            android:weightSum="1"
-            android:visibility="gone">
-
             <Button
-                android:id="@+id/f_p_d_download"
+                android:id="@+id/fpdDownloadB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="download"
+                android:text="@string/download"
                 android:textStyle="bold" />
 
         </LinearLayout>

@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
@@ -23,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import app.connections.async_tasks.GetPokemonDisplayDataListAT;
-import app.data_objects.Pokemon;
-import app.connections.firebase.GetPokemonDisplayDataListDB;
+import app.connections.async_tasks.GetPokemonListPartialDisplayDataAT;
+import app.connections.firebase.GetPokemonListPartialDisplayDataDB;
 import app.connections.firebase.InsertPokemonDB;
-import app.ui.layout_adapters.PokemonConfigurationAdapter;
+import app.data_objects.Pokemon;
 import app.storages.Storage;
 import app.ui.activities.MainActivity;
+import app.ui.adapters.PokemonConfigurationAdapter;
 import app.ui.dialogs.AddOptionsDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
@@ -42,14 +40,14 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
                     if (result.getContents() == null) {
                         toast(getString(R.string.scan_canceled));
                     } else {
-                        binding.fCGridview.setEnabled(false);
-                        binding.fCAddOptionsButton.setEnabled(false);
+                        binding.fcListGV.setEnabled(false);
+                        binding.fcAddOptionsFAB.setEnabled(false);
                         toast(getString(R.string.scan_successful));
                         Pokemon pokemon = Pokemon.fromStringOfTransmissibleData(result.getContents());
                         String userId = getAuthenticatedUserId();
                         pokemon.setUserId(userId);
                         Storage.setCopyOfSelectedPokemon(pokemon);
-                        new InsertPokemonDB(this, pokemon).execute();
+                        new InsertPokemonDB(this, pokemon, POKEMON_COLLECTION).execute();
                     }
                 }
             });
@@ -60,39 +58,42 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
 
         Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
-        binding.fCGridview.setOnItemClickListener(this::seePokemonDetails);
-        binding.fCAddOptionsButton.setOnClickListener(view -> new AddOptionsDialog(this, barcodeLauncher).load());
+        binding.fcListGV.setOnItemClickListener((adapterView, view, i, l) -> {
+            Storage.setCopyOfSelectedPokemon(pokemonList.get((int) l));
+            navigateTo(R.id.action_collection_to_details);
+        });
+
+        binding.fcAddOptionsFAB.setOnClickListener(view -> new AddOptionsDialog(this, barcodeLauncher).load());
+        binding.fcPublicCollectionFAB.setOnClickListener(view -> navigateTo(R.id.action_collection_to_publicCollection));
+
         return binding.getRoot();
     }
-    
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         Storage.setCopyOfSelectedPokemon(null);
+        Storage.setPublicPokemon(false);
         if (Storage.getPokemonList() != null) {
             pokemonList = Storage.getPokemonList();
             loadGridView();
         } else {
-            new GetPokemonDisplayDataListDB(this, getAuthenticatedUserId(), POKEMON_COLLECTION).execute();
+            new GetPokemonListPartialDisplayDataDB(this, getAuthenticatedUserId()).execute();
         }
     }
 
-    private void seePokemonDetails(AdapterView<?> adapterView, View view, int position, long id) {
-        Storage.setCopyOfSelectedPokemon(pokemonList.get((int) id));
-        navigateTo(R.id.action_collection_to_details);
-    }
-
     private void loadGridView() {
-        BaseAdapter baseAdapter = new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList));
-        binding.fCGridview.setAdapter(baseAdapter);
-        binding.fCProgressbar.setVisibility(View.GONE);
+        binding.fcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
+        binding.fcLoadingPB.setVisibility(View.GONE);
     }
 
     @Override
     public void callback(Object caller, Object result) {
-        if (caller instanceof GetPokemonDisplayDataListDB) {
-            new GetPokemonDisplayDataListAT(this, (List<Pokemon>) result).execute();
-        } else if (caller instanceof GetPokemonDisplayDataListAT) {
+        if (caller instanceof GetPokemonListPartialDisplayDataDB) {
+//            ((List<Pokemon>) result).forEach(pokemon -> new GetPokemonHomeArtDB(this, pokemon).execute());
+            List<Pokemon> pokemonList= (List<Pokemon>) result;
+            new GetPokemonListPartialDisplayDataAT(this, (List<Pokemon>) result).execute();
+        } else if (caller instanceof GetPokemonListPartialDisplayDataAT) {
             pokemonList = (List<Pokemon>) result;
             Storage.setPokemonList(pokemonList);
             loadGridView();
@@ -104,6 +105,8 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
     @Override
     public void timedOut(Object caller) {
         toast(getString(R.string.server_timeout));
-        binding.fCProgressbar.setVisibility(View.GONE);
+        if (caller instanceof GetPokemonListPartialDisplayDataDB || caller instanceof GetPokemonListPartialDisplayDataAT) {
+            binding.fcLoadingPB.setVisibility(View.GONE);
+        }
     }
 }

@@ -1,20 +1,20 @@
 package app.ui.dialogs;
 
 import android.app.Dialog;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.core.content.ContextCompat;
 
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.mypokemoncollection.R;
 
-import app.ui.fragments.ICallbackContext;
 import app.ui.fragments.GeneralisedFragment;
+import app.ui.fragments.ICallbackContext;
 
-public class AddOptionsDialog extends GeneralisedDialog{
+public class AddOptionsDialog extends GeneralisedDialog {
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher;
 
@@ -25,32 +25,33 @@ public class AddOptionsDialog extends GeneralisedDialog{
 
     @Override
     protected void create() {
-        dialog = new Dialog(((GeneralisedFragment<?>) callbackContext).requireActivity());
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.setContentView(R.layout.dialog_add_options);
+        GeneralisedFragment<?> fragment = ((GeneralisedFragment<?>) callbackContext);
+        dialog = new Dialog(fragment.requireActivity());
+        dialog.setContentView(R.layout.dialog_bottom);
 
-        Window window = dialog.getWindow();
-        window.setDimAmount(0);
-        window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.gravity = Gravity.BOTTOM;
-        layoutParams.x = ((GeneralisedFragment<?>) callbackContext).requireActivity().findViewById(R.id.f_c_add_options_button).getWidth() / 2 + 100;
-        layoutParams.y = 30;
-        window.setAttributes(layoutParams);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        GradientDrawable gradientDrawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{ContextCompat.getColor(fragment.requireActivity(), R.color.analogous_1),
+                        ContextCompat.getColor(fragment.requireActivity(), R.color.analogous_2),
+                        ContextCompat.getColor(fragment.requireActivity(), R.color.analogous_3),
+                        ContextCompat.getColor(fragment.requireActivity(), R.color.analogous_4),
+                });
+        dialog.getWindow().setBackgroundDrawable(gradientDrawable);
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     @Override
     protected void setupFunctionality() {
-        dialog.findViewById(R.id.dao_write).setOnClickListener(view1 -> addPokemonManually(dialog));
-        dialog.findViewById(R.id.dao_scan).setOnClickListener(view1 -> {
+        dialog.findViewById(R.id.dbCompleteL).setOnClickListener(view -> {
+            ((GeneralisedFragment<?>) callbackContext).navigateTo(R.id.action_collection_to_add);
+            dialog.dismiss();
+        });
+
+        dialog.findViewById(R.id.dbScanL).setOnClickListener(view -> {
             scanQRCode();
             dialog.dismiss();
         });
-    }
-
-    private void addPokemonManually(Dialog dialog) {
-        ((GeneralisedFragment<?>) callbackContext).navigateTo(R.id.action_collection_to_add);
-        dialog.dismiss();
     }
 
     private void scanQRCode() {

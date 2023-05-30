@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import app.data_objects.Pokemon;
-import app.data_objects.Type;
+import app.data_objects.PokemonType;
 
 public class GetAllPokemonSpeciesData {
 
@@ -50,9 +50,9 @@ public class GetAllPokemonSpeciesData {
             if (!already_exists) {
                 Element parent = e.parent().parent();
                 String species = parent.getElementsByClass("ent-name").text();
-                List<Type> types = parent.getElementsByClass("type-icon").stream()
+                List<PokemonType> pokemonTypes = parent.getElementsByClass("type-icon").stream()
                         .map(Element::text)
-                        .map(Type::getType)
+                        .map(PokemonType::getType)
                         .collect(Collectors.toList());
                 List<Long> baseStats = parent.getElementsByClass("cell-num").stream()
                         .map(bs -> Long.parseLong(bs.text()))
@@ -61,7 +61,7 @@ public class GetAllPokemonSpeciesData {
                 baseStats.remove(0);
                 String gender = PokemonGenderIsKnown.isKnown(pokedexNumber) ? MALE_GENDER : UNKNOWN_GENDER;
                 pokemonList.add(Pokemon.newPokemon().pokedexNumber(pokedexNumber).species(species)
-                                .gender(gender).types(types).baseStats(baseStats));
+                                .gender(gender).types(pokemonTypes).baseStats(baseStats));
             }
         }
         return pokemonList;

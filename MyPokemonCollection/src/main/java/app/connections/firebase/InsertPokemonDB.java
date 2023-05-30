@@ -1,7 +1,5 @@
 package app.connections.firebase;
 
-import static app.constants.PokemonDatabaseFields.POKEMON_COLLECTION;
-
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -15,20 +13,19 @@ public class InsertPokemonDB {
 
     private final ICallbackContext callbackContext;
     private final Pokemon pokemon;
+    private final String databaseCollection;
 
-    public InsertPokemonDB(ICallbackContext callbackContext, Pokemon pokemon) {
+    public InsertPokemonDB(ICallbackContext callbackContext, Pokemon pokemon, String databaseCollection) {
         this.callbackContext = callbackContext;
         this.pokemon = pokemon;
+        this.databaseCollection = databaseCollection;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void execute() {
-        FirebaseFirestore.getInstance().collection(POKEMON_COLLECTION)
+        FirebaseFirestore.getInstance().collection(databaseCollection)
                 .add(pokemon.getDatabaseMapObject())
-                .addOnSuccessListener(task -> {
-                    pokemon.setID(task.getId());
-                    callbackContext.callback(this, pokemon);
-                })
+                .addOnSuccessListener(task -> callbackContext.callback(this, pokemon))
                 .addOnFailureListener(task -> callbackContext.timedOut(this));
     }
 }

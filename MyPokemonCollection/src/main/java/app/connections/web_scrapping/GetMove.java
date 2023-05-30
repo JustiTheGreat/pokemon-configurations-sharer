@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import app.data_objects.Move;
 import app.data_objects.MoveCategory;
-import app.data_objects.Type;
+import app.data_objects.PokemonType;
 
 public class GetMove {
     public static Move get(String moveName) {
@@ -36,7 +36,7 @@ public class GetMove {
 
                 Element element = doc.select("a[href^=/type/]").get(1);
 
-                Type type = Type.getType(element.text());
+                PokemonType pokemonType = PokemonType.getType(element.text());
 
                 String categoryName = element.parent().parent().parent().child(1).child(1).text().split(" ")[1].trim().toLowerCase();
                 MoveCategory moveCategory = GetMoveCategory.get(categoryName);
@@ -57,7 +57,7 @@ public class GetMove {
                     description = doc.getElementsByClass("sun").get(1).parent().parent().child(1).text();
                 }
 
-                return new Move(moveName, type, moveCategory, power, accuracy, PP, description);
+                return new Move(moveName, pokemonType, moveCategory, power, accuracy, PP, description);
             }
         }
         return null;

@@ -16,7 +16,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import app.ui.fragments.ICallbackContext;
 import app.data_objects.Ability;
-import app.ui.layout_adapters.searchable.AbilityAdapter;
+import app.ui.adapters.searchable.AbilityAdapter;
 import app.ui.fragments.AddPokemon;
 
 public class ChooseAbilityDialog extends GeneralisedDialog {

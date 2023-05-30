@@ -6,4 +6,5 @@ public interface Gender {
     String UNKNOWN_GENDER = "";
     String[] MALE_GENDER_VALUES = {"mf", "md", "mo"};
     String[] FEMALE_GENDER_VALUES = {"mf", "fd", "fo"};
+    String UNKNOWN_GENDER_VALUE = "uk";
 }

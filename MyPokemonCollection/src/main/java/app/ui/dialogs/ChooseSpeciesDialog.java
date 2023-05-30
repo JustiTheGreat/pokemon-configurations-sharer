@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import app.data_objects.Pokemon;
-import app.ui.layout_adapters.searchable.SpeciesAdapter;
+import app.ui.adapters.searchable.SpeciesAdapter;
 import app.ui.fragments.AddPokemon;
 import app.ui.fragments.ICallbackContext;
 
@@ -52,8 +52,10 @@ public class ChooseSpeciesDialog extends GeneralisedDialog {
     @Override
     protected void setupFunctionality() {
         AutoCompleteTextView speciesTV = dialog.findViewById(R.id.d_search_search);
-        speciesTV.setAdapter(new SpeciesAdapter(((AddPokemon) callbackContext).getActivity(), allSpeciesData));
+        speciesTV.setAdapter(new SpeciesAdapter(((AddPokemon) callbackContext).requireActivity(), allSpeciesData));
         speciesTV.setThreshold(1);
+        speciesTV.setMaxLines(6);
+//        speciesTV.setDropDownHeight(850);
         if (pokemon.getPokedexNumber() > 0) {
             speciesTV.setText(pokemon.getSpecies());
         }

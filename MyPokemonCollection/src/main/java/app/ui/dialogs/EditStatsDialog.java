@@ -136,7 +136,12 @@ public class EditStatsDialog extends GeneralisedDialog {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String correctValue = s.toString();
-                if (!correctValue.equals("")) {
+                if (correctValue.equals("")) {
+                    editText.removeTextChangedListener(this);
+                    editText.setText("0");
+                    editText.setSelection(editText.getText().length());
+                    editText.addTextChangedListener(this);
+                } else {
                     correctValue = correctValue
                             .replace(",", "")
                             .replace(".", "")

@@ -1,5 +1,7 @@
 package app.ui.dialogs;
 
+import static app.constants.PokemonDatabaseFields.POKEMON_COLLECTION;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Build;
@@ -62,7 +64,7 @@ public class NameDialog extends GeneralisedDialog {
                 pokemon.setUserId(user_id);
 
                 disableActivityTouchInput(fragment.requireActivity());
-                new InsertPokemonDB(callbackContext, pokemon).execute();
+                new InsertPokemonDB(callbackContext, pokemon, POKEMON_COLLECTION).execute();
             } else {
                 disableActivityTouchInput(fragment.requireActivity());
                 new UpdatePokemonDB(callbackContext, pokemon).execute();

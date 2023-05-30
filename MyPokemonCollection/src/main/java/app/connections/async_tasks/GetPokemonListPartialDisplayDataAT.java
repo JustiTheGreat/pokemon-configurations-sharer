@@ -17,14 +17,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import app.data_objects.Pokemon;
-import app.data_objects.Type;
+import app.data_objects.PokemonType;
 import app.ui.fragments.ICallbackContext;
 
-public class GetPokemonDisplayDataListAT extends GeneralisedTask<List<Pokemon>> {
+public class GetPokemonListPartialDisplayDataAT extends GeneralisedTask<List<Pokemon>> {
 
     private final List<Pokemon> pokemonList;
 
-    public GetPokemonDisplayDataListAT(ICallbackContext callbackContext, List<Pokemon> pokemonList) {
+    public GetPokemonListPartialDisplayDataAT(ICallbackContext callbackContext, List<Pokemon> pokemonList) {
         super(callbackContext);
         this.pokemonList = pokemonList;
     }
@@ -62,12 +62,12 @@ public class GetPokemonDisplayDataListAT extends GeneralisedTask<List<Pokemon>> 
             if (value == pokemon.getPokedexNumber()) {
                 Element parent = e.parent().parent();
                 String species = parent.getElementsByClass("ent-name").text();
-                List<Type> types = parent.getElementsByClass("type-icon").stream()
+                List<PokemonType> pokemonTypes = parent.getElementsByClass("type-icon").stream()
                         .map(Element::text)
-                        .map(Type::getType)
+                        .map(PokemonType::getType)
                         .collect(Collectors.toList());
                 pokemon.setSpecies(species);
-                pokemon.setTypes(types);
+                pokemon.setTypes(pokemonTypes);
                 break;
             }
         }

@@ -14,7 +14,7 @@ import java.util.List;
 
 import app.data_objects.Move;
 import app.data_objects.MoveCategory;
-import app.data_objects.Type;
+import app.data_objects.PokemonType;
 
 public class GetPokemonMoves {
     public static List<Move> get(long pokedexNumber) {
@@ -48,7 +48,7 @@ public class GetPokemonMoves {
 
                 Element element = doc.select("a[href^=/type/]").get(1);
 
-                Type type = Type.getType(element.text());
+                PokemonType pokemonType = PokemonType.getType(element.text());
 
                 String categoryName = element.parent().parent().parent().child(1).child(1).text().split(" ")[1].trim().toLowerCase();
                 MoveCategory moveCategory = GetMoveCategory.get(categoryName);
@@ -69,7 +69,7 @@ public class GetPokemonMoves {
                     description = doc.getElementsByClass("sun").get(1).parent().parent().child(1).text();
                 } else description = "problem";
 
-                moves.add(new Move(name, type, moveCategory, power, accuracy, PP, description));
+                moves.add(new Move(name, pokemonType, moveCategory, power, accuracy, PP, description));
             }
         }
         return moves;

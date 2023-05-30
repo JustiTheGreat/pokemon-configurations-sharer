@@ -3,16 +3,16 @@ package app.data_objects;
 public class Move {
 
     private final String name;
-    private final Type type;
+    private final PokemonType pokemonType;
     private final MoveCategory category;
     private final int power;
     private final int accuracy;
     private final int pp;
     private final String description;
 
-    public Move(String name, Type type, MoveCategory category, int power, int accuracy, int pp, String description) {
+    public Move(String name, PokemonType pokemonType, MoveCategory category, int power, int accuracy, int pp, String description) {
         this.name = name;
-        this.type = type;
+        this.pokemonType = pokemonType;
         this.category = category;
         this.power = power;
         this.accuracy = accuracy;
@@ -22,7 +22,7 @@ public class Move {
 
     public Move(String name) {
         this.name = name;
-        type = null;
+        pokemonType = null;
         category = null;
         power = -1;
         accuracy = -1;
@@ -34,8 +34,8 @@ public class Move {
         return name;
     }
 
-    public Type getType() {
-        return type;
+    public PokemonType getType() {
+        return pokemonType;
     }
 
     public MoveCategory getCategory() {

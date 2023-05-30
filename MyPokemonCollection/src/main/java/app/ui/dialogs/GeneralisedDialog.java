@@ -9,7 +9,7 @@ public abstract class GeneralisedDialog {
     protected final ICallbackContext callbackContext;
     protected Dialog dialog;
 
-    public GeneralisedDialog(ICallbackContext callbackContext) {
+    protected GeneralisedDialog(ICallbackContext callbackContext) {
         this.callbackContext = callbackContext;
     }
 

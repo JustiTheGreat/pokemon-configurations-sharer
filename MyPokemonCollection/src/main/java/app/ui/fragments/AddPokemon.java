@@ -39,7 +39,7 @@ import app.ui.dialogs.ChooseAbilityDialog;
 import app.ui.dialogs.ChooseSpeciesDialog;
 import app.ui.dialogs.EditStatsDialog;
 import app.ui.dialogs.NameDialog;
-import app.ui.layout_adapters.MoveItemAdapterForAddEdit;
+import app.ui.adapters.MoveItemAdapterForAddEdit;
 
 
 @RequiresApi(api = Build.VERSION_CODES.R)
@@ -89,7 +89,12 @@ public class AddPokemon extends GeneralisedFragment<FragmentAddPokemonBinding> {
             movesAdapter.notifyDataSetChanged();
             if (pokemon.getMoves().size() != 4) binding.fAPAddMove.setVisibility(View.VISIBLE);
         } else {
-            new GetAllPokemonSpeciesDataAT(this).execute();
+            if (Storage.getPokemonSpeciesList() == null) {
+                new GetAllPokemonSpeciesDataAT(this).execute();
+            } else {
+                allSpeciesData = Storage.getPokemonSpeciesList();
+                binding.fAPSpeciesButton.setEnabled(true);
+            }
 
             binding.fAPChosenSpecies.setVisibility(View.GONE);
             binding.fAPChosenAbility.setVisibility(View.GONE);
@@ -159,6 +164,7 @@ public class AddPokemon extends GeneralisedFragment<FragmentAddPokemonBinding> {
     public void callback(Object caller, Object result) {
         if (caller instanceof GetAllPokemonSpeciesDataAT) {
             allSpeciesData = (List<Pokemon>) result;
+            Storage.setPokemonSpeciesList(allSpeciesData);
             binding.fAPSpeciesButton.setEnabled(true);
         } else if (caller instanceof GetPokemonAbilitiesAT) {
             allAbilitiesData = (List<Ability>) result;
@@ -175,22 +181,15 @@ public class AddPokemon extends GeneralisedFragment<FragmentAddPokemonBinding> {
         } else if (caller instanceof AddMoveDialog) {
             setMoveInfo(((AddMoveDialog) caller).getMoveIndex(), (Move) result);
         } else if (caller instanceof InsertPokemonDB) {
-            Pokemon pokemon = (Pokemon) result;
-            Storage.setCopyOfSelectedPokemon(pokemon);
-            new GetPokemonHomeArtDB(this, pokemon).execute();
+            new GetPokemonHomeArtDB(this, (Pokemon) result).execute();
         } else if (caller instanceof GetPokemonHomeArtDB) {
-            Storage.getPokemonList().add((Pokemon) result);
+            if (Storage.getPokemonList() != null) {
+                Storage.addToPokemonList((Pokemon) result);
+            }
             enableActivityTouchInput();
             navigateTo(R.id.action_add_to_collection);
         } else if (caller instanceof UpdatePokemonDB) {
-            Pokemon p = (Pokemon) result;
-            List<Pokemon> pokemonList = Storage.getPokemonList();
-            for (Pokemon pokemon : pokemonList) {
-                if (pokemon.getID().equals(p.getID())) {
-                    pokemonList.set(pokemonList.indexOf(pokemon), p);
-                    break;
-                }
-            }
+            Storage.setInPokemonList((Pokemon) result);
             enableActivityTouchInput();
             navigateTo(R.id.action_add_to_collection);
         }
@@ -330,6 +329,7 @@ public class AddPokemon extends GeneralisedFragment<FragmentAddPokemonBinding> {
         if (caller instanceof InsertPokemonDB || caller instanceof GetPokemonHomeArtDB || caller instanceof UpdatePokemonDB) {
             enableActivityTouchInput();
             toast(getString(R.string.server_timeout));
+            Storage.setPokemonList(null);
             navigateTo(R.id.action_add_to_collection);
         }
     }

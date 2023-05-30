@@ -39,7 +39,7 @@ public class Pokemon {
     private List<Long> IVs;
     private List<Long> EVs;
     private List<Move> moves;
-    private List<Type> types;
+    private List<PokemonType> pokemonTypes;
     private List<Long> baseStats;
     private Bitmap image;
     private Bitmap sprite;
@@ -66,7 +66,7 @@ public class Pokemon {
                 .ivs(pokemon.IVs == null ? null : new ArrayList<>(pokemon.IVs))
                 .evs(pokemon.EVs == null ? null : new ArrayList<>(pokemon.EVs))
                 .moves(pokemon.moves == null ? null : new ArrayList<>(pokemon.moves))
-                .types(pokemon.types)
+                .types(pokemon.pokemonTypes)
                 .baseStats(pokemon.baseStats)
                 .image(pokemon.image)
                 .sprite(pokemon.sprite)
@@ -86,7 +86,7 @@ public class Pokemon {
         this.IVs = new ArrayList<>(pokemon.IVs);
         this.EVs = new ArrayList<>(pokemon.EVs);
         this.moves.addAll(pokemon.moves);
-        this.types = pokemon.types;
+        this.pokemonTypes = pokemon.pokemonTypes;
         this.baseStats = pokemon.baseStats;
         this.image = pokemon.image;
         this.sprite = pokemon.sprite;
@@ -205,8 +205,8 @@ public class Pokemon {
         return this;
     }
 
-    public Pokemon types(List<Type> types) {
-        this.types = types;
+    public Pokemon types(List<PokemonType> pokemonTypes) {
+        this.pokemonTypes = pokemonTypes;
         return this;
     }
 
@@ -326,12 +326,12 @@ public class Pokemon {
         this.moves = moves;
     }
 
-    public List<Type> getTypes() {
-        return types;
+    public List<PokemonType> getTypes() {
+        return pokemonTypes;
     }
 
-    public void setTypes(List<Type> types) {
-        this.types = types;
+    public void setTypes(List<PokemonType> pokemonTypes) {
+        this.pokemonTypes = pokemonTypes;
     }
 
     public List<Long> getBaseStats() {
