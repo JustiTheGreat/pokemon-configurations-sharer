@@ -15,7 +15,7 @@ import androidx.annotation.RequiresApi;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,48 +27,47 @@ public class GetPokemonListPartialDisplayDataDB implements ICallbackContext {
 
     private final ICallbackContext callbackContext;
     private final String userId;
+    private final int count;
+    private final int BATCH_SIZE = 3;
+    private static boolean canRead = true;
 
-    public GetPokemonListPartialDisplayDataDB(ICallbackContext callbackContext, String userId) {
+    public static boolean canRead() {
+        return canRead;
+    }
+
+    public GetPokemonListPartialDisplayDataDB(ICallbackContext callbackContext, String userId, int count) {
         this.callbackContext = callbackContext;
         this.userId = userId;
+        this.count = count;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     public void execute() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Query query;
-        if (userId == null) query = db.collection(POKEMON_COLLECTION);
-        else query = db.collection(POKEMON_COLLECTION).whereEqualTo(USER_ID, userId);
-
-        query.get()
-                .addOnFailureListener(task -> {
-                    Log.e(TAG, task.getMessage());
-                    task.printStackTrace();
-                    callbackContext.timedOut(this);
-                })
-                .addOnSuccessListener(task -> {
-//                            try {
-                                List<Pokemon> pokemonList = new ArrayList<>();
-                                List<DocumentSnapshot> documents = task.getDocuments();
-                                for (DocumentSnapshot document : documents) {
-                                    Pokemon pokemon = Pokemon.newPokemon()
-                                            .id(document.getId())
-                                            .name(document.getString(NAME))
-                                            .pokedexNumber(document.getLong(POKEDEX_NUMBER))
-                                            .gender(document.getString(GENDER))
-                                            .shiny(Boolean.TRUE.equals(document.getBoolean(SHINY)))
-                                            .userId(userId);
-                                    pokemonList.add(pokemon);
-                                    new GetPokemonHomeArtDB(this, pokemon).execute();
-                                }
-                                callbackContext.callback(this, pokemonList);
-//                            } catch (Exception e) {
-//                                Log.e(TAG, e.getMessage());
-//                                e.printStackTrace();
-//                                callbackContext.timedOut(this);
-//                            }
-                        }
-                );
+        if (userId == null) return;
+        FirebaseFirestore.getInstance()
+                .collection(POKEMON_COLLECTION)
+                .whereEqualTo(USER_ID, userId)
+                .orderBy(NAME)
+                .limit((long) count * BATCH_SIZE)
+                .get()
+                .addOnFailureListener(this::failureListener)
+                .addOnSuccessListener(querySnapshot -> {
+                    if (count == 3) {
+                        successListener(querySnapshot);
+                    } else {
+                        int documentIndex = querySnapshot.size() - (querySnapshot.size() % 3 == 0 ? BATCH_SIZE : querySnapshot.size() % 3);
+                        DocumentSnapshot lastVisible = querySnapshot.getDocuments().get(documentIndex);
+                        FirebaseFirestore.getInstance()
+                                .collection(POKEMON_COLLECTION)
+                                .whereEqualTo(USER_ID, userId)
+                                .orderBy(NAME)
+                                .startAt(lastVisible)
+                                .limit(BATCH_SIZE)
+                                .get()
+                                .addOnFailureListener(this::failureListener)
+                                .addOnSuccessListener(this::successListener);
+                    }
+                });
     }
 
     @Override
@@ -77,5 +76,40 @@ public class GetPokemonListPartialDisplayDataDB implements ICallbackContext {
 
     @Override
     public void timedOut(Object caller) {
+    }
+
+    private void failureListener(Exception e) {
+        Log.e(TAG, e.getMessage());
+        e.printStackTrace();
+        callbackContext.timedOut(this);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private void successListener(QuerySnapshot querySnapshot) {
+        if (querySnapshot.isEmpty()) {
+            canRead = false;
+            return;
+        }
+        if (querySnapshot.size() < BATCH_SIZE) {
+            canRead = false;
+        }
+        try {
+            List<Pokemon> pokemonList = new ArrayList<>();
+            List<DocumentSnapshot> documents = querySnapshot.getDocuments();
+            for (DocumentSnapshot document : documents) {
+                Pokemon pokemon = Pokemon.newPokemon()
+                        .id(document.getId())
+                        .name(document.getString(NAME))
+                        .pokedexNumber(document.getLong(POKEDEX_NUMBER))
+                        .gender(document.getString(GENDER))
+                        .shiny(Boolean.TRUE.equals(document.getBoolean(SHINY)))
+                        .userId(userId);
+                pokemonList.add(pokemon);
+                new GetPokemonHomeArtDB(this, pokemon).execute();
+            }
+            callbackContext.callback(this, pokemonList);
+        } catch (Exception e) {
+            failureListener(e);
+        }
     }
 }

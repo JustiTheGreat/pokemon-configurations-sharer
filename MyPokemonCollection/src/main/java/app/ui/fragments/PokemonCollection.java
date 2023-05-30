@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -32,7 +34,9 @@ import app.ui.dialogs.AddOptionsDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBinding> {
+
     private List<Pokemon> pokemonList;
+    private int count = 2;
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
@@ -59,8 +63,33 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
         Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
         binding.fcListGV.setOnItemClickListener((adapterView, view, i, l) -> {
-            Storage.setCopyOfSelectedPokemon(pokemonList.get((int) l));
+            Storage.setCopyOfSelectedPokemon((Pokemon) adapterView.getAdapter().getItem(i));
             navigateTo(R.id.action_collection_to_details);
+        });
+
+        binding.fcListGV.setOnScrollListener(new AbsListView.OnScrollListener(){
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState){
+                if (scrollState != RecyclerView.SCROLL_STATE_IDLE
+                        || view.getCount() == 0
+                        || !GetPokemonListPartialDisplayDataDB.canRead()) {
+                    return;
+                }
+
+                View lastChildView = view.getChildAt(view.getChildCount() - 1);
+                int lastChildBottom = lastChildView.getBottom();
+                int recyclerBottom = view.getBottom() - view.getPaddingBottom();
+                int lastPosition = view.getPositionForView(lastChildView);
+
+                if (lastChildBottom == recyclerBottom && lastPosition == view.getCount() - 1) {
+                    binding.fcLoadingPB.setVisibility(View.VISIBLE);
+                    new GetPokemonListPartialDisplayDataDB(PokemonCollection.this, getAuthenticatedUserId(), ++count).execute();
+                }
+            }
         });
 
         binding.fcAddOptionsFAB.setOnClickListener(view -> new AddOptionsDialog(this, barcodeLauncher).load());
@@ -76,27 +105,27 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
         Storage.setPublicPokemon(false);
         if (Storage.getPokemonList() != null) {
             pokemonList = Storage.getPokemonList();
-            loadGridView();
+            binding.fcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
+            binding.fcLoadingPB.setVisibility(View.GONE);
         } else {
-            new GetPokemonListPartialDisplayDataDB(this, getAuthenticatedUserId()).execute();
+            new GetPokemonListPartialDisplayDataDB(this, getAuthenticatedUserId(), ++count).execute();
         }
-    }
-
-    private void loadGridView() {
-        binding.fcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
-        binding.fcLoadingPB.setVisibility(View.GONE);
     }
 
     @Override
     public void callback(Object caller, Object result) {
         if (caller instanceof GetPokemonListPartialDisplayDataDB) {
-//            ((List<Pokemon>) result).forEach(pokemon -> new GetPokemonHomeArtDB(this, pokemon).execute());
-            List<Pokemon> pokemonList= (List<Pokemon>) result;
             new GetPokemonListPartialDisplayDataAT(this, (List<Pokemon>) result).execute();
         } else if (caller instanceof GetPokemonListPartialDisplayDataAT) {
-            pokemonList = (List<Pokemon>) result;
-            Storage.setPokemonList(pokemonList);
-            loadGridView();
+            if(pokemonList == null){
+                pokemonList = (List<Pokemon>) result;
+                Storage.setPokemonList(pokemonList);
+            }else{
+                pokemonList.addAll((List<Pokemon>) result);
+            }
+
+            binding.fcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
+            binding.fcLoadingPB.setVisibility(View.GONE);
         } else if (caller instanceof InsertPokemonDB) {
             pokemonList.add((Pokemon) result);
         }
