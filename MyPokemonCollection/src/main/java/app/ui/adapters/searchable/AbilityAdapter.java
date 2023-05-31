@@ -30,6 +30,11 @@ public class AbilityAdapter extends ArrayAdapter<Ability> {
     }
 
     @Override
+    public int getCount() {
+        return currentData.size();
+    }
+
+    @Override
     public Ability getItem(int index) {
         return currentData.get(index);
     }

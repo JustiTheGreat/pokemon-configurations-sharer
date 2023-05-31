@@ -31,6 +31,11 @@ public class MoveAdapter extends ArrayAdapter<Move> {
     }
 
     @Override
+    public int getCount() {
+        return currentData.size();
+    }
+
+    @Override
     public Move getItem(int index) {
         return currentData.get(index);
     }
