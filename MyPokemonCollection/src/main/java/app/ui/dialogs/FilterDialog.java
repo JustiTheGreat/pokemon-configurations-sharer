@@ -25,7 +25,6 @@ import com.mypokemoncollection.R;
 
 import java.util.stream.Collectors;
 
-import app.connections.firebase.GetFilteredPokemonDisplayDataListDB;
 import app.data_objects.Pokemon;
 import app.data_objects.PokemonType;
 import app.storages.Storage;
@@ -161,8 +160,7 @@ public class FilterDialog extends GeneralisedDialog {
         });
 
         dialog.findViewById(R.id.dfFilterB).setOnClickListener(view -> {
-            new GetFilteredPokemonDisplayDataListDB(callbackContext, selectedSpeciesPokedexNumber).execute();
-            callbackContext.callback(this, null);
+            callbackContext.callback(this, selectedSpeciesPokedexNumber);
             dialog.dismiss();
         });
     }

@@ -7,7 +7,7 @@
     tools:context="app.ui.fragments.PokemonCollection">
 
     <GridView
-        android:id="@+id/fcListGV"
+        android:id="@+id/fpcListGV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
@@ -25,7 +25,7 @@
         tools:layout_editor_absoluteY="80dp"></GridView>
 
     <ProgressBar
-        android:id="@+id/fcLoadingPB"
+        android:id="@+id/fpcLoadingPB"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,19 +35,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fcAddOptionsFAB"
+        android:id="@+id/fpcAddOptionsFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:clickable="true"
-        android:src="@drawable/add"
+        android:src="@drawable/icon_plus"
         app:backgroundTint="@color/main_color"
-        app:layout_constraintBottom_toBottomOf="@+id/fcListGV"
+        app:layout_constraintBottom_toBottomOf="@+id/fpcListGV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fcPublicCollectionFAB"
+        android:id="@+id/fpcPublicCollectionFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

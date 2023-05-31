@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.mypokemoncollection.R;
-import com.mypokemoncollection.databinding.FragmentCollectionBinding;
+import com.mypokemoncollection.databinding.FragmentPokemonCollectionBinding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import app.ui.adapters.PokemonConfigurationAdapter;
 import app.ui.dialogs.AddOptionsDialog;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
-public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBinding> {
+public class PokemonCollection extends GeneralisedFragment<FragmentPokemonCollectionBinding> {
 
     private List<Pokemon> pokemonList;
     private int count = 2;
@@ -44,8 +44,8 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
                     if (result.getContents() == null) {
                         toast(getString(R.string.scan_canceled));
                     } else {
-                        binding.fcListGV.setEnabled(false);
-                        binding.fcAddOptionsFAB.setEnabled(false);
+                        binding.fpcListGV.setEnabled(false);
+                        binding.fpcAddOptionsFAB.setEnabled(false);
                         toast(getString(R.string.scan_successful));
                         Pokemon pokemon = Pokemon.fromStringOfTransmissibleData(result.getContents());
                         String userId = getAuthenticatedUserId();
@@ -58,22 +58,22 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentCollectionBinding.inflate(inflater, container, false);
+        binding = FragmentPokemonCollectionBinding.inflate(inflater, container, false);
 
         Objects.requireNonNull(((MainActivity) requireActivity()).getSupportActionBar()).setDisplayHomeAsUpEnabled(false);
 
-        binding.fcListGV.setOnItemClickListener((adapterView, view, i, l) -> {
+        binding.fpcListGV.setOnItemClickListener((adapterView, view, i, l) -> {
             Storage.setCopyOfSelectedPokemon((Pokemon) adapterView.getAdapter().getItem(i));
             navigateTo(R.id.action_collection_to_details);
         });
 
-        binding.fcListGV.setOnScrollListener(new AbsListView.OnScrollListener(){
+        binding.fpcListGV.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
 
             @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState){
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState != RecyclerView.SCROLL_STATE_IDLE
                         || view.getCount() == 0
                         || !GetPokemonListPartialDisplayDataDB.canRead()) {
@@ -86,14 +86,14 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
                 int lastPosition = view.getPositionForView(lastChildView);
 
                 if (lastChildBottom == recyclerBottom && lastPosition == view.getCount() - 1) {
-                    binding.fcLoadingPB.setVisibility(View.VISIBLE);
+                    binding.fpcLoadingPB.setVisibility(View.VISIBLE);
                     new GetPokemonListPartialDisplayDataDB(PokemonCollection.this, getAuthenticatedUserId(), ++count).execute();
                 }
             }
         });
 
-        binding.fcAddOptionsFAB.setOnClickListener(view -> new AddOptionsDialog(this, barcodeLauncher).load());
-        binding.fcPublicCollectionFAB.setOnClickListener(view -> navigateTo(R.id.action_collection_to_publicCollection));
+        binding.fpcAddOptionsFAB.setOnClickListener(view -> new AddOptionsDialog(this, barcodeLauncher).load());
+        binding.fpcPublicCollectionFAB.setOnClickListener(view -> navigateTo(R.id.action_collection_to_publicCollection));
 
         return binding.getRoot();
     }
@@ -105,8 +105,8 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
         Storage.setPublicPokemon(false);
         if (Storage.getPokemonList() != null) {
             pokemonList = Storage.getPokemonList();
-            binding.fcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
-            binding.fcLoadingPB.setVisibility(View.GONE);
+            binding.fpcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
+            binding.fpcLoadingPB.setVisibility(View.GONE);
         } else {
             new GetPokemonListPartialDisplayDataDB(this, getAuthenticatedUserId(), ++count).execute();
         }
@@ -117,15 +117,15 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
         if (caller instanceof GetPokemonListPartialDisplayDataDB) {
             new GetPokemonListPartialDisplayDataAT(this, (List<Pokemon>) result).execute();
         } else if (caller instanceof GetPokemonListPartialDisplayDataAT) {
-            if(pokemonList == null){
+            if (pokemonList == null) {
                 pokemonList = (List<Pokemon>) result;
                 Storage.setPokemonList(pokemonList);
-            }else{
+            } else {
                 pokemonList.addAll((List<Pokemon>) result);
             }
 
-            binding.fcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
-            binding.fcLoadingPB.setVisibility(View.GONE);
+            binding.fpcListGV.setAdapter(new PokemonConfigurationAdapter(this.getActivity(), new ArrayList<>(pokemonList)));
+            binding.fpcLoadingPB.setVisibility(View.GONE);
         } else if (caller instanceof InsertPokemonDB) {
             pokemonList.add((Pokemon) result);
         }
@@ -135,7 +135,7 @@ public class PokemonCollection extends GeneralisedFragment<FragmentCollectionBin
     public void timedOut(Object caller) {
         toast(getString(R.string.server_timeout));
         if (caller instanceof GetPokemonListPartialDisplayDataDB || caller instanceof GetPokemonListPartialDisplayDataAT) {
-            binding.fcLoadingPB.setVisibility(View.GONE);
+            binding.fpcLoadingPB.setVisibility(View.GONE);
         }
     }
 }

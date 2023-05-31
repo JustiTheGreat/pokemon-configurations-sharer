@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mypokemoncollection.R;
 import com.mypokemoncollection.databinding.FragmentPublicPokemonCollectionBinding;
@@ -24,7 +26,7 @@ import java.util.stream.Collectors;
 
 import app.connections.async_tasks.GetAllPokemonSpeciesDataAT;
 import app.connections.async_tasks.GetPokemonListPartialDisplayDataAT;
-import app.connections.firebase.GetFilteredPokemonDisplayDataListDB;
+import app.connections.firebase.GetFilteredPokemonListPartialDisplayDataListDB;
 import app.connections.firebase.GetPokemonListPartialDisplayDataDB;
 import app.connections.firebase.InsertPokemonDB;
 import app.data_objects.Pokemon;
@@ -37,6 +39,13 @@ public class PublicPokemonCollection extends GeneralisedFragment<FragmentPublicP
 
     private FilterDialog filterDialog;
     private GetPokemonListPartialDisplayDataAT currentAsyncTask;
+    private List<Pokemon> pokemonList;
+    private long pokedexNumber = DEFAULT_POKEDEX_NUMBER;
+    private int count = 2;
+
+    public void resetCount() {
+        count = 2;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Nullable
@@ -44,15 +53,44 @@ public class PublicPokemonCollection extends GeneralisedFragment<FragmentPublicP
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentPublicPokemonCollectionBinding.inflate(inflater, container, false);
 
+        GetFilteredPokemonListPartialDisplayDataListDB.setCanRead(true);
+        resetCount();
+
         binding.fppcFilterFAB.setOnClickListener(view -> {
             filterDialog = new FilterDialog(this);
             filterDialog.load();
         });
 
         binding.fppcListGV.setOnItemClickListener((adapterView, view, i, l) -> {
+            pokemonList = null;
             Pokemon pokemon = (Pokemon) adapterView.getAdapter().getItem(i);
             Storage.setCopyOfSelectedPokemon(pokemon);
             navigateTo(R.id.action_publicCollection_to_details);
+        });
+
+        binding.fppcListGV.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState != RecyclerView.SCROLL_STATE_IDLE
+                        || view.getCount() == 0
+                        || !GetFilteredPokemonListPartialDisplayDataListDB.canRead()) {
+                    return;
+                }
+
+                View lastChildView = view.getChildAt(view.getChildCount() - 1);
+                int lastChildBottom = lastChildView.getBottom();
+                int recyclerBottom = view.getBottom() - view.getPaddingBottom();
+                int lastPosition = view.getPositionForView(lastChildView);
+
+                if (lastChildBottom == recyclerBottom && lastPosition == view.getCount() - 1) {
+                    binding.fppcLoadingPB.setVisibility(View.VISIBLE);
+                    new GetFilteredPokemonListPartialDisplayDataListDB(PublicPokemonCollection.this, pokedexNumber, ++count).execute();
+                }
+            }
         });
 
         return binding.getRoot();
@@ -68,20 +106,24 @@ public class PublicPokemonCollection extends GeneralisedFragment<FragmentPublicP
             new GetAllPokemonSpeciesDataAT(this).execute();
         }
 
-        new GetFilteredPokemonDisplayDataListDB(this, DEFAULT_POKEDEX_NUMBER).execute();
+        new GetFilteredPokemonListPartialDisplayDataListDB(this, pokedexNumber, ++count).execute();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     public void callback(Object caller, Object result) {
-        if (caller instanceof GetFilteredPokemonDisplayDataListDB) {
+        if (caller instanceof GetFilteredPokemonListPartialDisplayDataListDB) {
             if (currentAsyncTask != null && currentAsyncTask.getStatus() != AsyncTask.Status.FINISHED) {
                 currentAsyncTask.cancel(true);
             }
             currentAsyncTask = new GetPokemonListPartialDisplayDataAT(this, (List<Pokemon>) result);
             currentAsyncTask.execute();
         } else if (caller instanceof GetPokemonListPartialDisplayDataAT) {
-            List<Pokemon> pokemonList = (List<Pokemon>) result;
+            if (pokemonList == null) {
+                pokemonList = (List<Pokemon>) result;
+            } else {
+                pokemonList.addAll((List<Pokemon>) result);
+            }
 
             if (filterDialog != null) {
                 pokemonList = pokemonList.stream().filter(pokemon -> {
@@ -107,9 +149,15 @@ public class PublicPokemonCollection extends GeneralisedFragment<FragmentPublicP
                 filterDialog.notifyPokemonSpeciesDataIsAvailable();
             }
         } else if (caller instanceof FilterDialog) {
+            pokemonList = null;
+            GetFilteredPokemonListPartialDisplayDataListDB.setCanRead(true);
+            resetCount();
+            pokedexNumber = (long) result;
+            new GetFilteredPokemonListPartialDisplayDataListDB(this, pokedexNumber, ++count).execute();
+
             binding.fppcListGV.setVisibility(View.GONE);
             binding.fppcLoadingPB.setVisibility(View.VISIBLE);
-        } else if (caller instanceof InsertPokemonDB){
+        } else if (caller instanceof InsertPokemonDB) {
             Storage.addToPokemonList((Pokemon) result);
         }
     }

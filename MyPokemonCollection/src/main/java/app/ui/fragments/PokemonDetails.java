@@ -177,6 +177,7 @@ public class PokemonDetails extends GeneralisedFragment<FragmentPokemonDetailsBi
             new GetPokemonSpriteDB(this, (Pokemon) result).execute();
         } else if (caller instanceof GetPokemonSpriteDB) {
             pokemon = (Pokemon) result;
+            Storage.setCopyOfSelectedPokemon(pokemon);
             setPageInfo();
             enableActivityTouchInput();
         } else if (caller instanceof DeletePokemonDB) {

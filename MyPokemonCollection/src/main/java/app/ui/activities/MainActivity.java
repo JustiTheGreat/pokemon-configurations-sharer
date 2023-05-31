@@ -19,6 +19,7 @@ import com.mypokemoncollection.databinding.ActivityMainBinding;
 
 import java.util.Objects;
 
+import app.storages.Storage;
 import app.ui.fragments.AddPokemon;
 import app.ui.fragments.GeneralisedFragment;
 import app.ui.fragments.PokemonCollection;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             int id = item.getItemId();
             if (id == R.id.m_log_out) {
                 menu.setGroupVisible(0, false);
+                Storage.setPokemonList(null);
 
                 GeneralisedFragment<?> currentFragment = (GeneralisedFragment<?>)
                         Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_content_main))
